@@ -1,0 +1,312 @@
+---
+import Base from "~/layouts/Base.astro";
+import Section from "~/components/Section.astro";
+import ProjectCard from "~/components/ProjectCard.astro";
+import { getCollection } from "astro:content";
+
+const all = await getCollection("projects");
+const sorted = all.sort((a, b) => a.data.order - b.data.order);
+const featured = sorted.filter((p) => p.data.featured).slice(0, 3);
+const qms = sorted.filter((p) => p.data.category === "qms");
+const tasis = sorted.filter((p) => p.data.category === "tasis");
+const personal = sorted.filter((p) => p.data.category === "personal");
+
+const categories = [
+  {
+    slug: "qms",
+    label: "QMS",
+    blurb:
+      "Internal product and live-site work for Queen Margaret's School: a private Board of Governors microsite, an interactive strategic plan, and an admissions-agent guide in development.",
+    href: "/work/qms",
+    count: qms.length,
+  },
+  {
+    slug: "tasis",
+    label: "TASIS",
+    blurb:
+      "School-marketing work focused on hierarchy and access to information: a homepage concept, two live digital viewbooks, and a live library page redesign.",
+    href: "/work/tasis",
+    count: tasis.length,
+  },
+  {
+    slug: "personal",
+    label: "Personal Projects",
+    blurb:
+      "Self-initiated product work focused on education and accessibility, currently in progress: a learning support app concept for students with learning disabilities.",
+    href: "/work/personal",
+    count: personal.length,
+  },
+] as const;
+
+function eyebrowFor(category: string) {
+  if (category === "qms") return "QMS · Internal";
+  if (category === "tasis") return "TASIS";
+  return "Personal · In progress";
+}
+---
+
+<Base
+  title="Work"
+  description="Selected UX/UI, web, and digital experience work across institutional, school marketing, and personal product concepts."
+>
+  <section class="page-header">
+    <div class="container">
+      <p class="eyebrow">Work</p>
+      <h1>
+        Selected work across school websites, internal tools, and learning-focused product ideas.
+      </h1>
+      <p class="lede">
+        Three areas of work: live institutional projects at Queen Margaret's
+        School, school-marketing pages and publications for TASIS Portugal,
+        and a self-initiated education product exploration.
+      </p>
+    </div>
+  </section>
+
+  <!-- FEATURED — 3 cards -->
+  <Section eyebrow="Featured" title="Three projects to start with">
+    <div class="featured-grid">
+      {featured.map((p) => (
+        <ProjectCard
+          href={`/work/${p.slug}`}
+          eyebrow={eyebrowFor(p.data.category)}
+          title={p.data.title}
+          summary={p.data.summary}
+          role={p.data.role}
+          tags={p.data.tags}
+          confidential={p.data.confidential}
+          status={p.data.status}
+          category={p.data.category}
+          featured
+        />
+      ))}
+    </div>
+  </Section>
+
+  <!-- CATEGORIES -->
+  <Section eyebrow="By category" title="Browse by area" tone="muted">
+    <div class="cat-grid">
+      {categories.map((c) => (
+        <a href={c.href} class:list={["cat-card", `cat-${c.slug}`]}>
+          <span class="cat-stripe" aria-hidden="true"></span>
+          <span class="cat-glow" aria-hidden="true"></span>
+          <div class="cat-head">
+            <span class="eyebrow">
+              <span class="cat-eyebrow-dot" aria-hidden="true"></span>
+              {c.label}
+            </span>
+            <span class="cat-count">{c.count} {c.count === 1 ? "project" : "projects"}</span>
+          </div>
+          <p>{c.blurb}</p>
+          <span class="cat-arrow" aria-hidden="true">→</span>
+        </a>
+      ))}
+    </div>
+  </Section>
+
+  <!-- ALL PROJECTS — horizontal scroll on vertical scroll -->
+  <section class="h-scroll" aria-label="All projects">
+    <div class="h-scroll__pin">
+      <div class="h-scroll__header container">
+        <p class="eyebrow">All projects</p>
+        <h2 class="h-scroll__title">Everything in one place.</h2>
+        <p class="h-scroll__progress" aria-hidden="true">
+          <span class="h-scroll__progress-track">
+            <span class="h-scroll__progress-fill"></span>
+          </span>
+          <span class="h-scroll__progress-hint">Scroll to explore →</span>
+        </p>
+      </div>
+      <div class="h-scroll__viewport">
+        <ul class="h-scroll__track">
+          {sorted.map((p) => (
+            <li class="h-scroll__item">
+              <ProjectCard
+                href={`/work/${p.slug}`}
+                eyebrow={eyebrowFor(p.data.category)}
+                title={p.data.title}
+                summary={p.data.summary}
+                role={p.data.role}
+                tags={p.data.tags}
+                confidential={p.data.confidential}
+                status={p.data.status}
+                category={p.data.category}
+              />
+            </li>
+          ))}
+          <li class="h-scroll__item">
+            <a class="end-card" href="/contact">
+              <span class="eyebrow">Open to work</span>
+              <h3>Let's talk about your project, role, or idea.</h3>
+              <span class="end-card-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-header {
+    padding-block: clamp(3rem, 6vw, 5rem) clamp(2rem, 4vw, 3rem);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-header h1 {
+    font-size: var(--fs-3xl);
+    margin-block: var(--space-4) var(--space-5);
+    max-width: 24ch;
+  }
+
+  .page-header .lede {
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-md);
+    line-height: var(--lh-base);
+    max-width: 56ch;
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 720px) {
+    .featured-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .featured-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .cat-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 720px) {
+    .cat-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .cat-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-7);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: transform var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out),
+      background var(--dur-base) var(--ease-out);
+    color: var(--color-ink);
+    min-height: 220px;
+    overflow: hidden;
+  }
+
+  .cat-card:hover {
+    text-decoration: none;
+    transform: translateY(-2px);
+    border-color: var(--color-border-strong);
+    background: var(--color-bg-muted);
+  }
+
+  .cat-stripe {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2px;
+    transition: height var(--dur-base) var(--ease-out);
+  }
+
+  .cat-card.cat-qms .cat-stripe { background: var(--grad-qms); }
+  .cat-card.cat-tasis .cat-stripe { background: var(--grad-tasis); }
+  .cat-card.cat-personal .cat-stripe { background: var(--grad-personal); }
+
+  .cat-card:hover .cat-stripe { height: 3px; }
+
+  .cat-glow {
+    position: absolute;
+    pointer-events: none;
+    top: -50%;
+    right: -20%;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0;
+    transition: opacity var(--dur-slow) var(--ease-out);
+  }
+
+  .cat-card.cat-qms .cat-glow { background: var(--cat-qms-ink); }
+  .cat-card.cat-tasis .cat-glow { background: var(--cat-tasis-ink); }
+  .cat-card.cat-personal .cat-glow { background: var(--cat-personal-ink); }
+
+  .cat-card:hover .cat-glow { opacity: 0.2; }
+
+  .cat-head,
+  .cat-card p,
+  .cat-card .cat-arrow {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cat-head .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .cat-eyebrow-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+  }
+
+  .cat-card.cat-qms .cat-eyebrow-dot { background: var(--grad-qms); }
+  .cat-card.cat-tasis .cat-eyebrow-dot { background: var(--grad-tasis); }
+  .cat-card.cat-personal .cat-eyebrow-dot { background: var(--grad-personal); }
+
+  .cat-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  .cat-count {
+    font-size: var(--fs-xs);
+    color: var(--color-ink-muted);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .cat-card p {
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-base);
+    line-height: var(--lh-base);
+  }
+
+  .cat-arrow {
+    margin-top: auto;
+    color: var(--color-ink-muted);
+    transition: transform var(--dur-base) var(--ease-out),
+      color var(--dur-base) var(--ease-out);
+    align-self: flex-end;
+  }
+
+  .cat-card:hover .cat-arrow {
+    color: var(--color-ink);
+    transform: translateX(4px);
+  }
+
+</style>

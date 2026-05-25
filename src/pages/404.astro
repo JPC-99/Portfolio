@@ -1,0 +1,55 @@
+---
+import Base from "~/layouts/Base.astro";
+---
+
+<Base title="Page not found" description="The page you were looking for doesn't exist." noindex={true}>
+  <section class="not-found">
+    <div class="container">
+      <p class="eyebrow">404</p>
+      <h1 class="display">
+        That page doesn't exist.<br />
+        <span class="ink-soft">Or it moved when we weren't looking.</span>
+      </h1>
+      <p class="lede">
+        Here are some places that probably do.
+      </p>
+      <div class="links">
+        <a href="/" class="btn btn-primary">
+          Home <span class="arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="/work" class="btn btn-secondary">Work</a>
+        <a href="/about" class="btn btn-secondary">About</a>
+        <a href="/contact" class="btn btn-secondary">Contact</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .not-found {
+    padding-block: clamp(4rem, 10vw, 8rem);
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .not-found h1 {
+    margin-block: var(--space-4) var(--space-6);
+    max-width: 22ch;
+  }
+
+  .ink-soft { color: var(--color-ink-secondary); }
+
+  .not-found .lede {
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-md);
+    line-height: var(--lh-base);
+  }
+
+  .links {
+    margin-top: var(--space-7);
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+</style>

@@ -1,0 +1,205 @@
+---
+import "~/styles/global.css";
+import Nav from "~/components/Nav.astro";
+import Footer from "~/components/Footer.astro";
+import { site } from "~/data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = site.description,
+  ogImage,
+  noindex = false,
+} = Astro.props;
+
+const pageTitle = title ? `${title} · ${site.name}` : site.title;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
+  .toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.name} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+
+    <meta name="theme-color" content="#f7f5f1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d1014" media="(prefers-color-scheme: dark)" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Nav />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script is:inline>
+      (function () {
+        var doc = document.documentElement;
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function revealAll() {
+          var els = document.querySelectorAll('[data-reveal]');
+          for (var i = 0; i < els.length; i++) els[i].classList.add('is-revealed');
+        }
+
+        if (reduceMotion) {
+          doc.style.setProperty('--mx', '50%');
+          doc.style.setProperty('--my', '35%');
+          revealAll();
+          return;
+        }
+
+        // ---- Pointer-driven ambient (smoothed via requestAnimationFrame) ----
+        var tx = 50, ty = 35, cx = tx, cy = ty;
+        window.addEventListener('pointermove', function (e) {
+          tx = (e.clientX / window.innerWidth) * 100;
+          ty = (e.clientY / window.innerHeight) * 100;
+        }, { passive: true });
+
+        function tick() {
+          // simple lerp; feels alive without being twitchy
+          cx += (tx - cx) * 0.045;
+          cy += (ty - cy) * 0.045;
+          doc.style.setProperty('--mx', cx.toFixed(2) + '%');
+          doc.style.setProperty('--my', cy.toFixed(2) + '%');
+          requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+
+        // ---- Scroll progress (0..1) ----
+        function onScroll() {
+          var max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+          var sp = Math.min(1, Math.max(0, window.scrollY / max));
+          doc.style.setProperty('--sp', sp.toFixed(3));
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
+        // ---- Scroll reveals ----
+        if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function (entries) {
+            for (var i = 0; i < entries.length; i++) {
+              if (entries[i].isIntersecting) {
+                entries[i].target.classList.add('is-revealed');
+                io.unobserve(entries[i].target);
+              }
+            }
+          }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+          document.querySelectorAll('[data-reveal]').forEach(function (el) { io.observe(el); });
+        } else {
+          revealAll();
+        }
+
+        // ---- Horizontal-scroll-on-vertical sections ----
+        // Each section keeps a target (scroll-derived) and a smoothed value
+        // that lerps toward the target every frame. This makes trackpad,
+        // mouse-wheel, and touch all feel uniformly smooth without changing
+        // how fast the user can move through the section.
+        var hScrollSections = document.querySelectorAll('.h-scroll');
+        if (hScrollSections.length) {
+          var hReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+          var hMobile = window.matchMedia('(max-width: 720px)');
+          var hFallback = function () { return hReduce.matches || hMobile.matches; };
+
+          var hControllers = [];
+          hScrollSections.forEach(function (section) {
+            var viewport = section.querySelector('.h-scroll__viewport');
+            var track = section.querySelector('.h-scroll__track');
+            if (!viewport || !track) return;
+
+            var state = { target: 0, current: 0 };
+
+            function measure() {
+              if (hFallback()) {
+                section.style.setProperty('--h-scroll-distance', '0px');
+                section.style.setProperty('--hx', '0');
+                return;
+              }
+              var distance = Math.max(0, track.scrollWidth - viewport.clientWidth);
+              section.style.setProperty('--h-scroll-distance', distance + 'px');
+            }
+
+            function readTarget() {
+              if (hFallback()) return;
+              var rect = section.getBoundingClientRect();
+              var totalScroll = section.offsetHeight - window.innerHeight;
+              if (totalScroll <= 0) return;
+              var raw = -rect.top / totalScroll;
+              state.target = Math.min(1, Math.max(0, raw));
+            }
+
+            function tick() {
+              if (hFallback()) return;
+              // Lerp with factor 0.18; converges in ~4–5 frames without
+              // feeling laggy on fast scroll input.
+              state.current += (state.target - state.current) * 0.18;
+              // Snap when within a tiny epsilon to stop the GPU from doing
+              // sub-pixel work forever.
+              if (Math.abs(state.target - state.current) < 0.0005) {
+                state.current = state.target;
+              }
+              section.style.setProperty('--hx', state.current.toFixed(4));
+            }
+
+            hControllers.push({ measure: measure, readTarget: readTarget, tick: tick, state: state });
+            measure();
+            readTarget();
+            state.current = state.target;
+            section.style.setProperty('--hx', state.current.toFixed(4));
+          });
+
+          function hLoop() {
+            for (var i = 0; i < hControllers.length; i++) hControllers[i].tick();
+            requestAnimationFrame(hLoop);
+          }
+          // Run a single shared RAF loop for all h-scroll sections.
+          if (!hReduce.matches && !hMobile.matches) {
+            requestAnimationFrame(hLoop);
+          }
+
+          function hOnScroll() {
+            for (var i = 0; i < hControllers.length; i++) hControllers[i].readTarget();
+          }
+          function hOnResize() {
+            for (var i = 0; i < hControllers.length; i++) {
+              hControllers[i].measure();
+              hControllers[i].readTarget();
+            }
+          }
+
+          window.addEventListener('scroll', hOnScroll, { passive: true });
+          window.addEventListener('resize', hOnResize, { passive: true });
+          if (hReduce.addEventListener) hReduce.addEventListener('change', hOnResize);
+          if (hMobile.addEventListener) hMobile.addEventListener('change', hOnResize);
+        }
+      })();
+    </script>
+  </body>
+</html>

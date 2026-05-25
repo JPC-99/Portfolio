@@ -1,0 +1,89 @@
+---
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  lede?: string;
+  align?: "left" | "center";
+  id?: string;
+  tone?: "default" | "muted" | "inverse";
+  size?: "default" | "lg" | "tight";
+}
+
+const {
+  eyebrow,
+  title,
+  lede,
+  align = "left",
+  id,
+  tone = "default",
+  size = "default",
+} = Astro.props;
+
+const sectionClass = [
+  "section",
+  size === "lg" && "section-lg",
+  size === "tight" && "section-tight",
+  `tone-${tone}`,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<section class={sectionClass} id={id}>
+  <div class="container">
+    {(eyebrow || title || lede) && (
+      <header class:list={["section-header", `align-${align}`]}>
+        {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+        {title && <h2 class="section-title">{title}</h2>}
+        {lede && <p class="section-lede">{lede}</p>}
+      </header>
+    )}
+    <slot />
+  </div>
+</section>
+
+<style>
+  .tone-muted {
+    background: var(--color-bg-muted);
+  }
+
+  .tone-inverse {
+    background: var(--color-bg-inverse);
+    color: var(--color-ink-inverse);
+  }
+
+  .tone-inverse :global(h1),
+  .tone-inverse :global(h2),
+  .tone-inverse :global(h3) {
+    color: var(--color-ink-inverse);
+  }
+
+  .section-header {
+    margin-bottom: var(--space-9);
+    max-width: 56rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .align-center {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .section-title {
+    font-size: var(--fs-2xl);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .section-lede {
+    font-size: var(--fs-md);
+    line-height: var(--lh-base);
+    color: var(--color-ink-secondary);
+    max-width: 48ch;
+  }
+
+  .align-center .section-lede {
+    margin-inline: auto;
+  }
+</style>

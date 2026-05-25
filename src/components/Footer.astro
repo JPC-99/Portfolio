@@ -1,0 +1,122 @@
+---
+import { site } from "~/data/site";
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-top">
+      <div>
+        <p class="footer-tag eyebrow">Available for select work</p>
+        <a href="/contact" class="footer-cta">
+          Let's talk <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <div class="footer-meta">
+        <a href={`mailto:${site.email}`} class="footer-link"
+          >{site.email}</a
+        >
+        <a
+          href={site.linkedin}
+          class="footer-link"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          LinkedIn
+        </a>
+        <span class="muted">{site.location}</span>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span class="muted">© {year} Jack Chicquen</span>
+      <span class="muted">Designed and built by JP</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--space-12);
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+
+  .footer-inner {
+    padding-block: var(--space-10) var(--space-7);
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+    align-items: end;
+    padding-bottom: var(--space-9);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  @media (min-width: 720px) {
+    .footer-top {
+      grid-template-columns: 1fr auto;
+    }
+  }
+
+  .footer-tag {
+    margin-bottom: var(--space-4);
+  }
+
+  .footer-cta {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    font-size: clamp(1.6rem, 1.2rem + 2vw, 2.5rem);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-ink);
+  }
+
+  .footer-cta:hover {
+    text-decoration: none;
+    color: var(--color-accent-strong);
+  }
+
+  .footer-cta span {
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+
+  .footer-cta:hover span {
+    transform: translateX(6px);
+  }
+
+  .footer-meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    text-align: right;
+    font-size: var(--fs-sm);
+  }
+
+  @media (max-width: 719px) {
+    .footer-meta {
+      text-align: left;
+    }
+  }
+
+  .footer-link {
+    color: var(--color-ink-secondary);
+  }
+
+  .footer-link:hover {
+    color: var(--color-ink);
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    padding-top: var(--space-6);
+    font-size: var(--fs-xs);
+  }
+</style>

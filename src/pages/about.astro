@@ -1,0 +1,379 @@
+---
+import Base from "~/layouts/Base.astro";
+import Section from "~/components/Section.astro";
+import { Image } from "astro:assets";
+import headshot from "~/assets/images/about/headshot.jpeg";
+import { site } from "~/data/site";
+---
+
+<Base title="About" description="Jack (JP) Chicquen is a UX/UI designer and digital marketing specialist on Vancouver Island, with a background in education.">
+  <section class="about-hero">
+    <div class="container">
+      <p class="eyebrow">About</p>
+      <h1 class="display">
+        UX/UI design through<br />
+        <span class="ink-soft">the lens of education.</span>
+      </h1>
+      <p class="lede">
+        I'm Jack, but most people call me JP. I'm a UX/UI designer and digital
+        marketing specialist on Vancouver Island, currently designing
+        institutional and web experiences for Queen Margaret's School.
+      </p>
+    </div>
+  </section>
+
+  <Section eyebrow="Background" title="From classrooms to interfaces." size="default">
+    <div class="bio-grid">
+      <div class="bio-copy">
+        <p>
+          I grew up in Shawnigan Lake, BC, where small-town values and time
+          outdoors shaped how I work and what I make. Hockey, lacrosse, biking,
+          skiing, and long stretches playing video games with my brother. In
+          high school I joined the Lacrosse Academy at Claremont Secondary in
+          Victoria, which sharpened the discipline and adaptability I still
+          lean on now.
+        </p>
+        <p>
+          My professional path started at Vancouver Island University, where I
+          earned an Educational Assistant and Community Support Certificate.
+          That led to a mix of on-call, temporary, and permanent roles in
+          schools across the Island. The on-call work was the most demanding
+          and the most rewarding: a new team, a new student, a new room every
+          day. It built interpersonal and problem-solving skills that show up
+          in every design decision I make.
+        </p>
+        <p>
+          Driven by a creative pull I couldn't ignore, I went back to school
+          for an Interactive Media Developer Certificate at Camosun College.
+          Balancing work and study, I discovered UX/UI design: a field that
+          let me design and build, and reach more people than I could one
+          classroom at a time.
+        </p>
+        <p>
+          After completing the IMD program in 2023, I joined TASIS Portugal as
+          a UX/UI Designer and Web Specialist Intern. It was my first
+          institutional design role and a fast introduction to working inside
+          a global school community. Since August 2024 I've continued with
+          TASIS remotely as a consultant from Victoria, BC, alongside my work
+          at Queen Margaret's School as a digital marketing specialist and
+          designer.
+        </p>
+        <p>
+          On the side, I'm exploring education-focused product ideas,
+          particularly around learning support for students with learning
+          disabilities.
+        </p>
+      </div>
+      <aside class="bio-side">
+        <figure class="bio-portrait" data-reveal>
+          <Image
+            src={headshot}
+            alt="Portrait of Jack (JP) Chicquen"
+            widths={[320, 480, 640, 960]}
+            sizes="(min-width: 800px) 360px, 70vw"
+            format="webp"
+            quality={84}
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <dl>
+          <div>
+            <dt>Location</dt>
+            <dd>Victoria, BC</dd>
+          </div>
+          <div>
+            <dt>Education</dt>
+            <dd>
+              Interactive Media Developer Certificate, Camosun College<br />
+              Educational Assistant & Community Support Certificate, VIU
+            </dd>
+          </div>
+          <div>
+            <dt>Current roles</dt>
+            <dd>
+              Digital marketing specialist & designer<br />
+              Queen Margaret's School<br />
+              <span class="dd-soft">UX/UI consultant, TASIS Portugal</span>
+            </dd>
+          </div>
+          <div>
+            <dt>Contact</dt>
+            <dd>
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+            </dd>
+          </div>
+          {site.resume && (
+            <div>
+              <dt>Resume</dt>
+              <dd>
+                <a href={site.resume} target="_blank" rel="noopener noreferrer">
+                  Download (PDF)
+                  <span class="sr-only">(opens in new tab)</span>
+                </a>
+              </dd>
+            </div>
+          )}
+        </dl>
+      </aside>
+    </div>
+  </Section>
+
+  <Section eyebrow="Philosophy" title="How I think about design." tone="muted" size="default">
+    <ul class="phil-list">
+      <li>
+        <h3>Clarity over cleverness.</h3>
+        <p>
+          The page or product has a job to do. I'd rather design a confident,
+          obvious experience than a clever one that needs explaining.
+        </p>
+      </li>
+      <li>
+        <h3>Accessibility is the floor.</h3>
+        <p>
+          Focus states, contrast, hierarchy, and type aren't features. They're
+          the baseline a professional digital product owes its users.
+        </p>
+      </li>
+      <li>
+        <h3>Constraints make better work.</h3>
+        <p>
+          WordPress themes, plugin commitments, governance rules, PHP versions:
+          these aren't the enemy. They're the conditions the design has to live
+          inside.
+        </p>
+      </li>
+    </ul>
+  </Section>
+
+  <Section eyebrow="Strengths" title="A few things people hire me for." size="default">
+    <ul class="strength-list">
+      <li>UX/UI design for content-heavy sites and internal tools</li>
+      <li>WordPress implementation work that holds up over time</li>
+      <li>Information architecture for stakeholders with competing needs</li>
+      <li>Accessible-by-default HTML, CSS, and design tokens</li>
+      <li>Content design that turns long copy into useful structure</li>
+      <li>Quiet, defensible visual systems for institutional contexts</li>
+      <li>Print and digital production fluency across Adobe CC</li>
+      <li>Designing with people who don't usually get designed for</li>
+      <li>Digital marketing campaigns that stay on-brand across channels</li>
+    </ul>
+  </Section>
+
+  <Section eyebrow="What I'm looking for" title="Where I want to take this." size="default">
+    <div class="looking">
+      <p>
+        I'm building toward a career in UX/UI, product, and education
+        technology. I'm especially interested in:
+      </p>
+      <ul>
+        <li>Design work that improves outcomes for students, especially those with learning disabilities.</li>
+        <li>Education-sector product teams in K–12, independent schools, or EdTech tackling a meaningful problem.</li>
+        <li>Roles where design and implementation aren't separate jobs.</li>
+        <li>Teams that take accessibility, content, and stakeholder collaboration seriously.</li>
+      </ul>
+      <div class="looking-cta">
+        <a href="/contact" class="btn btn-primary">
+          Get in touch <span class="arrow" aria-hidden="true">→</span>
+        </a>
+        <a href={site.linkedin} class="btn btn-secondary" rel="noopener noreferrer" target="_blank">
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </Section>
+</Base>
+
+<style>
+  .about-hero {
+    padding-block: clamp(3rem, 6vw, 5rem) clamp(2.5rem, 5vw, 4rem);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .about-hero h1 {
+    margin-block: var(--space-4) var(--space-6);
+    max-width: 22ch;
+  }
+
+  .ink-soft { color: var(--color-ink-secondary); }
+
+  .about-hero .lede {
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-md);
+    max-width: 56ch;
+    line-height: var(--lh-base);
+  }
+
+  .bio-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-9);
+  }
+
+  @media (min-width: 800px) {
+    .bio-grid {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+      gap: var(--space-10);
+    }
+  }
+
+  .bio-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .bio-copy p {
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-md);
+    line-height: var(--lh-loose);
+    max-width: 60ch;
+  }
+
+  .bio-side {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .bio-portrait {
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--glass-border-strong);
+    background: var(--color-bg-elevated);
+    box-shadow: var(--shadow-md), var(--glass-highlight);
+    aspect-ratio: 4 / 5;
+    isolation: isolate;
+  }
+
+  .bio-portrait :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .bio-side dl {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-7);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-elevated);
+  }
+
+  .bio-side dt {
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-ink-muted);
+    margin-bottom: var(--space-1);
+  }
+
+  .bio-side dd {
+    margin: 0;
+    color: var(--color-ink);
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+  }
+
+  .bio-side a {
+    color: var(--color-accent-strong);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+  }
+
+  .dd-soft {
+    color: var(--color-ink-muted);
+  }
+
+  .phil-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 720px) {
+    .phil-list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .phil-list li {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-7);
+  }
+
+  .phil-list h3 {
+    font-size: var(--fs-md);
+    margin-bottom: var(--space-3);
+  }
+
+  .phil-list p {
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-base);
+    line-height: var(--lh-base);
+  }
+
+  .strength-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 640px) {
+    .strength-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 900px) {
+    .strength-list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .strength-list li {
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-elevated);
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-sm);
+  }
+
+  .looking {
+    display: grid;
+    gap: var(--space-5);
+    max-width: 60ch;
+  }
+
+  .looking p {
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-md);
+    line-height: var(--lh-base);
+  }
+
+  .looking ul {
+    list-style: disc;
+    padding-left: 1.2em;
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-md);
+    line-height: var(--lh-base);
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .looking-cta {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-top: var(--space-3);
+  }
+</style>

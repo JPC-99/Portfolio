@@ -1,0 +1,22 @@
+{
+  "name": "jpchicquen-portfolio",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfolio website for Jack (JP) Chicquen — UX/UI designer and digital experience specialist.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "^4.16.18"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.6.3"
+  }
+}

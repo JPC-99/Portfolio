@@ -1,0 +1,269 @@
+---
+// Structural, public-safe representation of the QMS Strategic Plan
+// standalone microsite. No real content from the plan is reproduced —
+// just the six-pillar radial navigator + atmospheric scene language.
+const pillars = [
+  { label: "Purpose",    tagline: "Our why" },
+  { label: "Values",     tagline: "Our how" },
+  { label: "Programs",   tagline: "Our what" },
+  { label: "People",     tagline: "Our who" },
+  { label: "Facilities", tagline: "Our where" },
+  { label: "Goals",      tagline: "Our guiding light" },
+];
+---
+
+<figure class="sp-mock" role="img" aria-label="Mockup of a six-pillar radial navigator over an atmospheric forest scene, with one pillar active.">
+  <div class="sp-scene">
+    <div class="sp-stars" aria-hidden="true"></div>
+    <div class="sp-glow" aria-hidden="true"></div>
+    <div class="sp-trees" aria-hidden="true"></div>
+    <div class="sp-mist" aria-hidden="true"></div>
+
+    <header class="sp-header">
+      <span class="sp-crest">QMS</span>
+      <span class="sp-title">Strategic Plan 2026</span>
+      <span class="sp-epigraph">Growing Change Together</span>
+    </header>
+
+    <ul class="sp-ring" role="tablist" aria-label="Strategic plan pillars (mockup)">
+      {pillars.map((p, i) => (
+        <li
+          class:list={["sp-pillar", { active: i === 2 }]}
+          style={`--i:${i}`}
+          role="tab"
+          aria-selected={i === 2 ? "true" : "false"}
+        >
+          <span class="sp-dot" aria-hidden="true"></span>
+          <span class="sp-label">{p.label}</span>
+        </li>
+      ))}
+    </ul>
+
+    <div class="sp-card" aria-hidden="true">
+      <span class="sp-eyebrow">Our what</span>
+      <span class="sp-headline">Programs</span>
+      <span class="sp-line"></span>
+      <span class="sp-line short"></span>
+    </div>
+  </div>
+
+  <figcaption class="sp-caption">
+    Six pillars · radial navigator · keyboard-first · single-file HTML
+  </figcaption>
+</figure>
+
+<style>
+  .sp-mock {
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--glass-border-strong);
+    background: var(--color-bg-elevated);
+    box-shadow: var(--shadow-md), var(--glass-highlight);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  }
+
+  /* Atmospheric scene — dark forest at dawn */
+  .sp-scene {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background:
+      radial-gradient(140% 90% at 50% 110%, rgba(11, 31, 26, 0) 0%, rgba(11, 31, 26, 1) 60%),
+      linear-gradient(180deg, #0a1a16 0%, #0b1f1a 50%, #060f0d 100%);
+    color: #f2efe6;
+  }
+
+  /* Pin-point stars */
+  .sp-stars {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.7), transparent 60%),
+      radial-gradient(1px 1px at 28% 32%, rgba(255, 255, 255, 0.5), transparent 60%),
+      radial-gradient(1px 1px at 45% 12%, rgba(255, 255, 255, 0.65), transparent 60%),
+      radial-gradient(1px 1px at 63% 26%, rgba(255, 255, 255, 0.5), transparent 60%),
+      radial-gradient(1px 1px at 78% 14%, rgba(255, 255, 255, 0.7), transparent 60%),
+      radial-gradient(1px 1px at 88% 36%, rgba(255, 255, 255, 0.5), transparent 60%),
+      radial-gradient(1px 1px at 18% 48%, rgba(255, 255, 255, 0.4), transparent 60%),
+      radial-gradient(1px 1px at 92% 22%, rgba(255, 255, 255, 0.5), transparent 60%);
+    opacity: 0.85;
+  }
+
+  /* Horizon glow — tinted toward the active pillar's hue (gold/green) */
+  .sp-glow {
+    position: absolute;
+    left: 50%;
+    bottom: 18%;
+    width: 90%;
+    height: 50%;
+    transform: translateX(-50%);
+    background: radial-gradient(closest-side, rgba(118, 188, 67, 0.35) 0%, rgba(230, 200, 147, 0.08) 50%, transparent 75%);
+    filter: blur(28px);
+    pointer-events: none;
+  }
+
+  /* Conifer silhouette strip along the bottom */
+  .sp-trees {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 26%;
+    background:
+      linear-gradient(180deg, transparent 0%, #050b09 70%),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 120' preserveAspectRatio='none'><path d='M0 120 L30 60 L48 90 L72 40 L96 80 L120 30 L150 75 L180 50 L210 85 L240 35 L270 70 L300 25 L330 75 L360 45 L390 80 L420 40 L450 85 L480 55 L510 25 L540 75 L570 50 L600 90 L600 120 Z' fill='%23030806'/></svg>") repeat-x bottom center / auto 100%;
+  }
+
+  .sp-mist {
+    position: absolute;
+    left: -10%;
+    right: -10%;
+    bottom: 22%;
+    height: 18%;
+    background: linear-gradient(180deg, transparent 0%, rgba(180, 200, 190, 0.16) 50%, transparent 100%);
+    filter: blur(14px);
+    pointer-events: none;
+  }
+
+  /* Crown header */
+  .sp-header {
+    position: absolute;
+    inset: 6% 0 auto 0;
+    display: grid;
+    place-items: center;
+    gap: 4px;
+    text-align: center;
+    z-index: 2;
+  }
+
+  .sp-crest {
+    display: inline-grid;
+    place-items: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    border: 1px solid rgba(230, 200, 147, 0.7);
+    border-radius: 50%;
+    font-family: Georgia, "Times New Roman", serif;
+    font-style: italic;
+    font-size: 0.78rem;
+    color: #e6c893;
+    margin-bottom: 4px;
+  }
+
+  .sp-title {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 0.92rem;
+    letter-spacing: 0.05em;
+    color: #f2efe6;
+  }
+
+  .sp-epigraph {
+    font-size: 0.66rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(230, 200, 147, 0.85);
+  }
+
+  /* Radial ring — pillars positioned around a central point */
+  .sp-ring {
+    --ring-r: 38%;
+    --count: 6;
+    position: absolute;
+    inset: 0;
+    list-style: none;
+    z-index: 3;
+  }
+
+  .sp-pillar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* place each pillar at angle = -90 + (i * 360/count) so pillar 0 sits at top */
+    transform: translate(-50%, -50%)
+      rotate(calc((var(--i) / var(--count)) * 360deg - 90deg))
+      translate(var(--ring-r))
+      rotate(calc(((var(--i) / var(--count)) * 360deg - 90deg) * -1));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: rgba(242, 239, 230, 0.7);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 240ms ease;
+  }
+
+  .sp-pillar.active {
+    color: #f2efe6;
+  }
+
+  .sp-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(242, 239, 230, 0.35);
+    box-shadow: 0 0 0 4px rgba(242, 239, 230, 0.06);
+    transition: background 240ms ease, box-shadow 240ms ease;
+  }
+
+  .sp-pillar.active .sp-dot {
+    background: #76bc43;
+    box-shadow: 0 0 0 4px rgba(118, 188, 67, 0.25),
+      0 0 22px rgba(118, 188, 67, 0.5);
+  }
+
+  /* Active-pillar card centered in the ring */
+  .sp-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 38%;
+    padding: var(--space-4);
+    display: grid;
+    gap: 6px;
+    text-align: center;
+    z-index: 2;
+    border: 1px solid rgba(242, 239, 230, 0.1);
+    background: rgba(11, 31, 26, 0.55);
+    border-radius: var(--radius-md);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+
+  .sp-eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(230, 200, 147, 0.9);
+  }
+
+  .sp-headline {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1rem;
+    color: #f2efe6;
+  }
+
+  .sp-line {
+    height: 5px;
+    border-radius: 3px;
+    background: rgba(242, 239, 230, 0.18);
+    margin: 0 auto;
+    width: 80%;
+  }
+
+  .sp-line.short {
+    width: 55%;
+  }
+
+  .sp-caption {
+    padding: var(--space-3) var(--space-5);
+    font-size: 0.72rem;
+    color: var(--color-ink-muted);
+    letter-spacing: 0.04em;
+    text-align: center;
+    border-top: 1px solid var(--color-border);
+    background: rgba(13, 16, 20, 0.4);
+  }
+</style>

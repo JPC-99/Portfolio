@@ -1,0 +1,100 @@
+---
+import Base from "~/layouts/Base.astro";
+import Section from "~/components/Section.astro";
+import ProjectCard from "~/components/ProjectCard.astro";
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects"))
+  .filter((p) => p.data.category === "qms")
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  title="QMS"
+  description="UX/UI, WordPress, and digital experience work for Queen Margaret's School: a private Board of Governors microsite, an interactive strategic plan, and an admissions-agent guide in development."
+>
+  <section class="page-header">
+    <div class="container">
+      <p class="eyebrow">Queen Margaret's School</p>
+      <h1>Internal product and live-site work for a working school.</h1>
+      <p class="lede">
+        A private Board of Governors microsite, an interactive strategic plan,
+        and an admissions-agent guide in development.
+      </p>
+    </div>
+  </section>
+
+  <Section eyebrow="Projects" title="QMS work">
+    <div class="grid grid-2">
+      {projects.map((p) => (
+        <ProjectCard
+          href={`/work/${p.slug}`}
+          eyebrow={p.data.type}
+          title={p.data.title}
+          summary={p.data.summary}
+          role={p.data.role}
+          tags={p.data.tags}
+          confidential={p.data.confidential}
+          status={p.data.status}
+          category="qms"
+        />
+      ))}
+    </div>
+  </Section>
+
+  <Section size="tight">
+    <div class="callout callout-confidential">
+      <strong>Confidentiality note.</strong> Some QMS projects involve private
+      governance, admissions, and stakeholder content. Where needed, visuals
+      are redacted or replaced with structural mockups. No real board
+      materials, internal documents, or private data are shown.
+    </div>
+  </Section>
+
+  <Section>
+    <div class="cta-row">
+      <h2>See how I work</h2>
+      <p class="lede">
+        Open to UX/UI, web, and digital experience roles, especially work
+        rooted in education, accessibility, or institutional product design.
+      </p>
+      <a href="/contact" class="btn btn-primary">
+        Get in touch <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </Section>
+</Base>
+
+<style>
+  .page-header {
+    padding-block: clamp(3rem, 6vw, 5rem) clamp(2rem, 4vw, 3rem);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-header h1 {
+    font-size: var(--fs-3xl);
+    margin-block: var(--space-4) var(--space-5);
+    max-width: 22ch;
+  }
+
+  .page-header .lede {
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-md);
+    line-height: var(--lh-base);
+    max-width: 56ch;
+  }
+
+  .cta-row {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .cta-row h2 {
+    font-size: var(--fs-2xl);
+  }
+
+  .cta-row .btn {
+    align-self: flex-start;
+    margin-top: var(--space-3);
+  }
+</style>

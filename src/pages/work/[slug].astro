@@ -1,0 +1,636 @@
+---
+import Base from "~/layouts/Base.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import BoardPortalMock from "~/components/mockups/BoardPortalMock.astro";
+import PageStructureMock from "~/components/mockups/PageStructureMock.astro";
+import FlowDiagram from "~/components/mockups/FlowDiagram.astro";
+import StrategicPlanMock from "~/components/mockups/StrategicPlanMock.astro";
+import CaseGallery from "~/components/CaseGallery.astro";
+import { Image } from "astro:assets";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((p) => ({
+    params: { slug: p.slug },
+    props: { project: p },
+  }));
+}
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+const d = project.data;
+
+const all = await getCollection("projects");
+const related = all
+  .filter((p) => p.data.category === d.category && p.slug !== project.slug)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 2);
+
+const categoryLabel =
+  d.category === "qms" ? "QMS · Internal" : d.category === "tasis" ? "TASIS" : "Personal";
+
+const categoryHref =
+  d.category === "qms" ? "/work/qms" : d.category === "tasis" ? "/work/tasis" : "/work/personal";
+
+const slug = project.slug;
+const isComingSoon = (d.status ?? "").toLowerCase().includes("coming");
+const isInProgress = (d.status ?? "").toLowerCase().includes("progress");
+---
+
+<Base title={d.title} description={d.summary}>
+  <article>
+    <!-- HEADER -->
+    <header class:list={["case-header", `cat-${d.category}`]}>
+      <span class="header-halo" aria-hidden="true"></span>
+      <span class="header-stripe" aria-hidden="true"></span>
+      <div class="container-wide">
+        <a href={categoryHref} class="back-link">
+          ←
+          <span class="back-dot" aria-hidden="true"></span>
+          <span>{categoryLabel}</span>
+        </a>
+
+        <div class="status-row">
+          {d.confidential && (
+            <span class="tag tag-confidential">Redacted</span>
+          )}
+          {d.status && (
+            <span class:list={["tag", (isComingSoon || isInProgress) && "tag-accent", "tag-dot"]}>
+              {d.status}
+            </span>
+          )}
+        </div>
+
+        <h1 class="case-title">{d.title}</h1>
+        <p class="case-subtitle">{d.subtitle}</p>
+
+        {d.links.length > 0 && (
+          <div class="case-actions">
+            {d.links.map((l, i) => (
+              <a
+                href={l.href}
+                rel="noopener noreferrer"
+                target="_blank"
+                class:list={["btn", i === 0 ? "btn-primary" : "btn-secondary"]}
+              >
+                {l.label}
+                <span class="arrow" aria-hidden="true">↗</span>
+                <span class="sr-only">(opens in new tab)</span>
+              </a>
+            ))}
+          </div>
+        )}
+
+        <dl class="case-meta">
+          <div>
+            <dt>Role</dt>
+            <dd>{d.role}</dd>
+          </div>
+          <div>
+            <dt>Type</dt>
+            <dd>{d.type}</dd>
+          </div>
+          {d.year && (
+            <div>
+              <dt>Year</dt>
+              <dd>{d.year}</dd>
+            </div>
+          )}
+          {d.tools.length > 0 && (
+            <div>
+              <dt>Tools</dt>
+              <dd>{d.tools.join(", ")}</dd>
+            </div>
+          )}
+        </dl>
+      </div>
+    </header>
+
+    <!-- VISUAL — real hero image if provided, otherwise a structural mock -->
+    <section class:list={["case-visual", { "is-placeholder": !d.hero && (isComingSoon || isInProgress) }]}>
+      <div class="container">
+        {!d.hero && (isComingSoon || isInProgress) && (
+          <p class="placeholder-note" data-reveal>
+            <span class="placeholder-dot" aria-hidden="true"></span>
+            {isComingSoon ? "Coming soon." : "In progress."} The visual below is a structural placeholder while the work is in development.
+          </p>
+        )}
+        {d.hero ? (
+          <figure class="case-hero-figure" data-reveal>
+            {d.links.length > 0 ? (
+              <a
+                href={d.links[0].href}
+                rel="noopener noreferrer"
+                target="_blank"
+                class="case-hero-link"
+                aria-label={`${d.links[0].label} (opens in new tab)`}
+              >
+                <Image
+                  src={d.hero.src}
+                  alt={d.hero.alt}
+                  widths={[800, 1200, 1600, 2000, 2400]}
+                  sizes="(min-width: 1280px) 1100px, (min-width: 720px) 90vw, 100vw"
+                  format="webp"
+                  quality={84}
+                  loading="eager"
+                  decoding="async"
+                />
+                <span class="case-hero-overlay" aria-hidden="true">
+                  <span class="case-hero-pill">
+                    {d.links[0].label}
+                    <span class="case-hero-pill-arrow">↗</span>
+                  </span>
+                </span>
+              </a>
+            ) : (
+              <Image
+                src={d.hero.src}
+                alt={d.hero.alt}
+                widths={[800, 1200, 1600, 2000, 2400]}
+                sizes="(min-width: 1280px) 1100px, (min-width: 720px) 90vw, 100vw"
+                format="webp"
+                quality={84}
+                loading="eager"
+                decoding="async"
+              />
+            )}
+          </figure>
+        ) : (
+          <>
+            {slug === "qms-board-portal" && <BoardPortalMock />}
+            {slug === "qms-agent-guide" && (
+              <PageStructureMock
+                url="qms · agent guide (in development)"
+                title="Working structure (placeholder)"
+                blocks={[
+                  { type: "header", label: "Header" },
+                  { type: "hero", label: "Agent overview · Key school info", height: 70 },
+                  { type: "card", label: "Programs at a glance", height: 50 },
+                  { type: "card", label: "Admissions process", height: 50 },
+                  { type: "card", label: "Fees & dates", height: 50 },
+                  { type: "card", label: "Contacts", height: 50 },
+                ]}
+              />
+            )}
+            {slug === "qms-strategic-plan" && <StrategicPlanMock />}
+            {slug === "tasis-homepage" && (
+              <PageStructureMock
+                url="tasis · homepage redesign"
+                title="Homepage hierarchy concept"
+                blocks={[
+                  { type: "header", label: "Header" },
+                  { type: "hero", label: "Hero · Who we are · Primary CTA", height: 100 },
+                  { type: "card", label: "Trust signals concentrated near CTA", height: 56 },
+                  { type: "card", label: "Programs at a glance", height: 60 },
+                  { type: "card", label: "Life at TASIS", height: 60 },
+                  { type: "cta", label: "Apply / Visit", height: 56 },
+                ]}
+              />
+            )}
+            {slug === "tasis-library" && (
+              <PageStructureMock
+                url="tasis · library page"
+                title="Library page hierarchy"
+                blocks={[
+                  { type: "header", label: "Header" },
+                  { type: "hero", label: "Library · Hours · How to ask for help", height: 80 },
+                  { type: "card", label: "Services", height: 56 },
+                  { type: "card", label: "Collections", height: 56 },
+                  { type: "card", label: "Spaces & atmosphere", height: 60 },
+                ]}
+              />
+            )}
+            {slug === "tasis-viewbooks" && (
+              <PageStructureMock
+                url="viewbook · spreads"
+                title="Viewbook spread pacing"
+                blocks={[
+                  { type: "hero", label: "Cover spread", height: 90 },
+                  { type: "card", label: "Section opener", height: 70 },
+                  { type: "text", label: "Photo spread", height: 60 },
+                  { type: "card", label: "Voice from the school", height: 60 },
+                  { type: "text", label: "Facts spread", height: 50 },
+                  { type: "card", label: "Closing spread", height: 80 },
+                ]}
+              />
+            )}
+            {slug === "learning-support-app" && (
+              <FlowDiagram
+                title="Working principles · concept stage"
+                steps={[
+                  { label: "Respect first", meta: "Age-appropriate, never childish, never patronizing." },
+                  { label: "Small wins, surfaced clearly", meta: "Progress is visible, never weaponized." },
+                  { label: "Few choices, well-presented", meta: "Reduce cognitive load before introducing structure." },
+                  { label: "Accessible by default", meta: "Type, contrast, motion, and structure are the floor." },
+                  { label: "EAs & LSTs are part of the product", meta: "Their workflow matters as much as the student's." },
+                ]}
+              />
+            )}
+          </>
+        )}
+      </div>
+    </section>
+
+    {/* Gallery — additional screenshots after the lead visual */}
+    {d.gallery.length > 0 && (
+      <CaseGallery items={d.gallery} title="Selected screens" />
+    )}
+
+    <!-- BODY -->
+    <section class="case-body section">
+      <div class="container-narrow">
+        {isComingSoon && (
+          <div class="callout">
+            <strong>Coming soon.</strong> This case study is a placeholder
+            while the project is in development. The full write-up will
+            replace this content when the work is ready to share publicly.
+          </div>
+        )}
+        {d.confidentialityNote && (
+          <div class="callout callout-confidential">
+            <strong>Confidentiality.</strong> {d.confidentialityNote}
+          </div>
+        )}
+        <div class="prose">
+          <Content />
+        </div>
+      </div>
+    </section>
+
+    <!-- RELATED -->
+    {related.length > 0 && (
+      <section class="case-related section-tight">
+        <div class="container">
+          <p class="eyebrow" data-reveal>More in {categoryLabel}</p>
+          <div class="related-grid">
+            {related.map((r, i) => (
+              <a
+                href={`/work/${r.slug}`}
+                class="related-card"
+                data-reveal
+                style={`--reveal-delay: ${i * 100}ms`}
+              >
+                <span class="related-title">{r.data.title}</span>
+                <span class="related-summary">{r.data.summary}</span>
+                <span class="related-arrow" aria-hidden="true">→</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <section class="section-tight">
+      <div class="container">
+        <a href="/work" class="btn btn-secondary">← All work</a>
+      </div>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .case-header {
+    position: relative;
+    padding-block: clamp(3rem, 7vw, 6rem) clamp(2.5rem, 5vw, 4rem);
+    border-bottom: 1px solid var(--color-border);
+    overflow: hidden;
+  }
+
+  /* Slim category gradient at the very top edge. Restraint > decoration. */
+  .header-stripe {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2px;
+    z-index: 1;
+  }
+
+  .case-header.cat-qms .header-stripe { background: var(--grad-qms); }
+  .case-header.cat-tasis .header-stripe { background: var(--grad-tasis); }
+  .case-header.cat-personal .header-stripe { background: var(--grad-personal); }
+
+  /* Soft offscreen halo \u2014 the only chromatic moment, sits behind everything. */
+  .header-halo {
+    position: absolute;
+    pointer-events: none;
+    top: -40%;
+    right: -10%;
+    width: 50%;
+    height: 140%;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.22;
+    z-index: 0;
+  }
+
+  .case-header.cat-qms .header-halo { background: var(--cat-qms-ink); }
+  .case-header.cat-tasis .header-halo { background: var(--cat-tasis-ink); }
+  .case-header.cat-personal .header-halo { background: var(--cat-personal-ink); }
+
+  .case-header > .container-wide {
+    position: relative;
+    z-index: 1;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-ink-muted);
+    font-size: var(--fs-sm);
+    margin-bottom: var(--space-5);
+  }
+
+  .back-link:hover {
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  .back-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    display: inline-block;
+  }
+
+  .cat-qms .back-dot { background: var(--grad-qms); }
+  .cat-tasis .back-dot { background: var(--grad-tasis); }
+  .cat-personal .back-dot { background: var(--grad-personal); }
+
+  .status-row {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-5);
+  }
+
+  .case-title {
+    font-size: var(--fs-3xl);
+    line-height: 1.08;
+    letter-spacing: var(--tracking-tight);
+    max-width: 24ch;
+    margin-bottom: var(--space-5);
+  }
+
+  .case-subtitle {
+    font-size: var(--fs-md);
+    color: var(--color-ink-secondary);
+    max-width: 56ch;
+    line-height: var(--lh-base);
+    margin-bottom: var(--space-7);
+  }
+
+  .case-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-bottom: var(--space-9);
+  }
+
+  .case-actions .arrow {
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+
+  .case-actions .btn:hover .arrow {
+    transform: translate(2px, -2px);
+  }
+
+  .case-meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    padding-block: var(--space-6) var(--space-2);
+    border-top: 1px solid var(--color-border);
+  }
+
+  @media (min-width: 560px) {
+    .case-meta {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-5) var(--space-7);
+    }
+  }
+
+  @media (min-width: 960px) {
+    .case-meta {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-6) var(--space-7);
+    }
+  }
+
+  .case-meta div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+
+  .case-meta dt {
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-ink-muted);
+    font-weight: var(--fw-medium);
+    line-height: 1;
+  }
+
+  .case-meta dd {
+    margin: 0;
+    color: var(--color-ink);
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  .case-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .case-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-accent-strong);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .case-links a:hover {
+    color: var(--color-accent);
+  }
+
+  .case-links .ext {
+    font-size: 0.75em;
+    opacity: 0.7;
+  }
+
+  .case-visual {
+    padding-block: clamp(2rem, 5vw, 4rem) var(--space-2);
+  }
+
+  .placeholder-note {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--fs-sm);
+    color: var(--color-ink-secondary);
+    border: 1px dashed var(--glass-border-strong);
+    border-radius: var(--radius-full);
+    background: rgba(243, 238, 226, 0.03);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+
+  .placeholder-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(208, 84, 69, 0.18);
+  }
+
+  .case-visual.is-placeholder :global(.mock),
+  .case-visual.is-placeholder :global(.flow),
+  .case-visual.is-placeholder :global(.page-window) {
+    opacity: 0.78;
+  }
+
+  .case-hero-figure {
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--glass-border-strong);
+    background: var(--color-bg-elevated);
+    box-shadow: var(--shadow-md), var(--glass-highlight);
+    isolation: isolate;
+  }
+
+  .case-hero-figure :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+
+  .case-hero-link {
+    position: relative;
+    display: block;
+    color: var(--color-ink);
+  }
+
+  .case-hero-link:hover {
+    text-decoration: none;
+  }
+
+  .case-hero-link:hover :global(img) {
+    transform: scale(1.012);
+  }
+
+  .case-hero-overlay {
+    position: absolute;
+    inset: auto var(--space-5) var(--space-5) auto;
+    display: flex;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity var(--dur-base) var(--ease-out),
+      transform var(--dur-base) var(--ease-out);
+    pointer-events: none;
+  }
+
+  .case-hero-link:hover .case-hero-overlay,
+  .case-hero-link:focus-visible .case-hero-overlay {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .case-hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--color-ink-inverse);
+    background: var(--color-bg-inverse);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .case-hero-pill-arrow {
+    font-size: 0.85em;
+  }
+
+  .case-body {
+    padding-block: clamp(2rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
+  }
+
+  .case-body .callout {
+    margin-bottom: var(--space-9);
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    margin-top: var(--space-5);
+  }
+
+  @media (min-width: 720px) {
+    .related-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-6);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-ink);
+    position: relative;
+    transition: transform var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out),
+      background var(--dur-base) var(--ease-out);
+  }
+
+  .related-card:hover {
+    text-decoration: none;
+    transform: translateY(-2px);
+    border-color: var(--color-border-strong);
+    background: var(--color-bg-muted);
+  }
+
+  .related-title {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-semibold);
+  }
+
+  .related-summary {
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-base);
+  }
+
+  .related-arrow {
+    margin-top: var(--space-3);
+    color: var(--color-ink-muted);
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+
+  .related-card:hover .related-arrow {
+    transform: translateX(4px);
+    color: var(--color-ink);
+  }
+</style>

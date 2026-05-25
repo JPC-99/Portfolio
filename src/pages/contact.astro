@@ -1,0 +1,201 @@
+---
+import Base from "~/layouts/Base.astro";
+import { site } from "~/data/site";
+---
+
+<Base title="Contact" description="Get in touch with JP Chicquen. Open to UX/UI, web, and education-focused product roles and collaboration.">
+  <section class="contact-hero">
+    <div class="container">
+      <p class="eyebrow">Contact</p>
+      <h1 class="display">
+        Let's talk about<br />
+        <span class="ink-soft">your project, role, or idea.</span>
+      </h1>
+      <p class="lede">
+        Open to UX/UI, web, and digital experience roles. I'm especially
+        interested in work that improves outcomes for schools, learners, and
+        education-focused teams. I also take on select contract work.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contact-grid">
+      <div class="contact-card primary">
+        <p class="eyebrow">Email</p>
+        <a class="contact-link" href={`mailto:${site.email}`}>
+          {site.email}
+        </a>
+        <p class="muted small">
+          The best way to start a real conversation. I read everything that
+          lands here.
+        </p>
+      </div>
+
+      <div class="contact-card">
+        <p class="eyebrow">LinkedIn</p>
+        <a class="contact-link" href={site.linkedin} rel="noopener noreferrer" target="_blank">
+          Connect on LinkedIn
+          <span class="sr-only">(opens in new tab)</span>
+        </a>
+        <p class="muted small">
+          Good for a lighter introduction or a referral. Based on Vancouver
+          Island; open to remote, hybrid, and on-Island work.
+        </p>
+      </div>
+
+      <div class="contact-card">
+        <p class="eyebrow">Open to</p>
+        <ul class="contact-list">
+          <li>Full-time UX/UI and product roles</li>
+          <li>Select contract and consulting work</li>
+          <li>Education-sector design collaboration</li>
+          <li>Accessibility-focused improvements</li>
+        </ul>
+        {site.resume && (
+          <a class="contact-resume" href={site.resume} target="_blank" rel="noopener noreferrer">
+            Download resume (PDF)
+            <span class="resume-arrow" aria-hidden="true">↓</span>
+            <span class="sr-only">(opens in new tab)</span>
+          </a>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container">
+      <div class="callout">
+        <strong>A note on this page.</strong> This portfolio is statically
+        built, with no form backend, so I'd rather not pretend there's one.
+        Email is the most reliable way to reach me.
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact-hero {
+    padding-block: clamp(3rem, 6vw, 5rem) clamp(2.5rem, 5vw, 4rem);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .contact-hero h1 {
+    margin-block: var(--space-4) var(--space-6);
+    max-width: 22ch;
+  }
+
+  .ink-soft { color: var(--color-ink-secondary); }
+
+  .contact-hero .lede {
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-md);
+    line-height: var(--lh-base);
+    max-width: 56ch;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 720px) {
+    .contact-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .contact-card {
+    padding: var(--space-7);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .contact-card.primary {
+    background: var(--color-bg-inverse);
+    color: var(--color-ink-inverse);
+    border-color: var(--color-bg-inverse);
+  }
+
+  .contact-card.primary :global(.eyebrow) {
+    color: var(--color-ink-subtle);
+  }
+
+  .contact-link {
+    font-size: clamp(1.4rem, 1rem + 1.8vw, 2rem);
+    font-weight: var(--fw-semibold);
+    color: var(--color-ink);
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.2;
+  }
+
+  .primary .contact-link {
+    color: var(--color-ink-inverse);
+  }
+
+  .contact-link:hover {
+    color: var(--color-accent-strong);
+  }
+
+  .primary .contact-link:hover {
+    color: var(--color-accent);
+  }
+
+  .contact-static {
+    font-size: clamp(1.3rem, 1rem + 1.4vw, 1.7rem);
+    font-weight: var(--fw-semibold);
+    color: var(--color-ink);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .contact-list {
+    list-style: none;
+    display: grid;
+    gap: var(--space-2);
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-sm);
+  }
+
+  .contact-resume {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+    align-self: flex-start;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--glass-border-strong);
+    border-radius: var(--radius-full);
+    font-size: var(--fs-sm);
+    color: var(--color-ink);
+    transition: border-color var(--dur-base) var(--ease-out),
+      background var(--dur-base) var(--ease-out);
+  }
+
+  .contact-resume:hover {
+    text-decoration: none;
+    border-color: rgba(243, 238, 226, 0.32);
+    background: rgba(243, 238, 226, 0.04);
+  }
+
+  .resume-arrow {
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+
+  .contact-resume:hover .resume-arrow {
+    transform: translateY(2px);
+  }
+
+  .small {
+    font-size: var(--fs-sm);
+    line-height: var(--lh-base);
+  }
+
+  .primary .muted {
+    color: var(--color-ink-subtle);
+  }
+</style>

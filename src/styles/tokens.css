@@ -1,0 +1,166 @@
+/* =========================================
+   Design tokens — JP Chicquen Portfolio
+   Dark, editorial, restrained.
+   Single primary accent (warm gold/sand).
+   QMS palette reserved for QMS contexts only.
+   ========================================= */
+:root {
+  /* Base canvas — deep, neutral, slightly warm dark. The ambient background
+     gradient + color glows are layered on top in global.css. */
+  --color-bg: #0a0d12;
+  --color-bg-deep: #06080b;
+
+  /* Glass surfaces — translucent over the ambient background, never solid.
+     Stacking order: bg < glass (blurred) < glass-strong (more opaque card). */
+  --color-bg-elevated: rgba(28, 33, 42, 0.55);
+  --color-bg-muted: rgba(36, 42, 52, 0.55);
+  --color-bg-raised: rgba(46, 54, 66, 0.6);
+
+  /* Inverse surface — warm cream, used for high-contrast CTA blocks */
+  --color-bg-inverse: #f3eee2;
+
+  /* Text — warm off-white on dark */
+  --color-ink: #f3eee2;
+  --color-ink-secondary: #b9b3a4;
+  --color-ink-muted: #82847f;
+  --color-ink-subtle: #5a5d63;
+  --color-ink-inverse: #0a0d12;
+
+  /* Borders — translucent so the ambient color shows through */
+  --color-border: rgba(243, 238, 226, 0.08);
+  --color-border-strong: rgba(243, 238, 226, 0.16);
+  --color-border-inverse: rgba(10, 13, 18, 0.12);
+
+  /* Glass — composable values used by .glass surfaces */
+  --glass-blur: 22px;
+  --glass-saturate: 180%;
+  --glass-bg: rgba(28, 33, 42, 0.55);
+  --glass-bg-hover: rgba(36, 42, 52, 0.65);
+  --glass-border: rgba(243, 238, 226, 0.1);
+  --glass-border-strong: rgba(243, 238, 226, 0.2);
+
+  /* Inner specular — a faint top-edge highlight that sells the depth. */
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+  --glass-highlight-strong: inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.22);
+
+  /* Primary accent — warm terracotta red.
+     Editorial, confident, never stoplight-loud. Used for links, hovers,
+     the in-progress badge, and the single moment of color in CTAs. */
+  --color-accent: #d05445;
+  --color-accent-strong: #e36b5b;
+  --color-accent-soft: rgba(208, 84, 69, 0.12);
+
+  /* Category identity — three short-range gradients.
+     Used sparingly as 2px stripes, eyebrow dots, and header halos so each
+     project category has a quiet visual signature. Each gradient stays
+     within a narrow hue range so they read as "depth" not "decoration". */
+  --grad-qms: linear-gradient(135deg, #2a6fb3 0%, #4da0c8 100%);
+  --grad-tasis: linear-gradient(135deg, #c8483b 0%, #e98b66 100%);
+  --grad-personal: linear-gradient(135deg, #2f7a55 0%, #74b58e 100%);
+
+  /* Solid representative ink for each category — used for tag dots and
+     radial halos where a single color reads cleaner than a gradient. */
+  --cat-qms-ink: #4193c2;
+  --cat-tasis-ink: #d56950;
+  --cat-personal-ink: #5aa07e;
+
+  /* QMS contextual palette — used ONLY inside QMS surfaces.
+     Do not apply globally. */
+  --qms-green: #75bb43;
+  --qms-deep-green: #046852;
+  --qms-navy: #172a54;
+  --qms-blue: #005487;
+  --qms-light-blue-grey: #dce3eb;
+  --qms-light-grey: #f2f2f2;
+
+  /* Status — single neutral system, no category colors */
+  --status-default-bg: rgba(243, 238, 226, 0.04);
+  --status-default-border: var(--color-border);
+  --status-default-ink: var(--color-ink-secondary);
+
+  --status-progress-bg: rgba(208, 84, 69, 0.1);
+  --status-progress-border: rgba(208, 84, 69, 0.35);
+  --status-progress-ink: var(--color-accent-strong);
+
+  /* Typography */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+
+  --fs-xs: 0.78rem;
+  --fs-sm: 0.9rem;
+  --fs-base: 1rem;
+  --fs-md: clamp(1.05rem, 0.95rem + 0.4vw, 1.18rem);
+  --fs-lg: clamp(1.2rem, 1rem + 0.8vw, 1.45rem);
+  --fs-xl: clamp(1.5rem, 1.2rem + 1.4vw, 1.95rem);
+  --fs-2xl: clamp(2rem, 1.4rem + 2.6vw, 2.85rem);
+  --fs-3xl: clamp(2.5rem, 1.7rem + 3.6vw, 3.95rem);
+  --fs-4xl: clamp(3rem, 2rem + 4.8vw, 5rem);
+
+  --lh-tight: 1.1;
+  --lh-snug: 1.25;
+  --lh-base: 1.55;
+  --lh-loose: 1.75;
+
+  --tracking-tight: -0.02em;
+  --tracking-snug: -0.01em;
+  --tracking-base: 0;
+  --tracking-wide: 0.06em;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-7: 2rem;
+  --space-8: 2.5rem;
+  --space-9: 3rem;
+  --space-10: 4rem;
+  --space-11: 5rem;
+  --space-12: 6rem;
+  --space-13: 8rem;
+
+  /* Layout */
+  --content-max: 72rem;
+  --content-narrow: 48rem;
+  --content-wide: 84rem;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+
+  /* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 28px;
+  --radius-full: 999px;
+
+  /* Shadows — long, low, glass-appropriate. Translucent surfaces benefit
+     from softer, larger shadows than solid ones. */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 18px 48px rgba(0, 0, 0, 0.38);
+  --shadow-lg: 0 32px 80px rgba(0, 0, 0, 0.5);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  --dur-fast: 150ms;
+  --dur-base: 220ms;
+  --dur-slow: 360ms;
+
+  /* Focus */
+  --focus-ring: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent);
+
+  color-scheme: dark;
+}

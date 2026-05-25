@@ -1,0 +1,190 @@
+---
+// Redacted, public-safe representation of the QMS Board Portal.
+// No real content, names, or documents — purely a structural diagram.
+interface Props {
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+---
+
+<div class:list={["mock board", { compact }]} role="img" aria-label="Redacted board portal dashboard mockup showing role-based tiles for Board, Finance, Governance, Calendar, and an executive-only documents hub.">
+  <div class="mock-chrome">
+    <span></span><span></span><span></span>
+    <span class="addr">board.qmslife.com</span>
+  </div>
+  <div class="mock-body">
+    <div class="mock-header">
+      <div class="mock-mark">QMS</div>
+      <div class="mock-role">Role · Governance</div>
+    </div>
+
+    <div class="mock-grid">
+      <div class="tile tile-board">
+        <span class="tile-label">Board of Governors</span>
+        <span class="tile-line"></span>
+        <span class="tile-line short"></span>
+      </div>
+      <div class="tile tile-finance">
+        <span class="tile-label">Finance Committee</span>
+        <span class="tile-line"></span>
+        <span class="tile-line short"></span>
+      </div>
+      <div class="tile tile-governance">
+        <span class="tile-label">Governance Committee</span>
+        <span class="tile-line"></span>
+        <span class="tile-line short"></span>
+      </div>
+      <div class="tile tile-calendar">
+        <span class="tile-label">Calendar</span>
+        <span class="tile-line"></span>
+        <span class="tile-line short"></span>
+      </div>
+      <div class="tile tile-exec">
+        <span class="tile-label">CAIS · Documents Hub</span>
+        <span class="tile-meta">Executive only</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .mock {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    background: var(--color-bg-elevated);
+    box-shadow: var(--shadow-md);
+  }
+
+  .mock-chrome {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-bg-muted);
+    border-bottom: 1px solid var(--color-border);
+    font-size: var(--fs-xs);
+  }
+
+  .mock-chrome span:not(.addr) {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-border-strong);
+  }
+
+  .addr {
+    margin-left: auto;
+    color: var(--color-ink-muted);
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+  }
+
+  .mock-body {
+    padding: var(--space-6);
+    background: linear-gradient(180deg, var(--color-bg-elevated) 0%, var(--color-bg-raised) 100%);
+  }
+
+  .mock-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-5);
+  }
+
+  .mock-mark {
+    display: inline-grid;
+    place-items: center;
+    height: 1.8rem;
+    padding-inline: var(--space-3);
+    border-radius: var(--radius-sm);
+    background: #046852;
+    color: #fff;
+    font-weight: var(--fw-semibold);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+  }
+
+  .mock-role {
+    font-size: var(--fs-xs);
+    color: var(--color-ink-muted);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .mock-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 540px) {
+    .mock-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .tile-exec {
+      grid-column: span 3;
+    }
+  }
+
+  .compact .mock-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .compact .tile-exec {
+    grid-column: span 2;
+  }
+
+  .tile {
+    background: var(--color-bg-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    min-height: 90px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+
+  .tile::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    background: var(--color-border);
+  }
+
+  .tile-board::before { background: #75bb43; }
+  .tile-finance::before { background: #046852; }
+  .tile-governance::before { background: #005487; }
+  .tile-calendar::before { background: #172a54; }
+  .tile-exec::before { background: #6b3d2c; }
+
+  .tile-label {
+    font-size: 0.78rem;
+    font-weight: var(--fw-semibold);
+    color: var(--color-ink);
+  }
+
+  .tile-line {
+    height: 6px;
+    width: 80%;
+    background: var(--color-bg-raised);
+    border-radius: var(--radius-xs);
+  }
+
+  .tile-line.short {
+    width: 50%;
+  }
+
+  .tile-meta {
+    margin-top: auto;
+    font-size: 0.7rem;
+    color: var(--color-ink-muted);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+</style>

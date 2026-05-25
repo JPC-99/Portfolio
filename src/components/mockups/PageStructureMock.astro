@@ -1,0 +1,101 @@
+---
+// A generic redacted browser-window structure mockup.
+interface Block {
+  label?: string;
+  height?: number;
+  type?: "header" | "hero" | "cta" | "card" | "text" | "form";
+}
+interface Props {
+  url?: string;
+  title?: string;
+  blocks: Block[];
+}
+const { url = "site.example", title, blocks } = Astro.props;
+---
+
+<figure class="page-mock">
+  {title && <figcaption class="page-caption eyebrow">{title}</figcaption>}
+  <div class="page-window">
+    <div class="page-chrome">
+      <span></span><span></span><span></span>
+      <span class="page-url">{url}</span>
+    </div>
+    <div class="page-body">
+      {blocks.map((b) => (
+        <div
+          class:list={["page-block", b.type ?? "text"]}
+          style={`height:${b.height ?? 36}px`}
+        >
+          {b.label && <span class="page-block-label">{b.label}</span>}
+        </div>
+      ))}
+    </div>
+  </div>
+</figure>
+
+<style>
+  .page-mock {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .page-window {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--color-bg-elevated);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .page-chrome {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-bg-muted);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-chrome span:not(.page-url) {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-border-strong);
+  }
+
+  .page-url {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--color-ink-muted);
+  }
+
+  .page-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    background: linear-gradient(180deg, var(--color-bg-elevated) 0%, var(--color-bg-raised) 100%);
+  }
+
+  .page-block {
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-muted);
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    padding: 0 var(--space-3);
+    font-size: 0.72rem;
+    color: var(--color-ink-muted);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .page-block.header { background: var(--color-ink); color: var(--color-ink-inverse); border-color: var(--color-ink); }
+  .page-block.hero { background: var(--color-accent-soft); border-color: transparent; color: var(--color-accent-strong); }
+  .page-block.cta { background: var(--color-ink); color: var(--color-ink-inverse); border-color: var(--color-ink); }
+  .page-block.card { background: var(--color-bg-muted); }
+  .page-block.form { background: var(--color-bg-muted); border-style: dashed; }
+</style>

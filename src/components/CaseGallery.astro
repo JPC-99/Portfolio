@@ -1,0 +1,111 @@
+---
+import { Image } from "astro:assets";
+
+interface Item {
+  src: ImageMetadata;
+  alt: string;
+  caption?: string;
+  span?: "full" | "half";
+}
+
+interface Props {
+  items: Item[];
+  title?: string;
+}
+
+const { items, title } = Astro.props;
+---
+
+{items.length > 0 && (
+  <section class="case-gallery" aria-label={title ?? "Project visuals"}>
+    <div class="container">
+      {title && <p class="eyebrow gallery-eyebrow">{title}</p>}
+
+      <div class="gallery-grid">
+        {items.map((item, i) => (
+          <figure
+            class:list={["gallery-item", `span-${item.span ?? "full"}`]}
+            data-reveal
+            style={`--reveal-delay: ${Math.min(i * 80, 320)}ms`}
+          >
+            <div class="gallery-frame">
+              <Image
+                src={item.src}
+                alt={item.alt}
+                widths={[640, 960, 1280, 1600, 2000]}
+                sizes="(min-width: 1100px) 70vw, (min-width: 720px) 90vw, 100vw"
+                format="webp"
+                quality={82}
+                loading={i === 0 ? "eager" : "lazy"}
+                decoding="async"
+              />
+            </div>
+            {item.caption && (
+              <figcaption class="gallery-caption">{item.caption}</figcaption>
+            )}
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .case-gallery {
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+
+  .gallery-eyebrow {
+    margin-bottom: var(--space-6);
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 900px) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .span-full {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .gallery-item {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  /* The frame is what gives screenshots a "designed surface" feel:
+     glass border + inset highlight + soft outer shadow + clip. */
+  .gallery-frame {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--glass-border-strong);
+    background: var(--color-bg-elevated);
+    box-shadow: var(--shadow-md), var(--glass-highlight);
+    position: relative;
+    isolation: isolate;
+  }
+
+  .gallery-frame :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    /* slight downsample sharpening for screenshots */
+    image-rendering: -webkit-optimize-contrast;
+  }
+
+  .gallery-caption {
+    font-size: var(--fs-sm);
+    color: var(--color-ink-muted);
+    line-height: var(--lh-base);
+    padding-inline: var(--space-1);
+    max-width: 56ch;
+  }
+</style>

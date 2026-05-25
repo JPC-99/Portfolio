@@ -1,0 +1,93 @@
+---
+import Base from "~/layouts/Base.astro";
+import Section from "~/components/Section.astro";
+import ProjectCard from "~/components/ProjectCard.astro";
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects"))
+  .filter((p) => p.data.category === "personal")
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  title="Personal Projects"
+  description="Self-initiated product work focused on education and accessibility. Currently in progress."
+>
+  <section class="page-header">
+    <div class="container">
+      <p class="eyebrow">Personal Projects</p>
+      <h1>Self-initiated work, mostly about learning.</h1>
+      <p class="lede">
+        Ongoing product and UX exploration, especially around education tools
+        for students with learning disabilities.
+      </p>
+      <div class="status-banner">
+        <span class="tag tag-accent tag-dot">In progress</span>
+        <p>
+          This section is still being developed. It documents product thinking,
+          research direction, and early UX explorations rather than a finished
+          product.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <Section eyebrow="Projects" title="Current explorations">
+    <div class="grid grid-2">
+      {projects.map((p) => (
+        <ProjectCard
+          href={`/work/${p.slug}`}
+          eyebrow={p.data.type}
+          title={p.data.title}
+          summary={p.data.summary}
+          role={p.data.role}
+          tags={p.data.tags}
+          status={p.data.status}
+          category="personal"
+        />
+      ))}
+    </div>
+  </Section>
+</Base>
+
+<style>
+  .page-header {
+    padding-block: clamp(3rem, 6vw, 5rem) clamp(2rem, 4vw, 3rem);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-header h1 {
+    font-size: var(--fs-3xl);
+    margin-block: var(--space-4) var(--space-5);
+    max-width: 22ch;
+  }
+
+  .page-header .lede {
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-md);
+    line-height: var(--lh-base);
+    max-width: 56ch;
+  }
+
+  .status-banner {
+    margin-top: var(--space-7);
+    display: flex;
+    gap: var(--space-5);
+    align-items: flex-start;
+    padding: var(--space-5) var(--space-6);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    max-width: 60ch;
+    flex-wrap: wrap;
+  }
+
+  .status-banner p {
+    margin: 0;
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-base);
+    flex: 1;
+    min-width: 240px;
+  }
+</style>

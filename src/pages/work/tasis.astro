@@ -1,0 +1,72 @@
+---
+import Base from "~/layouts/Base.astro";
+import Section from "~/components/Section.astro";
+import ProjectCard from "~/components/ProjectCard.astro";
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects"))
+  .filter((p) => p.data.category === "tasis")
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  title="TASIS"
+  description="School-marketing work for TASIS Portugal: a homepage redesign concept, two live digital viewbooks, and a live library page redesign."
+>
+  <section class="page-header">
+    <div class="container">
+      <p class="eyebrow">TASIS Portugal</p>
+      <h1>School-marketing pages and publications.</h1>
+      <p class="lede">
+        Work focused on what a school's public-facing pages and publications
+        need to do first: clear hierarchy, useful information, and the next
+        step a prospective family is trying to find.
+      </p>
+    </div>
+  </section>
+
+  <Section eyebrow="Projects" title="TASIS work">
+    <div class="grid grid-2">
+      {projects.map((p) => (
+        <ProjectCard
+          href={`/work/${p.slug}`}
+          eyebrow={p.data.type}
+          title={p.data.title}
+          summary={p.data.summary}
+          role={p.data.role}
+          tags={p.data.tags}
+          status={p.data.status}
+          category="tasis"
+        />
+      ))}
+    </div>
+  </Section>
+
+  <Section size="tight">
+    <div class="callout">
+      <strong>Note.</strong> The library page and both digital viewbooks are
+      live on the TASIS Portugal site. The homepage redesign is a concept.
+      Specific dates and quantitative outcomes aren't claimed.
+    </div>
+  </Section>
+</Base>
+
+<style>
+  .page-header {
+    padding-block: clamp(3rem, 6vw, 5rem) clamp(2rem, 4vw, 3rem);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-header h1 {
+    font-size: var(--fs-3xl);
+    margin-block: var(--space-4) var(--space-5);
+    max-width: 22ch;
+  }
+
+  .page-header .lede {
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-md);
+    line-height: var(--lh-base);
+    max-width: 56ch;
+  }
+</style>

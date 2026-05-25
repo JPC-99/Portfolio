@@ -1,0 +1,694 @@
+---
+import Base from "~/layouts/Base.astro";
+import Section from "~/components/Section.astro";
+import ProjectCard from "~/components/ProjectCard.astro";
+import { Image } from "astro:assets";
+import boardPortalImg from "~/assets/images/qms-board-portal/dashboard.png";
+import { getCollection } from "astro:content";
+import { site } from "~/data/site";
+
+const allProjects = await getCollection("projects");
+const allSorted = allProjects.sort((a, b) => a.data.order - b.data.order);
+
+function eyebrowFor(category: string) {
+  if (category === "qms") return "QMS · Internal";
+  if (category === "tasis") return "TASIS";
+  return "Personal · In progress";
+}
+---
+
+<Base title={undefined} description={site.description}>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow fade-in-up">UX/UI · Digital Marketing · Education</p>
+      <h1 class="hero-title fade-in-up delay-1">
+        UX/UI designer &amp;<br />
+        <span class="ink-soft">Digital Marketing Specialist</span>
+      </h1>
+      <p class="hero-lede fade-in-up delay-2">
+        I design intuitive digital experiences, shaped by a deep understanding
+        of real users and a background in education.
+      </p>
+      <div class="hero-actions fade-in-up delay-3">
+        <a href="/work" class="btn btn-primary">
+          View selected work <span class="arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="/contact" class="btn btn-secondary">Get in touch</a>
+      </div>
+      <ul class="hero-meta fade-in-up delay-4" aria-label="Background">
+        <li>Vancouver Island, BC</li>
+        <li>Interactive Media Developer Certificate</li>
+        <li>Education-sector background</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- QMS SPOTLIGHT — lead-in to selected work -->
+  <Section eyebrow="Spotlight" title="A private, role-aware microsite for the QMS Board of Governors.">
+    <div class="spotlight">
+      <div class="spotlight-copy" data-reveal>
+        <p class="lede">
+          A private WordPress microsite that brings board and committee
+          resources into one role-aware dashboard, with a content model the
+          QMS team can maintain themselves.
+        </p>
+        <ul class="bullets">
+          <li data-reveal style="--reveal-delay: 80ms">Role-aware dashboard for Board, Finance, Governance, and Executive surfaces</li>
+          <li data-reveal style="--reveal-delay: 160ms">Calendar built into the same shell as governance work</li>
+          <li data-reveal style="--reveal-delay: 240ms">Editable by non-technical staff without breaking the layout</li>
+          <li data-reveal style="--reveal-delay: 320ms">QMS palette used sparingly, as category accents</li>
+        </ul>
+        <p class="muted small">
+          Visuals are redacted to protect private governance materials.
+        </p>
+        <a href="/work/qms-board-portal" class="btn btn-secondary spotlight-cta">
+          Read the case study <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+      <figure class="spotlight-visual spotlight-image" data-reveal style="--reveal-delay: 160ms">
+        <Image
+          src={boardPortalImg}
+          alt="Queen Margaret's School Board of Governors portal dashboard, with role-aware tiles for Board, Finance Committee, Governance Committee, and Calendar."
+          widths={[640, 960, 1280, 1600]}
+          sizes="(min-width: 900px) 55vw, 100vw"
+          format="webp"
+          quality={82}
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+    </div>
+  </Section>
+
+  <!-- ALL PROJECTS — pinned section with horizontal scroll on vertical scroll -->
+  <section class="h-scroll" aria-label="All projects">
+    <div class="h-scroll__pin">
+      <div class="h-scroll__header container">
+        <p class="eyebrow">All projects</p>
+        <h2 class="h-scroll__title">Everything, end to end.</h2>
+        <p class="h-scroll__progress" aria-hidden="true">
+          <span class="h-scroll__progress-track">
+            <span class="h-scroll__progress-fill"></span>
+          </span>
+          <span class="h-scroll__progress-hint">Scroll to explore →</span>
+        </p>
+      </div>
+      <div class="h-scroll__viewport">
+        <ul class="h-scroll__track">
+          {allSorted.map((p) => (
+            <li class="h-scroll__item">
+              <ProjectCard
+                href={`/work/${p.slug}`}
+                eyebrow={eyebrowFor(p.data.category)}
+                title={p.data.title}
+                summary={p.data.summary}
+                role={p.data.role}
+                tags={p.data.tags}
+                confidential={p.data.confidential}
+                status={p.data.status}
+                category={p.data.category}
+              />
+            </li>
+          ))}
+          <li class="h-scroll__item h-scroll__end">
+            <a class="end-card" href="/work">
+              <span class="eyebrow">More to explore</span>
+              <h3>See the full work page</h3>
+              <span class="end-card-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT I DO -->
+  <Section eyebrow="What I do" title="Design that takes implementation seriously.">
+    <div class="cred-grid">
+      <div class="cred" data-reveal style="--reveal-delay: 0ms">
+        <span class="cred-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M14.5 9.5 12 12l-2.5 2.5L12 12z"/>
+            <path d="M14.5 9.5 16 8M9.5 14.5 8 16"/>
+          </svg>
+        </span>
+        <h3>UX &amp; product thinking</h3>
+        <p>
+          Problem framing, user journeys, content structure, and the decisions
+          that move a project forward instead of around in circles.
+        </p>
+      </div>
+      <div class="cred" data-reveal style="--reveal-delay: 90ms">
+        <span class="cred-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 20l3-3 8-8 3 3-8 8H4z"/>
+            <path d="M14 7l3 3"/>
+            <path d="M5 19l2-2"/>
+          </svg>
+        </span>
+        <h3>Visual &amp; interaction design</h3>
+        <p>
+          A calm, editorial visual sense. Real focus states, considered motion,
+          and respect for the systems behind a clean UI.
+        </p>
+      </div>
+      <div class="cred" data-reveal style="--reveal-delay: 180ms">
+        <span class="cred-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 6l-5 6 5 6"/>
+            <path d="M16 6l5 6-5 6"/>
+            <path d="M14 4l-4 16"/>
+          </svg>
+        </span>
+        <h3>Web implementation</h3>
+        <p>
+          WordPress, design tokens, accessible HTML and CSS, plus the production
+          discipline to keep brand and behaviour aligned across every surface.
+        </p>
+      </div>
+      <div class="cred" data-reveal style="--reveal-delay: 270ms">
+        <span class="cred-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 9l10-4 10 4-10 4-10-4z"/>
+            <path d="M6 11v4c0 1.5 2.7 3 6 3s6-1.5 6-3v-4"/>
+            <path d="M22 9v5"/>
+          </svg>
+        </span>
+        <h3>Education context</h3>
+        <p>
+          Years inside schools as an educational assistant, and now on the
+          marketing team at QMS. I design for the people who actually use the
+          product.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <!-- HOW I WORK -->
+  <Section eyebrow="How I work" title="Honest about constraints. Specific about decisions." tone="muted">
+    <ol class="process">
+      <li data-reveal style="--reveal-delay: 0ms">
+        <span class="process-num">01</span>
+        <div>
+          <h3>Name the job of the page</h3>
+          <p>
+            Before any visual decisions, I get specific about what the page or
+            product is for. Everything downstream gets easier once that's
+            settled.
+          </p>
+        </div>
+      </li>
+      <li data-reveal style="--reveal-delay: 110ms">
+        <span class="process-num">02</span>
+        <div>
+          <h3>Design with constraints, not against them</h3>
+          <p>
+            WordPress themes, plugin commitments, role boundaries, and
+            stakeholder realities shape the design. Pretending they don't
+            wastes time.
+          </p>
+        </div>
+      </li>
+      <li data-reveal style="--reveal-delay: 220ms">
+        <span class="process-num">03</span>
+        <div>
+          <h3>Build small, defensible patterns</h3>
+          <p>
+            Cards, tags, hierarchy, focus states. Once these are right, future
+            work builds on itself instead of fighting against it.
+          </p>
+        </div>
+      </li>
+    </ol>
+  </Section>
+
+  <!-- SKILLS -->
+  <Section eyebrow="Tools" title="What I use">
+    <div class="skills">
+      <div data-reveal style="--reveal-delay: 0ms">
+        <h3>
+          <span class="skill-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 20l3-3 8-8 3 3-8 8H4z"/>
+              <path d="M14 7l3 3"/>
+            </svg>
+          </span>
+          Design
+        </h3>
+        <ul>
+          <li>Figma</li>
+          <li>Adobe Creative Cloud</li>
+          <li>InDesign, Illustrator, Photoshop</li>
+        </ul>
+      </div>
+      <div data-reveal style="--reveal-delay: 90ms">
+        <h3>
+          <span class="skill-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 6l-5 6 5 6"/>
+              <path d="M16 6l5 6-5 6"/>
+            </svg>
+          </span>
+          Web
+        </h3>
+        <ul>
+          <li>WordPress (Roots/Sage)</li>
+          <li>HTML, CSS, accessible markup</li>
+          <li>Astro, content collections</li>
+        </ul>
+      </div>
+      <div data-reveal style="--reveal-delay: 180ms">
+        <h3>
+          <span class="skill-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="14" rx="2"/>
+              <path d="M7 5v14M17 5v14"/>
+              <path d="M10 10l5 2-5 2z"/>
+            </svg>
+          </span>
+          Production
+        </h3>
+        <ul>
+          <li>Premiere Pro, Media Encoder</li>
+          <li>Acrobat fillable PDFs</li>
+          <li>Print and digital production</li>
+        </ul>
+      </div>
+      <div data-reveal style="--reveal-delay: 270ms">
+        <h3>
+          <span class="skill-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3l1.6 5L19 9.5l-4.2 3.2L16 18l-4-2.8L8 18l1.2-5.3L5 9.5l5.4-1.5z"/>
+            </svg>
+          </span>
+          Practice
+        </h3>
+        <ul>
+          <li>Information architecture</li>
+          <li>Content design</li>
+          <li>Accessibility-minded design</li>
+          <li>Stakeholder collaboration</li>
+        </ul>
+      </div>
+      <div data-reveal style="--reveal-delay: 360ms">
+        <h3>
+          <span class="skill-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 4l1.5 3.5L17 9l-3.5 1.5L12 14l-1.5-3.5L7 9l3.5-1.5L12 4z"/>
+              <path d="M18 14l.9 2.1L21 17l-2.1.9L18 20l-.9-2.1L15 17l2.1-.9L18 14z"/>
+              <path d="M5 16l.7 1.6L7.3 18l-1.6.7L5 20l-.7-1.3L3 18l1.6-.4L5 16z"/>
+            </svg>
+          </span>
+          AI-assisted
+        </h3>
+        <ul>
+          <li>Claude</li>
+          <li>ChatGPT</li>
+          <li>Gemini</li>
+          <li>Adobe (Firefly, generative tools)</li>
+        </ul>
+      </div>
+    </div>
+  </Section>
+
+  <!-- ABOUT PREVIEW -->
+  <Section>
+    <div class="about-preview">
+      <div data-reveal>
+        <p class="eyebrow">About</p>
+        <h2 class="about-title">
+          I came to design through education. Both still inform the way I work.
+        </h2>
+      </div>
+      <div class="about-copy" data-reveal style="--reveal-delay: 120ms">
+        <p>
+          Before this role I worked as an educational assistant, supporting
+          students one-on-one and in small groups, often with learning
+          disabilities. That work shaped how I think about design.
+        </p>
+        <p>
+          Today I'm a digital marketing specialist and designer at Queen
+          Margaret's School, with an Interactive Media Developer Certificate
+          and ongoing personal work in education-focused product design.
+        </p>
+        <a href="/about" class="btn btn-secondary">
+          More about me <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </Section>
+
+  <!-- CONTACT CTA -->
+  <Section>
+    <div class="cta" data-reveal>
+      <p class="eyebrow">Get in touch</p>
+      <h2 class="cta-title">
+        Hiring for UX/UI, web, or education-focused product work?
+      </h2>
+      <p class="cta-lede">
+        Open to roles, contracts, and meaningful collaboration. I'm especially
+        interested in work that improves outcomes for schools and learners.
+      </p>
+      <div class="cta-actions">
+        <a href="/contact" class="btn btn-primary">
+          Start a conversation <span class="arrow" aria-hidden="true">→</span>
+        </a>
+        <a href={`mailto:${site.email}`} class="btn btn-secondary">
+          {site.email}
+        </a>
+      </div>
+    </div>
+  </Section>
+</Base>
+
+<style>
+  .hero {
+    padding-block: clamp(4rem, 8vw, 7rem) clamp(3rem, 6vw, 6rem);
+  }
+
+  .hero-title {
+    font-size: var(--fs-4xl);
+    line-height: 1.05;
+    letter-spacing: var(--tracking-tight);
+    margin-top: var(--space-4);
+    max-width: 22ch;
+  }
+
+  .ink-soft {
+    color: var(--color-ink-secondary);
+  }
+
+  .hero-lede {
+    margin-top: var(--space-6);
+    font-size: var(--fs-md);
+    color: var(--color-ink-secondary);
+    max-width: 56ch;
+    line-height: var(--lh-base);
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-top: var(--space-7);
+  }
+
+  .hero-meta {
+    margin-top: var(--space-9);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    list-style: none;
+    font-size: var(--fs-sm);
+    color: var(--color-ink-muted);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* Credibility */
+  .cred-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-6);
+  }
+
+  .cred {
+    padding: var(--space-6) 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .cred-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: var(--space-4);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--glass-border-strong);
+    background: rgba(243, 238, 226, 0.04);
+    color: var(--color-accent-strong);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    backdrop-filter: blur(12px) saturate(160%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: transform var(--dur-base) var(--ease-out),
+      color var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out);
+  }
+
+  .cred:hover .cred-icon {
+    transform: translateY(-1px);
+    color: var(--color-accent);
+    border-color: rgba(243, 238, 226, 0.28);
+  }
+
+  .cred h3 {
+    font-size: var(--fs-lg);
+    margin-bottom: var(--space-3);
+  }
+
+  .cred p {
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-base);
+  }
+
+  /* Spotlight */
+  .spotlight {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-9);
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .spotlight {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    }
+  }
+
+  .spotlight-copy .lede {
+    font-size: var(--fs-md);
+    line-height: var(--lh-base);
+    color: var(--color-ink-secondary);
+    max-width: 50ch;
+    margin-bottom: var(--space-6);
+  }
+
+  .bullets {
+    list-style: none;
+    display: grid;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+  }
+
+  .bullets li {
+    padding-left: var(--space-5);
+    position: relative;
+    color: var(--color-ink-secondary);
+  }
+
+  .bullets li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 8px;
+    height: 1px;
+    background: var(--color-accent);
+  }
+
+  .small {
+    font-size: var(--fs-sm);
+  }
+
+  .spotlight-cta {
+    margin-top: var(--space-4);
+  }
+
+  .spotlight-image {
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--glass-border-strong);
+    background: var(--color-bg-elevated);
+    box-shadow: var(--shadow-md), var(--glass-highlight);
+    isolation: isolate;
+  }
+
+  .spotlight-image :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Process */
+  .process {
+    list-style: none;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .process li {
+    display: flex;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .process-num {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--color-accent-strong);
+    letter-spacing: 0.06em;
+    margin-top: 0.1rem;
+  }
+
+  .process h3 {
+    font-size: var(--fs-md);
+    margin-bottom: var(--space-2);
+  }
+
+  .process p {
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-base);
+  }
+
+  /* Skills */
+  .skills {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-7);
+  }
+
+  .skills h3 {
+    font-size: var(--fs-base);
+    margin-bottom: var(--space-3);
+    color: var(--color-ink);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .skill-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--color-accent-strong);
+    opacity: 0.9;
+  }
+
+  .skills ul {
+    list-style: none;
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .skills li {
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-sm);
+  }
+
+  /* About preview */
+  .about-preview {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+  }
+
+  @media (min-width: 800px) {
+    .about-preview {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: var(--space-10);
+    }
+  }
+
+  .about-title {
+    font-size: var(--fs-2xl);
+    line-height: var(--lh-snug);
+    margin-top: var(--space-3);
+  }
+
+  .about-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .about-copy p {
+    color: var(--color-ink-secondary);
+    font-size: var(--fs-md);
+    line-height: var(--lh-base);
+    max-width: 60ch;
+  }
+
+  .about-copy .btn {
+    align-self: flex-start;
+    margin-top: var(--space-3);
+  }
+
+  /* CTA — flips to warm cream against the dark page */
+  .cta {
+    background: var(--color-bg-inverse);
+    color: var(--color-ink-inverse);
+    border-radius: var(--radius-xl);
+    padding: clamp(2.5rem, 5vw, 5rem);
+    text-align: center;
+    display: grid;
+    gap: var(--space-4);
+    place-items: center;
+  }
+
+  .cta :global(.eyebrow) {
+    color: rgba(13, 16, 20, 0.55);
+  }
+
+  .cta-title {
+    color: var(--color-ink-inverse);
+    font-size: var(--fs-2xl);
+    max-width: 22ch;
+  }
+
+  .cta-lede {
+    color: rgba(13, 16, 20, 0.7);
+    max-width: 50ch;
+    font-size: var(--fs-md);
+    line-height: var(--lh-base);
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: var(--space-3);
+  }
+
+  .cta .btn-primary {
+    background: var(--color-ink-inverse);
+    color: var(--color-bg-inverse);
+    border-color: var(--color-ink-inverse);
+  }
+
+  .cta .btn-primary:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-ink-inverse);
+  }
+
+  .cta .btn-secondary {
+    color: var(--color-ink-inverse);
+    border-color: rgba(13, 16, 20, 0.2);
+  }
+
+  .cta .btn-secondary:hover {
+    background: rgba(13, 16, 20, 0.06);
+    border-color: var(--color-ink-inverse);
+    color: var(--color-ink-inverse);
+  }
+</style>
+
