@@ -4,7 +4,7 @@ subtitle: "Two live digital viewbooks built around a shared system, designed to 
 category: "tasis"
 role: "Design and production"
 type: "Digital publication · Live"
-summary: "Live digital viewbooks for TASIS Portugal's IB Diploma Programme and Early Learning Centre, built around a shared system so each viewbook stays distinct without becoming a fresh design every time."
+summary: "Live digital viewbooks for TASIS Portugal’s IB Diploma Programme and Early Learning Centre, built around a shared system so each viewbook stays distinct without becoming a fresh design every time."
 year: "2023"
 status: "Live"
 tools: ["Adobe InDesign", "Photoshop", "Illustrator"]
@@ -52,4 +52,4 @@ Both viewbooks are live on the TASIS Portugal site:
 - [IBDP Viewbook](https://www.tasisportugal.org/ibdp-viewbook)
 - [ELC Viewbook](https://www.tasisportugal.org/elc-viewbook)
 
-The shared system supports each programme's variant without requiring a fresh design pass for every one.
+The shared system supports each programme’s variant without requiring a fresh design pass for every one.

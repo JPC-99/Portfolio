@@ -18,7 +18,7 @@ order: 20
 
 ## Overview
 
-A product exploration informed by my time working as an educational assistant. The students I supported didn't need more tools. They needed tools that respected their time, attention, and dignity. Most software either over-gamified the experience or treated the learner as a generic adult.
+A product exploration informed by my time working as an educational assistant. The students I supported didn’t need more tools. They needed tools that respected their time, attention, and dignity. Most software either over-gamified the experience or treated the learner as a generic adult.
 
 This is a concept, not a launched product, and is presented that way throughout.
 
@@ -33,9 +33,9 @@ Students with learning disabilities are often handed tools that:
 - Optimize for compliance rather than understanding
 - Punish small mistakes with friction
 - Look like adult productivity software
-- Or look like a children's game, regardless of the learner's age
+- Or look like a children’s game, regardless of the learner’s age
 
-There's room for something quieter that still keeps the learner motivated.
+There’s room for something quieter that still keeps the learner motivated.
 
 ## Users
 
@@ -46,8 +46,8 @@ The primary user is a student with a learning disability, most often a teenager,
 - **Respect first.** The product should look age-appropriate, not childish.
 - **Small wins, surfaced clearly.** Progress is visible, but never weaponized.
 - **Few choices, well-presented.** Cognitive load is the enemy.
-- **Accessible by default.** Type, contrast, motion, and structure aren't features. They're the floor.
-- **EAs and LSTs are part of the product.** Their workflow matters as much as the student's.
+- **Accessible by default.** Type, contrast, motion, and structure aren’t features. They’re the floor.
+- **EAs and LSTs are part of the product.** Their workflow matters as much as the student’s.
 
 ## Approach
 
@@ -59,7 +59,7 @@ The primary user is a student with a learning disability, most often a teenager,
 
 Concept stage. Honest design exploration, not a launched product. The page exists in the portfolio because the thinking is part of what I want to be hired for.
 
-## What I'd want to test first
+## What I’d want to test first
 
 - Whether a quiet, age-respectful UI keeps teenage learners engaged longer than a gamified one
 - Whether shared visibility between student and EA reduces friction at the start of a session

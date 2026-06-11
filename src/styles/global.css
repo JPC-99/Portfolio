@@ -203,10 +203,12 @@ h6 {
   line-height: var(--lh-tight);
   letter-spacing: var(--tracking-tight);
   color: var(--color-ink);
+  text-wrap: balance;
 }
 
 p {
   margin: 0;
+  text-wrap: pretty;
 }
 
 ul,
@@ -555,6 +557,10 @@ ol {
 .prose ul {
   list-style: disc;
   padding-left: 1.4em;
+}
+
+.prose li {
+  text-wrap: pretty;
 }
 
 .prose ul li + li {

@@ -30,7 +30,7 @@ gallery:
 
 ## Overview
 
-A homepage redesign concept for TASIS Portugal, focused on what a school's homepage needs to do first: introduce the school clearly, signal trust, and guide prospective families toward a next step.
+A homepage redesign concept for TASIS Portugal, focused on what a school’s homepage needs to do first: introduce the school clearly, signal trust, and guide prospective families toward a next step.
 
 ## My role
 
