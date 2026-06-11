@@ -188,6 +188,27 @@ Push to `main`. Cloudflare Pages builds with `npm run build`, publishes
 variables. Branch pushes create preview deployments, so don't push work
 you don't want on a public preview URL.
 
+## Moving to a custom domain
+
+When the domain is registered (Cloudflare Registrar sells at cost, which
+keeps DNS and Pages in one dashboard):
+
+1. Cloudflare dashboard → Workers & Pages → this project →
+   **Custom domains** → add the apex (and `www` if wanted). If the domain
+   is registered with Cloudflare, DNS records are created automatically;
+   elsewhere, add the CNAME it shows you at your registrar.
+2. Wait for the domain to show **Active**, and confirm the site loads
+   over it.
+3. Flip exactly two values in this repo and push:
+   - `astro.config.mjs` → `site: 'https://yourdomain.com'`
+   - `public/robots.txt` → the `Sitemap:` URL
+   Canonicals, OG URLs, JSON-LD, and the sitemap all derive from
+   `site`, so nothing else changes.
+4. The `*.pages.dev` URL keeps working and Cloudflare serves both;
+   search engines will consolidate on the new canonical.
+5. Re-run the LinkedIn Post Inspector on the new URL before using it in
+   outreach.
+
 ## License
 
 Personal portfolio code. Use the structural patterns freely as reference;

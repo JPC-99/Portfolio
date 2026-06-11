@@ -1,3 +1,5 @@
+# If the site moves to a custom domain, update the Sitemap URL below
+# together with `site` in astro.config.mjs (see README).
 User-agent: *
 Allow: /
 
