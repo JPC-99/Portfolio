@@ -138,12 +138,14 @@ Built against WCAG 2.2 AA:
   (transparent-outline technique).
 - Mobile menu: `aria-expanded`/`aria-controls`, leaves the tab order when
   closed, Escape closes and restores focus.
-- Pinned horizontal-scroll sections stay keyboard-accessible: focusing a
-  card jumps the page to the equivalent runway position, and native
-  reveal scrolls (focus or find-in-page) are absorbed into the transform.
+- The project rail is a native horizontal scroller with snap points by
+  default; the pinned scroll-linked mode layers on only with JS, a wide
+  viewport, and motion allowed. While pinned, focusing a card jumps the
+  page to the equivalent runway position, and native reveal scrolls
+  (focus or find-in-page) are absorbed into the transform.
 - All motion — reveals, ambience, pinned scroll, view transitions — is
-  disabled under `prefers-reduced-motion`; small screens get native
-  horizontal scrolling with snap points.
+  disabled under `prefers-reduced-motion`; small screens, reduced-motion
+  users, and no-JS visitors all get the same native rail.
 - External links carry `rel="noopener noreferrer"` and a screen-reader
   "(opens in new tab)" note.
 - Dark-only by design, declared via `color-scheme: dark`.

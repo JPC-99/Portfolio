@@ -633,29 +633,16 @@ ol {
 
 /* =========================================
    Horizontal-scroll-on-vertical
-   A tall wrapper holds a sticky pinned viewport. As the user scrolls
-   vertically through the wrapper, the inner track translates left.
-   Tied to a CSS variable --hx (0..1) set by JS in Base.astro.
-   Works for any .h-scroll section on any page.
+   The base mode below is a plain native horizontal rail with snap
+   points: it is what no-JS visitors, small screens, and reduced-motion
+   users get, and it needs nothing to work. The pinned, scroll-linked
+   mode further down layers on only when JS is present (html.js), the
+   viewport is wide, and motion is allowed; there the track translates
+   via --hx (0..1) set by JS in Base.astro.
    ========================================= */
 .h-scroll {
   --hx: 0;
   position: relative;
-  /* Runway length: shorter feels snappier without losing the pinned effect. */
-  height: 220vh;
-}
-
-.h-scroll__pin {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  align-items: stretch;
-  overflow: hidden;
-  /* Promote to its own paint context so the inner translate doesn't trigger
-     repaints elsewhere on the page during scroll. */
-  contain: layout paint;
 }
 
 .h-scroll__header {
@@ -674,8 +661,9 @@ ol {
 }
 
 .h-scroll__progress {
+  /* Only meaningful while pinned; shown in that mode below. */
+  display: none;
   grid-column: 1 / -1;
-  display: flex;
   align-items: center;
   gap: var(--space-4);
   margin-top: var(--space-4);
@@ -711,10 +699,13 @@ ol {
 
 .h-scroll__viewport {
   position: relative;
-  overflow: hidden;
   display: flex;
   align-items: center;
-  padding-block: var(--space-4) var(--space-9);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-block: var(--space-4) var(--space-6);
 }
 
 .h-scroll__track {
@@ -725,21 +716,61 @@ ol {
   gap: var(--gap);
   padding-left: var(--gutter);
   padding-right: var(--gutter);
-  /* The JS in Base.astro lerps --hx toward the scroll-derived target each
-     frame, so the transform reads as a smooth, continuous motion rather
-     than a one-frame-per-scroll-event jump. */
-  transform: translate3d(calc(var(--hx) * -1 * var(--h-scroll-distance, 0px)), 0, 0);
-  will-change: transform;
-  backface-visibility: hidden;
 }
 
 .h-scroll__item {
   flex: 0 0 var(--card);
   display: flex;
+  scroll-snap-align: start;
 }
 
 .h-scroll__item > * {
   width: 100%;
+}
+
+/* Pinned mode: JS present, wide viewport, motion allowed. */
+@media (width > 720px) and (prefers-reduced-motion: no-preference) {
+  .js .h-scroll {
+    /* Runway length: shorter feels snappier without losing the pinned
+       effect. */
+    height: 220vh;
+  }
+
+  .js .h-scroll__pin {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    align-items: stretch;
+    overflow: hidden;
+    /* Promote to its own paint context so the inner translate doesn't
+       trigger repaints elsewhere on the page during scroll. */
+    contain: layout paint;
+  }
+
+  .js .h-scroll__progress {
+    display: flex;
+  }
+
+  .js .h-scroll__viewport {
+    overflow: hidden;
+    scroll-snap-type: none;
+    padding-block: var(--space-4) var(--space-9);
+  }
+
+  .js .h-scroll__track {
+    /* The JS in Base.astro lerps --hx toward the scroll-derived target
+       each frame, so the transform reads as a smooth, continuous motion
+       rather than a one-frame-per-scroll-event jump. */
+    transform: translate3d(calc(var(--hx) * -1 * var(--h-scroll-distance, 0px)), 0, 0);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  .js .h-scroll__item {
+    scroll-snap-align: none;
+  }
 }
 
 /* End-of-row card invites onward */
@@ -786,31 +817,3 @@ ol {
   color: var(--color-accent);
 }
 
-/* Reduced motion + small screens: don't pin; native horizontal scroll. */
-@media (max-width: 720px), (prefers-reduced-motion: reduce) {
-  .h-scroll {
-    height: auto;
-  }
-  .h-scroll__pin {
-    position: static;
-    height: auto;
-    overflow: visible;
-  }
-  .h-scroll__viewport {
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: var(--space-6);
-  }
-  .h-scroll__track {
-    transform: none !important;
-    padding-inline: var(--gutter);
-  }
-  .h-scroll__item {
-    scroll-snap-align: start;
-  }
-  .h-scroll__progress {
-    display: none;
-  }
-}

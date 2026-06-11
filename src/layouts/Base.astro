@@ -39,7 +39,7 @@ const ogImageAlt = `${site.fullName}. UX/UI designer and digital marketing speci
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="canonical" href={canonical} />
+    {!noindex && <link rel="canonical" href={canonical} />}
 
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
@@ -239,6 +239,13 @@ const ogImageAlt = `${site.fullName}. UX/UI designer and digital marketing speci
             //    find-in-page reveals) is absorbed into the runway instead.
             // Both jump instantly: these are corrections, and the page
             // position must match the track before the next key press.
+            // Geometry comes from measure()'s cached values, not fresh reads:
+            // event-time layout flushes can transiently report zero widths.
+            function railDistance() {
+              const cached = parseFloat(section.style.getPropertyValue("--h-scroll-distance"));
+              return cached > 0 ? cached : Math.max(1, track!.scrollWidth - viewport!.clientWidth);
+            }
+
             function jumpTo(hx: number) {
               const totalScroll = section.offsetHeight - window.innerHeight;
               if (totalScroll <= 0) return;
@@ -255,8 +262,9 @@ const ogImageAlt = `${site.fullName}. UX/UI designer and digital marketing speci
               if (!(e.target instanceof Element) || !e.target.matches(":focus-visible")) return;
               const item = e.target.closest(".h-scroll__item");
               if (!(item instanceof HTMLElement)) return;
-              const distance = Math.max(1, track.scrollWidth - viewport.clientWidth);
-              const centered = item.offsetLeft + item.offsetWidth / 2 - viewport.clientWidth / 2;
+              const distance = railDistance();
+              const vw = viewport.clientWidth || window.innerWidth;
+              const centered = item.offsetLeft + item.offsetWidth / 2 - vw / 2;
               jumpTo(Math.min(1, Math.max(0, centered / distance)));
             });
 
@@ -267,8 +275,7 @@ const ogImageAlt = `${site.fullName}. UX/UI designer and digital marketing speci
                 const nativeScroll = viewport.scrollLeft;
                 if (nativeScroll === 0) return;
                 viewport.scrollLeft = 0;
-                const distance = Math.max(1, track.scrollWidth - viewport.clientWidth);
-                jumpTo(Math.min(1, Math.max(0, nativeScroll / distance)));
+                jumpTo(Math.min(1, Math.max(0, nativeScroll / railDistance())));
               },
               { passive: true },
             );

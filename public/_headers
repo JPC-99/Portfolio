@@ -6,10 +6,13 @@
 #   printf "%s" "<script body>" | openssl dgst -sha256 -binary | base64
 # - style-src needs 'unsafe-inline' for Astro's auto-inlined stylesheets and
 #   the inline style attributes that set reveal stagger delays.
-# - img-src data: covers the inline SVG tree silhouette in global.css.
+# - img-src data: covers the inline SVG tree silhouette in the strategic
+#   plan mockup's CSS.
+# - default-src 'self' (not 'none') so Astro's hover prefetch works in
+#   Chromium, where <link rel="prefetch"> requests fall back to default-src.
 
 /*
-  Content-Security-Policy: default-src 'none'; script-src 'self' 'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
