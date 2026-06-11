@@ -4,9 +4,18 @@ import Section from "~/components/Section.astro";
 import { Image } from "astro:assets";
 import headshot from "~/assets/images/about/headshot.jpeg";
 import { site } from "~/data/site";
+import { profilePageSchema } from "~/lib/schema";
+
+const schema = profilePageSchema((Astro.site ?? Astro.url).origin);
 ---
 
 <Base title="About" description="Jack (JP) Chicquen is a UX/UI designer and digital marketing specialist on Vancouver Island, with a background in education.">
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(schema)}
+  />
   <section class="about-hero">
     <div class="container">
       <p class="eyebrow">About</p>

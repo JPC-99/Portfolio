@@ -8,6 +8,7 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  ogType?: "website" | "article";
   noindex?: boolean;
 }
 
@@ -15,6 +16,7 @@ const {
   title,
   description = site.description,
   ogImage,
+  ogType = "website",
   noindex = false,
 } = Astro.props;
 
@@ -43,7 +45,7 @@ const ogImageAlt = `${site.fullName}. UX/UI designer and digital marketing speci
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -60,6 +62,8 @@ const ogImageAlt = `${site.fullName}. UX/UI designer and digital marketing speci
     <meta name="twitter:image:alt" content={ogImageAlt} />
 
     <meta name="theme-color" content="#0a0d12" />
+
+    <slot name="head" />
 
     <script is:inline>document.documentElement.classList.add('js');</script>
   </head>

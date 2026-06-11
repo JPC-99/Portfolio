@@ -7,6 +7,7 @@ import FlowDiagram from "~/components/mockups/FlowDiagram.astro";
 import StrategicPlanMock from "~/components/mockups/StrategicPlanMock.astro";
 import CaseGallery from "~/components/CaseGallery.astro";
 import { Image } from "astro:assets";
+import { caseStudySchema } from "~/lib/schema";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -39,9 +40,28 @@ const categoryHref =
 const slug = project.slug;
 const isComingSoon = (d.status ?? "").toLowerCase().includes("coming");
 const isInProgress = (d.status ?? "").toLowerCase().includes("progress");
+
+const origin = (Astro.site ?? Astro.url).origin;
+const breadcrumbName =
+  d.category === "qms" ? "QMS" : d.category === "tasis" ? "TASIS" : "Personal Projects";
+const schema = caseStudySchema({
+  origin,
+  url: new URL(Astro.url.pathname, origin).toString(),
+  title: d.title,
+  description: d.summary,
+  tags: d.tags,
+  categoryLabel: breadcrumbName,
+  categoryHref: categoryHref,
+});
 ---
 
-<Base title={d.title} description={d.summary}>
+<Base title={d.title} description={d.summary} ogType="article">
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(schema)}
+  />
   <article>
     <!-- HEADER -->
     <header class:list={["case-header", `cat-${d.category}`]}>
