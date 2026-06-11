@@ -13,11 +13,14 @@ dependencies.
 
 - **[Astro](https://astro.build) 4** — fully static output, 15 pages
 - **Content collections** (Markdown + Zod schema) for the seven case studies
-- **Scoped CSS** per component over a global token system (`src/styles/tokens.css`)
-- **System fonts** — no font downloads
+- **Scoped CSS** per component over a global token system (`src/styles/tokens.css`),
+  with a dark default theme and an opt-in light theme
+- **Type**: body copy on the system stack; headings use one self-hosted
+  22 KB variable file of [Space Grotesk](https://github.com/floriankarsten/space-grotesk)
+  (SIL OFL, license shipped at `/fonts/SpaceGrotesk-OFL.txt`). No CDN pings.
 - **@astrojs/sitemap** (pinned 3.2.x for Astro 4) — the only integration
 - A single small client script (ambient atmosphere, scroll reveals, pinned
-  horizontal scroll) plus the nav toggle; everything else is HTML/CSS
+  horizontal scroll) plus the nav and theme toggles; everything else is HTML/CSS
 
 ## Quick start
 
@@ -39,6 +42,7 @@ npm run preview  # serve the built output
 ├── public/
 │   ├── _headers                # Cloudflare Pages security + caching headers
 │   ├── favicon.svg
+│   ├── fonts/                  # Space Grotesk latin woff2 + OFL license
 │   ├── jp-chicquen-resume.pdf
 │   ├── og-image.png            # 1200×630, captured from the live hero
 │   └── robots.txt              # references /sitemap-index.xml
@@ -115,12 +119,15 @@ frame-ancestors, referrer, permissions policies, HSTS, and immutable
 caching for hashed `/_astro/*` assets.
 
 The CSP allows exactly one inline script: the one-line `<head>` bootstrap
-in `Base.astro` that sets the `js` class, pinned by SHA-256 hash. **If that
-line ever changes, recompute the hash:**
+in `Base.astro` that sets the `js` class and applies any stored theme,
+pinned by SHA-256 hash. **If that line ever changes, recompute the hash
+from the exact bytes in the built HTML:**
 
 ```bash
-printf "%s" "document.documentElement.classList.add('js');" \
-  | openssl dgst -sha256 -binary | base64
+python3 -c "
+import re, hashlib, base64
+s = re.findall(r'<script>(.*?)</script>', open('dist/index.html').read())[0]
+print('sha256-' + base64.b64encode(hashlib.sha256(s.encode()).digest()).decode())"
 ```
 
 and update `script-src` in `public/_headers`. Adding webfonts, external
@@ -148,11 +155,15 @@ Built against WCAG 2.2 AA:
   users, and no-JS visitors all get the same native rail.
 - External links carry `rel="noopener noreferrer"` and a screen-reader
   "(opens in new tab)" note.
-- Dark-only by design, declared via `color-scheme: dark`.
+- Dark by default; the header toggle switches to a warm-paper light theme
+  (persisted, applied before first paint, `color-scheme` kept in sync,
+  AA contrast maintained in both schemes).
 
 ## Performance
 
-- Static HTML, system fonts, no third-party requests of any kind.
+- Static HTML, no third-party requests of any kind; the only font download
+  is one preloaded 22 KB same-origin file, headings only, with a
+  metric-matched fallback so the swap doesn't shift layout.
 - Ambient motion is compositor-only (transform + viewport-unit custom
   properties); both rAF loops park when idle and wake on input.
 - Hover prefetch for internal links; cross-document view transitions where
