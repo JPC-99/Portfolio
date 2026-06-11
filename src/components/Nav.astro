@@ -15,45 +15,78 @@ function isActive(href: string) {
       <span class="brand-name">{site.name}</span>
     </a>
 
-    <nav aria-label="Primary">
-      <ul class="nav-list" id="nav-list">
-        {
-          nav.map((item) => (
-            <li>
-              <a
-                href={item.href}
-                class:list={["nav-link", { active: isActive(item.href) }]}
-                aria-current={isActive(item.href) ? "page" : undefined}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))
-        }
-        <li>
-          <a
-            href={site.linkedin}
-            class="nav-link"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            LinkedIn
-            <span class="sr-only">(opens in new tab)</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <div class="nav-end">
+      <nav aria-label="Primary">
+        <ul class="nav-list" id="nav-list">
+          {
+            nav.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class:list={["nav-link", { active: isActive(item.href) }]}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a
+              href={site.linkedin}
+              class="nav-link"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              LinkedIn
+              <span class="sr-only">(opens in new tab)</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
 
-    <button
-      class="nav-toggle"
-      aria-controls="nav-list"
-      aria-expanded="false"
-      aria-label="Menu"
-    >
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </button>
+      <button class="theme-toggle" aria-label="Switch to light theme">
+        <svg
+          class="icon-sun"
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          width="16"
+          height="16"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+        >
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+        </svg>
+        <svg
+          class="icon-moon"
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          width="16"
+          height="16"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
+        </svg>
+      </button>
+
+      <button
+        class="nav-toggle"
+        aria-controls="nav-list"
+        aria-expanded="false"
+        aria-label="Menu"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -62,7 +95,7 @@ function isActive(href: string) {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(10, 13, 18, 0.45);
+    background: var(--nav-bg);
     -webkit-backdrop-filter: blur(24px) saturate(200%);
     backdrop-filter: blur(24px) saturate(200%);
     border-bottom: 1px solid transparent;
@@ -73,8 +106,14 @@ function isActive(href: string) {
   }
 
   .site-nav.scrolled {
-    background: rgba(10, 13, 18, 0.6);
+    background: var(--nav-bg-scrolled);
     border-bottom-color: var(--color-border);
+  }
+
+  .nav-end {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
   }
 
   .nav-inner {
@@ -141,6 +180,37 @@ function isActive(href: string) {
   .nav-link.active {
     color: var(--color-ink);
     background: var(--color-bg-muted);
+  }
+
+  .theme-toggle {
+    display: inline-grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
+    color: var(--color-ink-secondary);
+    transition: color var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out),
+      background var(--dur-base) var(--ease-out);
+  }
+
+  .theme-toggle:hover {
+    color: var(--color-ink);
+    border-color: var(--border-hover);
+    background: var(--fill-soft);
+  }
+
+  .icon-moon {
+    display: none;
+  }
+
+  :global(html[data-theme="light"]) .icon-sun {
+    display: none;
+  }
+
+  :global(html[data-theme="light"]) .icon-moon {
+    display: block;
   }
 
   .nav-toggle {
@@ -255,4 +325,36 @@ function isActive(href: string) {
   };
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
+  // Theme toggle. The <head> bootstrap applies any stored choice before
+  // first paint; this only reflects state and handles changes.
+  const themeToggle = document.querySelector<HTMLButtonElement>(".theme-toggle");
+  const themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+
+  function currentTheme(): "dark" | "light" {
+    return document.documentElement.getAttribute("data-theme") === "light"
+      ? "light"
+      : "dark";
+  }
+
+  function reflectTheme(theme: "dark" | "light") {
+    themeToggle?.setAttribute(
+      "aria-label",
+      theme === "dark" ? "Switch to light theme" : "Switch to dark theme",
+    );
+    if (themeMeta) themeMeta.content = theme === "dark" ? "#0a0d12" : "#f2eee4";
+  }
+
+  reflectTheme(currentTheme());
+
+  themeToggle?.addEventListener("click", () => {
+    const next = currentTheme() === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try {
+      localStorage.setItem("theme", next);
+    } catch {
+      /* private browsing: theme still applies for this page view */
+    }
+    reflectTheme(next);
+  });
 </script>

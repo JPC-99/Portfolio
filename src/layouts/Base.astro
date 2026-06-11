@@ -65,7 +65,7 @@ const ogImageAlt = `${site.fullName}. UX/UI designer and digital marketing speci
 
     <slot name="head" />
 
-    <script is:inline>document.documentElement.classList.add('js');</script>
+    <script is:inline>document.documentElement.classList.add('js');try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
   </head>
 
   <body>

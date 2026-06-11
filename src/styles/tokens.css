@@ -45,6 +45,24 @@
   --glass-highlight-strong: inset 0 1px 0 rgba(255, 255, 255, 0.14),
     inset 0 -1px 0 rgba(0, 0, 0, 0.22);
 
+  /* Ink-tinted translucent fills and hover borders. On dark these are
+     cream-tinted; the light theme flips them to ink-tinted. */
+  --fill-ghost: rgba(243, 238, 226, 0.03);
+  --fill-soft: rgba(243, 238, 226, 0.04);
+  --fill-hover: rgba(243, 238, 226, 0.08);
+  --border-hover: rgba(243, 238, 226, 0.3);
+
+  /* Sticky nav backdrop */
+  --nav-bg: rgba(10, 13, 18, 0.45);
+  --nav-bg-scrolled: rgba(10, 13, 18, 0.6);
+
+  /* Text and chrome that sit ON an inverse surface (the cream CTA block
+     on dark; it becomes a dark block when the light theme flips). */
+  --inverse-ink-soft: rgba(13, 16, 20, 0.55);
+  --inverse-ink-secondary: rgba(13, 16, 20, 0.7);
+  --inverse-border: rgba(13, 16, 20, 0.2);
+  --inverse-fill-hover: rgba(13, 16, 20, 0.06);
+
   /* Primary accent — warm terracotta red.
      Editorial, confident, never stoplight-loud. Used for links, hovers,
      the in-progress badge, and the single moment of color in CTAs. */
@@ -163,4 +181,71 @@
   --focus-ring: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent);
 
   color-scheme: dark;
+}
+
+/* =========================================
+   Light theme — warm paper take on the same system.
+   Dark stays the default brand experience; this applies only when the
+   visitor opts in via the header toggle (persisted in localStorage and
+   set as data-theme by the <head> bootstrap before first paint).
+   Accent shifts darker so link and tag text keep AA contrast on cream.
+   ========================================= */
+:root[data-theme="light"] {
+  --color-bg: #f2eee4;
+  --color-bg-deep: #e9e4d6;
+
+  --color-bg-elevated: rgba(255, 255, 255, 0.62);
+  --color-bg-muted: rgba(255, 255, 255, 0.48);
+  --color-bg-raised: rgba(255, 255, 255, 0.8);
+
+  --color-bg-inverse: #161a21;
+
+  --color-ink: #1c2026;
+  --color-ink-secondary: #4b4e55;
+  --color-ink-muted: #5f636b;
+  --color-ink-subtle: #888b91;
+  --color-ink-inverse: #f3eee2;
+
+  --color-border: rgba(28, 32, 38, 0.12);
+  --color-border-strong: rgba(28, 32, 38, 0.22);
+  --color-border-inverse: rgba(243, 238, 226, 0.14);
+
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-bg-hover: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(28, 32, 38, 0.1);
+  --glass-border-strong: rgba(28, 32, 38, 0.18);
+
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    inset 0 -1px 0 rgba(28, 32, 38, 0.05);
+  --glass-highlight-strong: inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 0 rgba(28, 32, 38, 0.07);
+
+  --fill-ghost: rgba(28, 32, 38, 0.03);
+  --fill-soft: rgba(28, 32, 38, 0.045);
+  --fill-hover: rgba(28, 32, 38, 0.07);
+  --border-hover: rgba(28, 32, 38, 0.3);
+
+  --nav-bg: rgba(242, 238, 228, 0.55);
+  --nav-bg-scrolled: rgba(242, 238, 228, 0.78);
+
+  --inverse-ink-soft: rgba(243, 238, 226, 0.62);
+  --inverse-ink-secondary: rgba(243, 238, 226, 0.78);
+  --inverse-border: rgba(243, 238, 226, 0.28);
+  --inverse-fill-hover: rgba(243, 238, 226, 0.1);
+
+  --color-accent: #b33d2f;
+  --color-accent-strong: #9c3526;
+  --color-accent-soft: rgba(179, 61, 47, 0.1);
+
+  --status-default-bg: rgba(28, 32, 38, 0.04);
+  --status-progress-bg: rgba(179, 61, 47, 0.1);
+  --status-progress-border: rgba(179, 61, 47, 0.35);
+  --status-progress-ink: var(--color-accent-strong);
+
+  --shadow-xs: 0 1px 2px rgba(28, 32, 38, 0.08);
+  --shadow-sm: 0 4px 16px rgba(28, 32, 38, 0.1);
+  --shadow-md: 0 18px 48px rgba(28, 32, 38, 0.14);
+  --shadow-lg: 0 32px 80px rgba(28, 32, 38, 0.18);
+
+  color-scheme: light;
 }

@@ -125,6 +125,20 @@ html::before {
   }
 }
 
+/* On paper, the same three color volumes sit lighter so the cream
+   stays calm and text keeps its contrast. */
+[data-theme="light"] body::before {
+  opacity: 0.34;
+}
+
+[data-theme="light"] body::after {
+  opacity: 0.26;
+}
+
+html[data-theme="light"]::before {
+  opacity: calc(0.26 + var(--sp) * 0.1);
+}
+
 /* Cross-document view transitions: a quiet crossfade between pages where
    the browser supports it. Pure progressive enhancement. */
 @view-transition {
@@ -356,7 +370,7 @@ ol {
 }
 
 .btn-secondary {
-  background: rgba(243, 238, 226, 0.04);
+  background: var(--fill-soft);
   color: var(--color-ink);
   border-color: var(--glass-border-strong);
   -webkit-backdrop-filter: blur(16px) saturate(160%);
@@ -365,8 +379,8 @@ ol {
 }
 
 .btn-secondary:hover {
-  border-color: rgba(243, 238, 226, 0.32);
-  background: rgba(243, 238, 226, 0.08);
+  border-color: var(--border-hover);
+  background: var(--fill-hover);
   color: var(--color-ink);
 }
 
@@ -447,7 +461,7 @@ ol {
   letter-spacing: var(--tracking-snug);
   border-radius: var(--radius-full);
   border: 1px solid var(--glass-border);
-  background: rgba(243, 238, 226, 0.04);
+  background: var(--fill-soft);
   color: var(--status-default-ink);
   -webkit-backdrop-filter: blur(12px) saturate(160%);
   backdrop-filter: blur(12px) saturate(160%);
@@ -785,7 +799,7 @@ ol {
   height: 100%;
   border-radius: var(--radius-lg);
   border: 1px dashed var(--glass-border-strong);
-  background: rgba(243, 238, 226, 0.03);
+  background: var(--fill-ghost);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   color: var(--color-ink);
@@ -796,8 +810,8 @@ ol {
 
 .end-card:hover {
   text-decoration: none;
-  background: rgba(243, 238, 226, 0.06);
-  border-color: rgba(243, 238, 226, 0.28);
+  background: var(--fill-hover);
+  border-color: var(--border-hover);
   transform: translateY(-2px);
 }
 
