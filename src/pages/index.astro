@@ -7,18 +7,13 @@ import boardPortalImg from "~/assets/images/qms-board-portal/dashboard.png";
 import { getCollection } from "astro:content";
 import { site } from "~/data/site";
 import { websiteSchema } from "~/lib/schema";
+import { eyebrowFor } from "~/lib/projects";
 
 const allProjects = await getCollection("projects");
 const allSorted = allProjects.sort((a, b) => a.data.order - b.data.order);
 
 const origin = (Astro.site ?? Astro.url).origin;
 const schema = websiteSchema(origin);
-
-function eyebrowFor(category: string) {
-  if (category === "qms") return "QMS · Internal";
-  if (category === "tasis") return "TASIS";
-  return "Personal";
-}
 ---
 
 <Base title={undefined} description={site.description}>

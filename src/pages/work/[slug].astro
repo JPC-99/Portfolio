@@ -8,6 +8,7 @@ import StrategicPlanMock from "~/components/mockups/StrategicPlanMock.astro";
 import CaseGallery from "~/components/CaseGallery.astro";
 import { Image } from "astro:assets";
 import { caseStudySchema } from "~/lib/schema";
+import { categoryHrefs, categoryLabels, eyebrowFor, statusFlags } from "~/lib/projects";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -31,26 +32,20 @@ const related = all
   .sort((a, b) => a.data.order - b.data.order)
   .slice(0, 2);
 
-const categoryLabel =
-  d.category === "qms" ? "QMS · Internal" : d.category === "tasis" ? "TASIS" : "Personal";
-
-const categoryHref =
-  d.category === "qms" ? "/work/qms" : d.category === "tasis" ? "/work/tasis" : "/work/personal";
+const categoryLabel = eyebrowFor(d.category);
+const categoryHref = categoryHrefs[d.category];
 
 const slug = project.slug;
-const isComingSoon = (d.status ?? "").toLowerCase().includes("coming");
-const isInProgress = (d.status ?? "").toLowerCase().includes("progress");
+const { isComingSoon, isInProgress, isUnderway } = statusFlags(d.status);
 
 const origin = (Astro.site ?? Astro.url).origin;
-const breadcrumbName =
-  d.category === "qms" ? "QMS" : d.category === "tasis" ? "TASIS" : "Personal Projects";
 const schema = caseStudySchema({
   origin,
   url: new URL(Astro.url.pathname, origin).toString(),
   title: d.title,
   description: d.summary,
   tags: d.tags,
-  categoryLabel: breadcrumbName,
+  categoryLabel: categoryLabels[d.category],
   categoryHref: categoryHref,
 });
 ---
@@ -79,7 +74,7 @@ const schema = caseStudySchema({
             <span class="tag tag-confidential">Redacted</span>
           )}
           {d.status && (
-            <span class:list={["tag", (isComingSoon || isInProgress) && "tag-accent", "tag-dot"]}>
+            <span class:list={["tag", isUnderway && "tag-accent", "tag-dot"]}>
               {d.status}
             </span>
           )}
@@ -183,6 +178,11 @@ const schema = caseStudySchema({
           </figure>
         ) : (
           <>
+            {/* Structural fallbacks. The two in-development projects use
+                theirs today; the confidential QMS projects keep a
+                public-safe mock on standby for any future state without
+                an approved screenshot. TASIS work is public, so it needs
+                no fallback. */}
             {slug === "qms-board-portal" && <BoardPortalMock />}
             {slug === "qms-agent-guide" && (
               <PageStructureMock
@@ -199,47 +199,6 @@ const schema = caseStudySchema({
               />
             )}
             {slug === "qms-strategic-plan" && <StrategicPlanMock />}
-            {slug === "tasis-homepage" && (
-              <PageStructureMock
-                url="tasis · homepage redesign"
-                title="Homepage hierarchy concept"
-                blocks={[
-                  { type: "header", label: "Header" },
-                  { type: "hero", label: "Hero · Who we are · Primary CTA", height: 100 },
-                  { type: "card", label: "Trust signals concentrated near CTA", height: 56 },
-                  { type: "card", label: "Programs at a glance", height: 60 },
-                  { type: "card", label: "Life at TASIS", height: 60 },
-                  { type: "cta", label: "Apply / Visit", height: 56 },
-                ]}
-              />
-            )}
-            {slug === "tasis-library" && (
-              <PageStructureMock
-                url="tasis · library page"
-                title="Library page hierarchy"
-                blocks={[
-                  { type: "header", label: "Header" },
-                  { type: "hero", label: "Library · Hours · How to ask for help", height: 80 },
-                  { type: "card", label: "Services", height: 56 },
-                  { type: "card", label: "Collections", height: 56 },
-                  { type: "card", label: "Spaces & atmosphere", height: 60 },
-                ]}
-              />
-            )}
-            {slug === "tasis-viewbooks" && (
-              <PageStructureMock
-                url="viewbook · spreads"
-                title="Viewbook spread pacing"
-                blocks={[
-                  { type: "hero", label: "Cover spread", height: 90 },
-                  { type: "card", label: "Section opener", height: 70 },
-                  { type: "text", label: "Photo spread", height: 60 },
-                  { type: "card", label: "Voice from the school", height: 60 },
-                  { type: "text", label: "Facts spread", height: 50 },
-                  { type: "card", label: "Closing spread", height: 80 },
-                ]}
-              />
-            )}
             {slug === "learning-support-app" && (
               <FlowDiagram
                 title="Working principles · concept stage"
@@ -465,32 +424,6 @@ const schema = caseStudySchema({
     line-height: 1.5;
     word-wrap: break-word;
     overflow-wrap: anywhere;
-  }
-
-  .case-links {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-  }
-
-  .case-links a {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    color: var(--color-accent-strong);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
-  }
-
-  .case-links a:hover {
-    color: var(--color-accent);
-  }
-
-  .case-links .ext {
-    font-size: 0.75em;
-    opacity: 0.7;
   }
 
   .case-visual {

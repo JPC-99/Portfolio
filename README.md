@@ -1,246 +1,181 @@
 # JP Chicquen — Portfolio
 
-Static portfolio website for Jack (JP) Chicquen, replacing the existing Framer portfolio with a custom, fast, free-to-host Astro build.
+Personal portfolio for Jack (JP) Chicquen, UX/UI designer and digital
+marketing specialist. Live at **https://jpchicquen.pages.dev**, deployed
+automatically from `main` by Cloudflare Pages.
 
-> **What was built**
-> A complete, multi-page Astro portfolio with a real design system, content collections for projects, redacted/public-safe mockups, an accessible navigation, and seven full or near-full case studies (QMS Board Portal, QMS Admissions, QMS Calendar, QMS Selected Production, TASIS Homepage, TASIS Library, TASIS Viewbooks, Learning Support App Concept).
->
-> Zero paid dependencies. No tracking. No backend.
+Static Astro site. No backend, no tracking, no webfonts, no paid
+dependencies.
 
 ---
 
 ## Stack
 
-- **[Astro](https://astro.build)** v4 — static site generator
-- **TypeScript** for the few files where it helps
-- **Content collections** (Markdown + Zod schema) for case studies
-- **Scoped CSS** in `.astro` components + a global token system
-- **System fonts** — no webfont download, no Google Fonts ping
-- **No JS framework** beyond Astro's small islands runtime
-
-Everything is open-source, free, and standard-tooling. No paid CMS, no paid component library, no paid icons, no paid analytics.
-
----
+- **[Astro](https://astro.build) 4** — fully static output, 15 pages
+- **Content collections** (Markdown + Zod schema) for the seven case studies
+- **Scoped CSS** per component over a global token system (`src/styles/tokens.css`)
+- **System fonts** — no font downloads
+- **@astrojs/sitemap** (pinned 3.2.x for Astro 4) — the only integration
+- A single small client script (ambient atmosphere, scroll reveals, pinned
+  horizontal scroll) plus the nav toggle; everything else is HTML/CSS
 
 ## Quick start
 
-You'll need **Node.js 18.17+ or 20.3+** ([nodejs.org](https://nodejs.org)).
+Node 18.17+ or 20.3+.
 
 ```bash
-# Install dependencies
 npm install
-
-# Start the local dev server (http://localhost:4321)
-npm run dev
-
-# Type-check with Astro
-npm run check
-
-# Build for production (writes to ./dist)
-npm run build
-
-# Preview the production build locally
-npm run preview
+npm run dev      # http://localhost:4321
+npm run check    # astro type-check (keep at 0 errors)
+npm run build    # production build to ./dist
+npm run preview  # serve the built output
 ```
-
-If you prefer `pnpm` or `yarn`, replace `npm` with your preferred manager — the scripts are standard.
-
----
 
 ## Project structure
 
 ```
 .
-├── astro.config.mjs        # Astro config
-├── package.json
-├── tsconfig.json
-├── public/                  # Static files served at site root
+├── astro.config.mjs            # site URL, sitemap, prefetch, compressHTML
+├── public/
+│   ├── _headers                # Cloudflare Pages security + caching headers
 │   ├── favicon.svg
-│   └── robots.txt
+│   ├── jp-chicquen-resume.pdf
+│   ├── og-image.png            # 1200×630, captured from the live hero
+│   └── robots.txt              # references /sitemap-index.xml
 └── src/
-    ├── components/          # Reusable UI components
-    │   ├── Nav.astro
+    ├── assets/images/          # source images; Astro emits WebP variants
+    ├── components/
+    │   ├── Nav.astro           # sticky nav, accessible mobile menu
     │   ├── Footer.astro
     │   ├── ProjectCard.astro
     │   ├── Section.astro
-    │   └── mockups/         # Redacted, public-safe visuals
-    │       ├── BoardPortalMock.astro
-    │       ├── CalendarMock.astro
-    │       ├── FlowDiagram.astro
-    │       └── PageStructureMock.astro
+    │   ├── CaseGallery.astro   # responsive screenshot gallery
+    │   └── mockups/            # public-safe structural mockups
+    │       ├── BoardPortalMock.astro      # QMS redaction fallback
+    │       ├── StrategicPlanMock.astro    # QMS redaction fallback
+    │       ├── PageStructureMock.astro    # generic page skeleton
+    │       └── FlowDiagram.astro          # numbered principle/flow list
     ├── content/
-    │   ├── config.ts        # Zod schema for projects
-    │   └── projects/        # One Markdown file per case study
-    │       ├── qms-board-portal.md
-    │       ├── qms-admissions.md
-    │       ├── qms-calendar.md
-    │       ├── qms-selected-production.md
-    │       ├── tasis-homepage.md
-    │       ├── tasis-library.md
-    │       ├── tasis-viewbooks.md
-    │       └── learning-support-app.md
-    ├── data/
-    │   └── site.ts          # Name, email, LinkedIn, nav
-    ├── layouts/
-    │   └── Base.astro       # SEO, OG, skip link, nav, footer
-    ├── pages/
-    │   ├── index.astro      # Home
-    │   ├── about.astro
-    │   ├── contact.astro
-    │   ├── 404.astro
-    │   └── work/
-    │       ├── index.astro      # Work overview
-    │       ├── qms.astro        # QMS category
-    │       ├── tasis.astro      # TASIS category
-    │       ├── personal.astro   # Personal projects category
-    │       └── [slug].astro     # Dynamic case-study page
-    └── styles/
-        ├── tokens.css       # Design tokens (colors, type, spacing, motion)
-        └── global.css       # Reset + base styles + utilities
+    │   ├── config.ts           # Zod schema (hero/gallery use image())
+    │   └── projects/           # one Markdown file per case study (7)
+    ├── data/site.ts            # name, email, LinkedIn, resume, nav
+    ├── lib/
+    │   ├── projects.ts         # category labels/hrefs, status flags
+    │   └── schema.ts           # JSON-LD builders (Person, WebSite, …)
+    ├── layouts/Base.astro      # head/SEO/OG/JSON-LD slot, client script
+    ├── pages/                  # /, /about, /contact, /404, /work/*
+    └── styles/                 # tokens.css + global.css
 ```
-
----
 
 ## How content works
 
-Every case study is a Markdown file under `src/content/projects/`. The frontmatter is type-checked against the schema in `src/content/config.ts`, and the page at `src/pages/work/[slug].astro` renders any project automatically.
+Each case study is one Markdown file in `src/content/projects/`. The
+frontmatter is validated against `src/content/config.ts`; the page at
+`src/pages/work/[slug].astro` renders everything automatically, including
+hero image, gallery, live links, status tags, and confidentiality callouts.
 
-To add a new case study:
+Key frontmatter fields:
 
-1. Create `src/content/projects/your-slug.md`.
-2. Fill in frontmatter:
+```yaml
+title: "…"
+subtitle: "…"
+category: "qms" | "tasis" | "personal"
+role: "…"
+type: "…"
+summary: "…"            # card text + meta description + JSON-LD
+year: "2024–2025"
+status: "Live" | "Concept" | "Coming soon" | "In progress" | …
+tools: ["Figma"]
+tags: ["UX/UI"]
+featured: true           # appears in the /work featured grid
+confidential: true       # renders the Redacted tag
+order: 1                 # lower = earlier in lists
+confidentialityNote: "…" # renders as a callout on the case page
+links:                   # first link becomes the primary CTA + hero link
+  - label: "View live page"
+    href: "https://…"
+hero:                    # optional; without it, a structural mock renders
+  src: "../../assets/images/<dir>/01-….png"
+  alt: "…"
+gallery:                 # optional screenshots below the hero
+  - src: "…"
+    alt: "…"
+    caption: "…"
+    span: "full" | "half"
+```
 
-   ```yaml
-   ---
-   title: "..."
-   subtitle: "..."
-   category: "qms" | "tasis" | "personal"
-   role: "..."
-   type: "..."
-   summary: "..."
-   year: "2025"
-   status: "Live" | "Ongoing" | "Concept" | ...
-   tools: ["Figma", "WordPress"]
-   tags: ["UX/UI", "Implementation"]
-   featured: true            # show on home + featured grids
-   confidential: false       # render the "Redacted" tag
-   order: 5                  # lower = earlier in lists
-   confidentialityNote: ""   # optional, renders as a callout
-   ---
-   ```
+Images go in `src/assets/images/<project>/`; Astro generates WebP at
+640–2400px widths with span-accurate `sizes`. Case heroes load eagerly with
+`fetchpriority="high"`; gallery images lazy-load.
 
-3. Write the body in plain Markdown — `##`, lists, **strong**, links all work.
-4. The slug (your filename, minus `.md`) becomes the URL: `/work/your-slug`.
+## Security headers
 
----
+`public/_headers` ships a strict Content-Security-Policy plus nosniff,
+frame-ancestors, referrer, permissions policies, HSTS, and immutable
+caching for hashed `/_astro/*` assets.
 
-## What to replace before going public
+The CSP allows exactly one inline script: the one-line `<head>` bootstrap
+in `Base.astro` that sets the `js` class, pinned by SHA-256 hash. **If that
+line ever changes, recompute the hash:**
 
-The site is honest about being a portfolio scaffold — it does not fabricate metrics, screenshots, or quotes. A few intentional placeholders are worth knowing about:
+```bash
+printf "%s" "document.documentElement.classList.add('js');" \
+  | openssl dgst -sha256 -binary | base64
+```
 
-| File / field | What it is | Action |
-| --- | --- | --- |
-| `src/data/site.ts` → `linkedin` | Placeholder LinkedIn URL | Replace with your real profile URL |
-| `src/data/site.ts` → `resume` | Commented out | Uncomment and add `/resume.pdf` to `public/` if you want a resume link |
-| `astro.config.mjs` → `site` | `https://jpchicquen.com` | Replace with the final domain you deploy to |
-| TASIS case study bodies | Honest concept-stage copy with "placeholder" notes | Replace with real screenshots/outcomes if you have them |
-| `qms-board-portal.md` mockup | Redacted, public-safe SVG-based mockup | Swap in a redacted screenshot if you have one — keep it redacted |
-| `public/favicon.svg` | Simple JP wordmark | Replace if you design a logo |
-| `public/og-image.png` | _(not yet added)_ | Optionally add an Open Graph image at this path |
+and update `script-src` in `public/_headers`. Adding webfonts, external
+images, or third-party scripts also requires a CSP update — that friction
+is intentional.
 
-Nothing is hardcoded to fake metrics. The "Confidentiality note" callout on QMS case studies is intentional — keep it.
+## Accessibility
 
----
+Built against WCAG 2.2 AA:
 
-## Deploying for free
+- Content is fully readable without JavaScript — the pre-reveal hidden
+  state only applies under the `js` class set in `<head>`.
+- One `h1` per page, semantic landmarks, skip link, logical heading order.
+- Visible focus everywhere, including Windows forced-colors mode
+  (transparent-outline technique).
+- Mobile menu: `aria-expanded`/`aria-controls`, leaves the tab order when
+  closed, Escape closes and restores focus.
+- Pinned horizontal-scroll sections stay keyboard-accessible: focusing a
+  card jumps the page to the equivalent runway position, and native
+  reveal scrolls (focus or find-in-page) are absorbed into the transform.
+- All motion — reveals, ambience, pinned scroll, view transitions — is
+  disabled under `prefers-reduced-motion`; small screens get native
+  horizontal scrolling with snap points.
+- External links carry `rel="noopener noreferrer"` and a screen-reader
+  "(opens in new tab)" note.
+- Dark-only by design, declared via `color-scheme: dark`.
 
-The site is fully static, so any free static host works. Recommended order:
+## Performance
 
-### 1. Cloudflare Pages (recommended)
+- Static HTML, system fonts, no third-party requests of any kind.
+- Ambient motion is compositor-only (transform + viewport-unit custom
+  properties); both rAF loops park when idle and wake on input.
+- Hover prefetch for internal links; cross-document view transitions where
+  supported (CSS-only, reduced-motion safe).
+- JSON-LD on home (WebSite + Person), about (ProfilePage), and every case
+  study (CreativeWork + BreadcrumbList). Sitemap + canonical + OG/Twitter
+  meta on every page.
 
-1. Push this folder to a GitHub repo.
-2. In Cloudflare → Pages → **Create a project** → connect the repo.
-3. Build settings:
-   - Build command: `npm run build`
-   - Build output directory: `dist`
-   - Node version: `20`
-4. Deploy. Cloudflare gives you `*.pages.dev` for free; connect a custom domain later from the Pages dashboard.
+## Confidentiality
 
-### 2. Netlify (free tier)
+QMS work involves private governance and admissions content. The published
+case studies use only an approved, redacted screenshot plus structural
+mockups built in-component — no real documents, names, or member data.
+`BoardPortalMock` and `StrategicPlanMock` are kept as standby fallbacks for
+any future state without an approved screenshot. Keep the confidentiality
+callouts; they are part of the story the portfolio tells.
 
-1. Push to GitHub.
-2. Netlify → **Add new site** → **Import from Git**.
-3. Build command: `npm run build`, publish directory: `dist`.
+## Deploying
 
-### 3. Vercel (free tier)
-
-1. Push to GitHub.
-2. Vercel → **Add New Project** → import the repo.
-3. Vercel auto-detects Astro. Accept defaults.
-
-No environment variables are required for the site to function.
-
----
-
-## Accessibility notes
-
-The site was designed with WCAG 2.2 AA in mind. Specifically:
-
-- Semantic HTML throughout (`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`).
-- Logical heading hierarchy on every page.
-- Skip-link to `#main` for keyboard users.
-- Visible `:focus-visible` ring on every interactive element.
-- Mobile navigation is keyboard- and screen-reader-accessible with `aria-expanded`, `aria-controls`, and `aria-label`.
-- Calendar mockup never uses colour alone — each category dot is labelled.
-- Reduced-motion users see all animations disabled via `prefers-reduced-motion`.
-- Dark mode supported via `prefers-color-scheme` with the same accessibility floor.
-- Touch targets sized for mobile (44px+ where it matters).
-- No hover-only critical information.
-- Link text makes sense out of context.
-
-Before going live, manually test:
-
-- Tab through every page with a keyboard only.
-- Resize the window down to ~360px width.
-- Try the site with `prefers-reduced-motion` enabled.
-- Run an automated audit (e.g. axe DevTools, Lighthouse).
-
----
-
-## Performance notes
-
-- Astro statically renders every page.
-- The only client-side JavaScript is the small mobile nav toggle + scroll-shadow listener in `Nav.astro`. Everything else is pure HTML/CSS.
-- No webfont download — system fonts only.
-- No third-party tracking, analytics, or chat widgets.
-- Images are SVG mockups — no large raster files.
-
-If you later add raster screenshots, drop them in `src/assets/` and use Astro's built-in `<Image />` from `astro:assets` for automatic optimization.
-
----
-
-## Security & privacy notes
-
-- No backend, no database, no API keys, no environment variables.
-- No third-party scripts.
-- The contact "form" is intentionally absent — the contact page is honest about being a static site and points to email/LinkedIn instead.
-- The QMS Board Portal case study uses **only** redacted, structural mockups created in-component. No real governance documents, names, or board content is included.
-- All QMS case studies include a confidentiality note where appropriate.
-- `.gitignore` excludes `node_modules`, build output, and any `.env` files.
-
----
-
-## Editing checklist after first read
-
-1. Replace LinkedIn URL in `src/data/site.ts`.
-2. Replace `site` URL in `astro.config.mjs` with your real domain.
-3. Add an OG image at `public/og-image.png` (1200×630 recommended) and reference it in `Base.astro` if desired.
-4. Review and tighten any case-study copy as your career and projects evolve.
-5. Add real screenshots only where they are public-safe (TASIS projects, parts of QMS work the school agrees can be shown).
-6. Run `npm run build` once locally before deploying to catch any typos in frontmatter.
-
----
+Push to `main`. Cloudflare Pages builds with `npm run build`, publishes
+`dist/`, and the site is live in about 90 seconds. No environment
+variables. Branch pushes create preview deployments, so don't push work
+you don't want on a public preview URL.
 
 ## License
 
-Personal portfolio code. Feel free to use the structural patterns and component approaches as a reference for your own work, but the case-study content and branding belong to Jack Chicquen.
+Personal portfolio code. Use the structural patterns freely as reference;
+the case-study content and branding belong to Jack Chicquen.

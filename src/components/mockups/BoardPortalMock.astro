@@ -99,7 +99,7 @@ const { compact = false } = Astro.props;
     height: 1.8rem;
     padding-inline: var(--space-3);
     border-radius: var(--radius-sm);
-    background: #046852;
+    background: var(--qms-deep-green);
     color: #fff;
     font-weight: var(--fw-semibold);
     font-size: 0.78rem;
@@ -157,10 +157,10 @@ const { compact = false } = Astro.props;
     background: var(--color-border);
   }
 
-  .tile-board::before { background: #75bb43; }
-  .tile-finance::before { background: #046852; }
-  .tile-governance::before { background: #005487; }
-  .tile-calendar::before { background: #172a54; }
+  .tile-board::before { background: var(--qms-green); }
+  .tile-finance::before { background: var(--qms-deep-green); }
+  .tile-governance::before { background: var(--qms-blue); }
+  .tile-calendar::before { background: var(--qms-navy); }
   .tile-exec::before { background: #6b3d2c; }
 
   .tile-label {

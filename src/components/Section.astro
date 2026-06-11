@@ -5,7 +5,7 @@ interface Props {
   lede?: string;
   align?: "left" | "center";
   id?: string;
-  tone?: "default" | "muted" | "inverse";
+  tone?: "default" | "muted";
   size?: "default" | "lg" | "tight";
 }
 
@@ -45,17 +45,6 @@ const sectionClass = [
 <style>
   .tone-muted {
     background: var(--color-bg-muted);
-  }
-
-  .tone-inverse {
-    background: var(--color-bg-inverse);
-    color: var(--color-ink-inverse);
-  }
-
-  .tone-inverse :global(h1),
-  .tone-inverse :global(h2),
-  .tone-inverse :global(h3) {
-    color: var(--color-ink-inverse);
   }
 
   .section-header {

@@ -3,6 +3,7 @@ import Base from "~/layouts/Base.astro";
 import Section from "~/components/Section.astro";
 import ProjectCard from "~/components/ProjectCard.astro";
 import { getCollection } from "astro:content";
+import { eyebrowFor } from "~/lib/projects";
 
 const all = await getCollection("projects");
 const sorted = all.sort((a, b) => a.data.order - b.data.order);
@@ -37,12 +38,6 @@ const categories = [
     count: personal.length,
   },
 ] as const;
-
-function eyebrowFor(category: string) {
-  if (category === "qms") return "QMS · Internal";
-  if (category === "tasis") return "TASIS";
-  return "Personal";
-}
 ---
 
 <Base

@@ -1,4 +1,6 @@
 ---
+import { statusFlags, type ProjectCategory } from "~/lib/projects";
+
 interface Props {
   href: string;
   eyebrow?: string;
@@ -9,7 +11,7 @@ interface Props {
   featured?: boolean;
   confidential?: boolean;
   status?: string;
-  category?: "qms" | "tasis" | "personal";
+  category?: ProjectCategory;
 }
 
 const {
@@ -25,13 +27,7 @@ const {
   category,
 } = Astro.props;
 
-const s = (status ?? "").toLowerCase();
-const isProgress =
-  s.includes("progress") ||
-  s.includes("coming") ||
-  s.includes("ongoing") ||
-  s.includes("planned");
-const isComingSoon = s.includes("coming");
+const { isComingSoon, isUnderway } = statusFlags(status);
 ---
 
 <a
@@ -54,7 +50,7 @@ const isComingSoon = s.includes("coming");
     <div class="card-status">
       {confidential && <span class="tag tag-confidential">Redacted</span>}
       {status && (
-        <span class:list={["tag", isProgress && "tag-accent", "tag-dot"]}>
+        <span class:list={["tag", isUnderway && "tag-accent", "tag-dot"]}>
           {status}
         </span>
       )}
