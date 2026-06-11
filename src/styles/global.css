@@ -14,6 +14,9 @@ html {
   -moz-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-behavior: smooth;
+  /* Keep anchor targets and keyboard-focused elements clear of the
+     sticky header. */
+  scroll-padding-top: 5.5rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -558,6 +561,21 @@ ol {
   border-radius: var(--radius-md);
   font-size: var(--fs-base);
   color: var(--color-ink-secondary);
+}
+
+/* Markdown blockquotes in case-study bodies share the callout language. */
+.prose blockquote {
+  margin: 0;
+  padding: var(--space-5) var(--space-6);
+  background: var(--color-bg-muted);
+  border: 1px solid var(--color-border);
+  border-left: 2px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-base);
+}
+
+.prose blockquote > * + * {
+  margin-top: var(--space-3);
 }
 
 .callout strong {

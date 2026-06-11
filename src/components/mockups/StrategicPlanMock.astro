@@ -25,15 +25,12 @@ const pillars = [
       <span class="sp-epigraph">Growing Change Together</span>
     </header>
 
-    <ul class="sp-ring" role="tablist" aria-label="Strategic plan pillars (mockup)">
+    {/* Decorative: the whole figure is exposed as a single labelled image,
+        so the ring carries no interactive roles of its own. */}
+    <ul class="sp-ring" aria-hidden="true">
       {pillars.map((p, i) => (
-        <li
-          class:list={["sp-pillar", { active: i === 2 }]}
-          style={`--i:${i}`}
-          role="tab"
-          aria-selected={i === 2 ? "true" : "false"}
-        >
-          <span class="sp-dot" aria-hidden="true"></span>
+        <li class:list={["sp-pillar", { active: i === 2 }]} style={`--i:${i}`}>
+          <span class="sp-dot"></span>
           <span class="sp-label">{p.label}</span>
         </li>
       ))}

@@ -164,8 +164,10 @@ const ogImageAlt = `${site.fullName}. UX/UI designer and digital marketing speci
           };
           const hControllers: HController[] = [];
 
-          hScrollSections.forEach((section) => {
-            if (!(section instanceof HTMLElement)) return;
+          hScrollSections.forEach((el) => {
+            if (!(el instanceof HTMLElement)) return;
+            // Fresh const so the narrowed type survives into the closures.
+            const section = el;
             const viewport = section.querySelector(".h-scroll__viewport");
             const track = section.querySelector(".h-scroll__track");
             if (!viewport || !track) return;
@@ -209,6 +211,30 @@ const ogImageAlt = `${site.fullName}. UX/UI designer and digital marketing speci
             readTarget();
             state.current = state.target;
             section.style.setProperty("--hx", state.current.toFixed(4));
+
+            // Keyboard path: when focus lands on a card while the section is
+            // pinned, jump the page scroll so the card is actually in view.
+            // The browser cannot do this itself because the track moves via
+            // transform, not scroll.
+            viewport.addEventListener("focusin", (e) => {
+              if (hFallback()) return;
+              if (!(e.target instanceof Element)) return;
+              const item = e.target.closest(".h-scroll__item");
+              if (!(item instanceof HTMLElement)) return;
+              // Undo any native scroll of the hidden-overflow viewport; the
+              // transform below is the one source of truth.
+              viewport.scrollLeft = 0;
+              const distance = Math.max(1, track.scrollWidth - viewport.clientWidth);
+              const centered = item.offsetLeft + item.offsetWidth / 2 - viewport.clientWidth / 2;
+              const hx = Math.min(1, Math.max(0, centered / distance));
+              const totalScroll = section.offsetHeight - window.innerHeight;
+              if (totalScroll <= 0) return;
+              const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+              state.target = hx;
+              state.current = hx;
+              section.style.setProperty("--hx", hx.toFixed(4));
+              window.scrollTo({ top: sectionTop + hx * totalScroll });
+            });
           });
 
           function hLoop() {

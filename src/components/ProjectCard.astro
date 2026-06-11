@@ -52,11 +52,7 @@ const isComingSoon = s.includes("coming");
       </span>
     )}
     <div class="card-status">
-      {confidential && (
-        <span class="tag tag-confidential" title="Redacted for confidentiality">
-          Redacted
-        </span>
-      )}
+      {confidential && <span class="tag tag-confidential">Redacted</span>}
       {status && (
         <span class:list={["tag", isProgress && "tag-accent", "tag-dot"]}>
           {status}

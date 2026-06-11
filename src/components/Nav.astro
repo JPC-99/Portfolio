@@ -48,7 +48,7 @@ function isActive(href: string) {
       class="nav-toggle"
       aria-controls="nav-list"
       aria-expanded="false"
-      aria-label="Toggle navigation menu"
+      aria-label="Menu"
     >
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
@@ -192,15 +192,23 @@ function isActive(href: string) {
       border-bottom: 1px solid var(--color-border);
       transform: translateY(-8px);
       opacity: 0;
+      /* visibility keeps the closed menu out of the tab order; the 0s
+         delay holds it visible until the closing fade finishes. */
+      visibility: hidden;
       pointer-events: none;
       transition: opacity var(--dur-base) var(--ease-out),
-        transform var(--dur-base) var(--ease-out);
+        transform var(--dur-base) var(--ease-out),
+        visibility 0s linear var(--dur-base);
     }
 
     .nav-list.open {
       transform: translateY(0);
       opacity: 1;
+      visibility: visible;
       pointer-events: auto;
+      transition: opacity var(--dur-base) var(--ease-out),
+        transform var(--dur-base) var(--ease-out),
+        visibility 0s;
     }
 
     .nav-link {
@@ -217,18 +225,26 @@ function isActive(href: string) {
   const list = document.querySelector<HTMLUListElement>("#nav-list");
   const header = document.querySelector<HTMLElement>(".site-nav");
 
+  function setOpen(open: boolean) {
+    toggle?.setAttribute("aria-expanded", String(open));
+    list?.classList.toggle("open", open);
+  }
+
   toggle?.addEventListener("click", () => {
-    const open = toggle.getAttribute("aria-expanded") === "true";
-    toggle.setAttribute("aria-expanded", String(!open));
-    list?.classList.toggle("open", !open);
+    setOpen(toggle.getAttribute("aria-expanded") !== "true");
   });
 
   // Close on link click (mobile)
   list?.querySelectorAll("a").forEach((a) => {
-    a.addEventListener("click", () => {
-      toggle?.setAttribute("aria-expanded", "false");
-      list.classList.remove("open");
-    });
+    a.addEventListener("click", () => setOpen(false));
+  });
+
+  // Escape closes the menu and hands focus back to the toggle.
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (toggle?.getAttribute("aria-expanded") !== "true") return;
+    setOpen(false);
+    toggle.focus();
   });
 
   // Scroll shadow
