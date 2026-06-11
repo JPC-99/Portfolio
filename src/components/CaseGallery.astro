@@ -33,10 +33,14 @@ const { items, title } = Astro.props;
                 src={item.src}
                 alt={item.alt}
                 widths={[640, 960, 1280, 1600, 2000]}
-                sizes="(min-width: 1100px) 70vw, (min-width: 720px) 90vw, 100vw"
+                sizes={
+                  (item.span ?? "full") === "half"
+                    ? "(min-width: 1240px) 524px, (min-width: 900px) 45vw, (min-width: 720px) 92vw, 100vw"
+                    : "(min-width: 1240px) 1072px, (min-width: 720px) 92vw, 100vw"
+                }
                 format="webp"
                 quality={82}
-                loading={i === 0 ? "eager" : "lazy"}
+                loading="lazy"
                 decoding="async"
               />
             </div>

@@ -91,33 +91,49 @@ const ogImageAlt = `${site.fullName}. UX/UI designer and digital marketing speci
       }
 
       if (reduceMotion) {
-        doc.style.setProperty("--mx", "50%");
-        doc.style.setProperty("--my", "35%");
+        doc.style.setProperty("--mx", "50vw");
+        doc.style.setProperty("--my", "35vh");
         revealAll();
       } else {
         // ---- Pointer-driven ambient (smoothed via requestAnimationFrame) ----
+        // The loop runs only while the smoothed position is still converging
+        // toward the pointer; once it settles, no frames are burned until
+        // the pointer moves again.
         let tx = 50;
         let ty = 35;
         let cx = tx;
         let cy = ty;
+        let ambientRunning = false;
+
+        function ambientTick() {
+          // simple lerp; feels alive without being twitchy
+          cx += (tx - cx) * 0.045;
+          cy += (ty - cy) * 0.045;
+          if (Math.abs(tx - cx) < 0.01 && Math.abs(ty - cy) < 0.01) {
+            cx = tx;
+            cy = ty;
+            ambientRunning = false;
+          }
+          doc.style.setProperty("--mx", cx.toFixed(2) + "vw");
+          doc.style.setProperty("--my", cy.toFixed(2) + "vh");
+          if (ambientRunning) requestAnimationFrame(ambientTick);
+        }
+
+        function startAmbient() {
+          if (ambientRunning) return;
+          ambientRunning = true;
+          requestAnimationFrame(ambientTick);
+        }
+
         window.addEventListener(
           "pointermove",
           (e) => {
             tx = (e.clientX / window.innerWidth) * 100;
             ty = (e.clientY / window.innerHeight) * 100;
+            startAmbient();
           },
           { passive: true },
         );
-
-        function tick() {
-          // simple lerp; feels alive without being twitchy
-          cx += (tx - cx) * 0.045;
-          cy += (ty - cy) * 0.045;
-          doc.style.setProperty("--mx", cx.toFixed(2) + "%");
-          doc.style.setProperty("--my", cy.toFixed(2) + "%");
-          requestAnimationFrame(tick);
-        }
-        requestAnimationFrame(tick);
 
         // ---- Scroll progress (0..1) ----
         function onScroll() {
@@ -160,7 +176,8 @@ const ogImageAlt = `${site.fullName}. UX/UI designer and digital marketing speci
           type HController = {
             measure: () => void;
             readTarget: () => void;
-            tick: () => void;
+            /** Advances one frame; returns true while still converging. */
+            tick: () => boolean;
           };
           const hControllers: HController[] = [];
 
@@ -194,7 +211,7 @@ const ogImageAlt = `${site.fullName}. UX/UI designer and digital marketing speci
             }
 
             function tick() {
-              if (hFallback()) return;
+              if (hFallback()) return false;
               // Lerp with factor 0.18; converges in ~4–5 frames without
               // feeling laggy on fast scroll input.
               state.current += (state.target - state.current) * 0.18;
@@ -204,6 +221,7 @@ const ogImageAlt = `${site.fullName}. UX/UI designer and digital marketing speci
                 state.current = state.target;
               }
               section.style.setProperty("--hx", state.current.toFixed(4));
+              return state.current !== state.target;
             }
 
             hControllers.push({ measure, readTarget, tick });
@@ -212,54 +230,91 @@ const ogImageAlt = `${site.fullName}. UX/UI designer and digital marketing speci
             state.current = state.target;
             section.style.setProperty("--hx", state.current.toFixed(4));
 
-            // Keyboard path: when focus lands on a card while the section is
-            // pinned, jump the page scroll so the card is actually in view.
-            // The browser cannot do this itself because the track moves via
-            // transform, not scroll.
-            viewport.addEventListener("focusin", (e) => {
-              if (hFallback()) return;
-              if (!(e.target instanceof Element)) return;
-              const item = e.target.closest(".h-scroll__item");
-              if (!(item instanceof HTMLElement)) return;
-              // Undo any native scroll of the hidden-overflow viewport; the
-              // transform below is the one source of truth.
-              viewport.scrollLeft = 0;
-              const distance = Math.max(1, track.scrollWidth - viewport.clientWidth);
-              const centered = item.offsetLeft + item.offsetWidth / 2 - viewport.clientWidth / 2;
-              const hx = Math.min(1, Math.max(0, centered / distance));
+            // Keyboard and find-in-page support. The track moves via
+            // transform, which browser scroll logic knows nothing about, so
+            // two corrections keep focused content actually visible:
+            // 1) focusin (keyboard only) centers the focused card by jumping
+            //    the page to the equivalent runway position;
+            // 2) any native scroll of the hidden-overflow viewport (focus or
+            //    find-in-page reveals) is absorbed into the runway instead.
+            // Both jump instantly: these are corrections, and the page
+            // position must match the track before the next key press.
+            function jumpTo(hx: number) {
               const totalScroll = section.offsetHeight - window.innerHeight;
               if (totalScroll <= 0) return;
               const sectionTop = section.getBoundingClientRect().top + window.scrollY;
               state.target = hx;
               state.current = hx;
               section.style.setProperty("--hx", hx.toFixed(4));
-              window.scrollTo({ top: sectionTop + hx * totalScroll });
+              window.scrollTo({ top: sectionTop + hx * totalScroll, behavior: "instant" });
+            }
+
+            viewport.addEventListener("focusin", (e) => {
+              if (hFallback()) return;
+              // :focus-visible keeps mouse clicks from jumping the page.
+              if (!(e.target instanceof Element) || !e.target.matches(":focus-visible")) return;
+              const item = e.target.closest(".h-scroll__item");
+              if (!(item instanceof HTMLElement)) return;
+              const distance = Math.max(1, track.scrollWidth - viewport.clientWidth);
+              const centered = item.offsetLeft + item.offsetWidth / 2 - viewport.clientWidth / 2;
+              jumpTo(Math.min(1, Math.max(0, centered / distance)));
             });
+
+            viewport.addEventListener(
+              "scroll",
+              () => {
+                if (hFallback()) return;
+                const nativeScroll = viewport.scrollLeft;
+                if (nativeScroll === 0) return;
+                viewport.scrollLeft = 0;
+                const distance = Math.max(1, track.scrollWidth - viewport.clientWidth);
+                jumpTo(Math.min(1, Math.max(0, nativeScroll / distance)));
+              },
+              { passive: true },
+            );
           });
 
+          // One shared RAF loop for all h-scroll sections. It parks itself
+          // once every section has converged and is restarted by scroll,
+          // resize, or breakpoint changes — which also revives the effect
+          // after crossing the mobile breakpoint without a reload.
+          let hRunning = false;
+
           function hLoop() {
-            for (const c of hControllers) c.tick();
-            requestAnimationFrame(hLoop);
+            let converging = false;
+            for (const c of hControllers) {
+              if (c.tick()) converging = true;
+            }
+            if (converging) {
+              requestAnimationFrame(hLoop);
+            } else {
+              hRunning = false;
+            }
           }
-          // Run a single shared RAF loop for all h-scroll sections.
-          if (!hReduce.matches && !hMobile.matches) {
+
+          function startHLoop() {
+            if (hRunning || hFallback()) return;
+            hRunning = true;
             requestAnimationFrame(hLoop);
           }
 
           function hOnScroll() {
             for (const c of hControllers) c.readTarget();
+            startHLoop();
           }
           function hOnResize() {
             for (const c of hControllers) {
               c.measure();
               c.readTarget();
             }
+            startHLoop();
           }
 
           window.addEventListener("scroll", hOnScroll, { passive: true });
           window.addEventListener("resize", hOnResize, { passive: true });
           hReduce.addEventListener("change", hOnResize);
           hMobile.addEventListener("change", hOnResize);
+          startHLoop();
         }
       }
     </script>

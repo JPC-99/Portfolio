@@ -52,10 +52,13 @@ body {
    Two color volumes follow the pointer (smoothed by JS) and drift slowly
    with scroll progress. A third quieter volume biases toward green and
    shifts with --sp. Sits fixed behind everything; glass surfaces refract
-   this color as the cursor moves. */
+   this color as the cursor moves.
+   All movement runs through transform (compositor-only) — never left/top,
+   which would force layout on every frame. --mx/--my are viewport-unit
+   lengths set by JS. */
 :root {
-  --mx: 50%;
-  --my: 35%;
+  --mx: 50vw;
+  --my: 35vh;
   --sp: 0;
 }
 
@@ -63,20 +66,21 @@ body::before,
 body::after {
   content: "";
   position: fixed;
+  left: 0;
+  top: 0;
   pointer-events: none;
   z-index: -1;
   border-radius: 50%;
   filter: blur(120px);
-  will-change: transform, left, top;
+  will-change: transform;
 }
 
 /* BLUE — anchored top-left region. Tracks the cursor closely. */
 body::before {
   width: 65vmax;
   height: 65vmax;
-  left: calc(var(--mx) * 0.7);
-  top: calc(var(--my) * 0.6 + 5%);
-  transform: translate(-50%, -50%);
+  transform: translate3d(calc(var(--mx) * 0.7), calc(var(--my) * 0.6 + 5vh), 0)
+    translate(-50%, -50%);
   background: radial-gradient(closest-side, rgba(58, 132, 200, 0.6) 0%, transparent 70%);
   opacity: 0.65;
 }
@@ -86,9 +90,8 @@ body::before {
 body::after {
   width: 60vmax;
   height: 60vmax;
-  left: calc(100% - var(--mx) * 0.7);
-  top: calc(95% - var(--my) * 0.6 - (var(--sp) * 18vh));
-  transform: translate(-50%, -50%);
+  transform: translate3d(calc(100vw - var(--mx) * 0.7), calc(95vh - var(--my) * 0.6 - var(--sp) * 18vh), 0)
+    translate(-50%, -50%);
   background: radial-gradient(closest-side, rgba(220, 88, 72, 0.5) 0%, transparent 70%);
   opacity: 0.55;
 }
@@ -99,9 +102,10 @@ body::after {
 html::before {
   content: "";
   position: fixed;
-  left: calc(var(--mx) * 0.4 + 5%);
-  top: calc(85% - var(--my) * 0.4);
-  transform: translate(-50%, -50%) translateY(calc(var(--sp) * -4vh));
+  left: 0;
+  top: 0;
+  transform: translate3d(calc(var(--mx) * 0.4 + 5vw), calc(85vh - var(--my) * 0.4 - var(--sp) * 4vh), 0)
+    translate(-50%, -50%);
   width: 55vmax;
   height: 55vmax;
   pointer-events: none;
@@ -110,6 +114,7 @@ html::before {
   filter: blur(100px);
   background: radial-gradient(closest-side, rgba(110, 200, 150, 0.9) 0%, transparent 70%);
   opacity: calc(0.55 + var(--sp) * 0.15);
+  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -117,6 +122,20 @@ html::before {
   body::after,
   html::before {
     transition: none;
+  }
+}
+
+/* Cross-document view transitions: a quiet crossfade between pages where
+   the browser supports it. Pure progressive enhancement. */
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }
 
