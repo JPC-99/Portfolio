@@ -2,8 +2,7 @@
 
 Personal portfolio for Jack (JP) Chicquen, UX/UI designer and digital
 marketing specialist. Live at **https://jpchicquen.com**, deployed
-automatically from `main` by Cloudflare Pages (`www` and the older
-`jpchicquen.pages.dev` 301 to the apex via `public/_redirects`).
+automatically from `main` by Cloudflare Pages.
 
 Static Astro site. No backend, no tracking, no webfonts, no paid
 dependencies.
@@ -192,12 +191,20 @@ you don't want on a public preview URL.
 ## Custom domain
 
 The canonical host is `jpchicquen.com`, attached to the Pages project as
-a custom domain (with `www`). `public/_redirects` 301s `www` and the old
-`jpchicquen.pages.dev` host to the apex, and everything URL-shaped
-(canonicals, OG, JSON-LD, sitemap) derives from `site` in
-`astro.config.mjs`. If the domain ever changes again, flip `site` and
-the `Sitemap:` line in `public/robots.txt`, update `_redirects`, and
-push.
+a custom domain (with `www`). Everything URL-shaped (canonicals, OG,
+JSON-LD, sitemap) derives from `site` in `astro.config.mjs`; if the
+domain ever changes, flip `site` and the `Sitemap:` line in
+`public/robots.txt` and push.
+
+`www` and `jpchicquen.pages.dev` also serve the site; every page on
+every host declares the apex canonical, so search engines consolidate
+correctly. For true 301s, Pages' `_redirects` file cannot do
+domain-level redirects — use the dashboard instead: **Account Home →
+Bulk Redirects → Create a redirect list** with
+`https://www.jpchicquen.com` → `https://jpchicquen.com` and
+`https://jpchicquen.pages.dev` → `https://jpchicquen.com` (301,
+preserve path suffix and query string), then create the Bulk Redirect
+rule from that list.
 
 ## License
 

@@ -33,3 +33,6 @@ package-lock.json.bak
 # misc
 *.log
 .cache/
+
+# personal documents dropped into the project root stay out of git
+/*.pdf
