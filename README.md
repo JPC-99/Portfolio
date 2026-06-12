@@ -1,8 +1,9 @@
 # JP Chicquen — Portfolio
 
 Personal portfolio for Jack (JP) Chicquen, UX/UI designer and digital
-marketing specialist. Live at **https://jpchicquen.pages.dev**, deployed
-automatically from `main` by Cloudflare Pages.
+marketing specialist. Live at **https://jpchicquen.com**, deployed
+automatically from `main` by Cloudflare Pages (`www` and the older
+`jpchicquen.pages.dev` 301 to the apex via `public/_redirects`).
 
 Static Astro site. No backend, no tracking, no webfonts, no paid
 dependencies.
@@ -188,26 +189,15 @@ Push to `main`. Cloudflare Pages builds with `npm run build`, publishes
 variables. Branch pushes create preview deployments, so don't push work
 you don't want on a public preview URL.
 
-## Moving to a custom domain
+## Custom domain
 
-When the domain is registered (Cloudflare Registrar sells at cost, which
-keeps DNS and Pages in one dashboard):
-
-1. Cloudflare dashboard → Workers & Pages → this project →
-   **Custom domains** → add the apex (and `www` if wanted). If the domain
-   is registered with Cloudflare, DNS records are created automatically;
-   elsewhere, add the CNAME it shows you at your registrar.
-2. Wait for the domain to show **Active**, and confirm the site loads
-   over it.
-3. Flip exactly two values in this repo and push:
-   - `astro.config.mjs` → `site: 'https://yourdomain.com'`
-   - `public/robots.txt` → the `Sitemap:` URL
-   Canonicals, OG URLs, JSON-LD, and the sitemap all derive from
-   `site`, so nothing else changes.
-4. The `*.pages.dev` URL keeps working and Cloudflare serves both;
-   search engines will consolidate on the new canonical.
-5. Re-run the LinkedIn Post Inspector on the new URL before using it in
-   outreach.
+The canonical host is `jpchicquen.com`, attached to the Pages project as
+a custom domain (with `www`). `public/_redirects` 301s `www` and the old
+`jpchicquen.pages.dev` host to the apex, and everything URL-shaped
+(canonicals, OG, JSON-LD, sitemap) derives from `site` in
+`astro.config.mjs`. If the domain ever changes again, flip `site` and
+the `Sitemap:` line in `public/robots.txt`, update `_redirects`, and
+push.
 
 ## License
 

@@ -1,6 +1,5 @@
-# If the site moves to a custom domain, update the Sitemap URL below
-# together with `site` in astro.config.mjs (see README).
+# Keep the Sitemap URL in sync with `site` in astro.config.mjs.
 User-agent: *
 Allow: /
 
-Sitemap: https://jpchicquen.pages.dev/sitemap-index.xml
+Sitemap: https://jpchicquen.com/sitemap-index.xml
