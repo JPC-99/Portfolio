@@ -36,3 +36,6 @@ package-lock.json.bak
 
 # personal documents dropped into the project root stay out of git
 /*.pdf
+
+# local handover notes for new chat sessions, not for the public repo
+/HANDOVER.md
