@@ -47,14 +47,16 @@ const { isComingSoon, isUnderway } = statusFlags(status);
         {eyebrow}
       </span>
     )}
-    <div class="card-status">
-      {confidential && <span class="tag tag-confidential">Redacted</span>}
-      {status && (
-        <span class:list={["tag", isUnderway && "tag-accent", "tag-dot"]}>
-          {status}
-        </span>
-      )}
-    </div>
+    {(confidential || status) && (
+      <div class="card-status">
+        {confidential && <span class="tag tag-confidential">Redacted</span>}
+        {status && (
+          <span class:list={["tag", isUnderway && "tag-accent", "tag-dot"]}>
+            {status}
+          </span>
+        )}
+      </div>
+    )}
   </div>
 
   <div class="card-body">
@@ -169,12 +171,14 @@ const { isComingSoon, isUnderway } = statusFlags(status);
     z-index: 1;
   }
 
+  /* Eyebrow and status stack on every card. Side-by-side placement
+     depended on card width (long pills wrapped, short ones didn't),
+     so cards in the same row showed pills in different places. */
   .card-top {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
     gap: var(--space-3);
-    flex-wrap: wrap;
   }
 
   .card-eyebrow {

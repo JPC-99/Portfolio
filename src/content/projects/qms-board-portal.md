@@ -122,6 +122,12 @@ Quantitative results from a private governance portal aren’t appropriate to pu
 - A maintainable content model that non-technical editors can keep current
 - A visual system that quietly supports trust and clarity in a board context
 
+## Since launch
+
+The portal hasn’t stood still. It has taken on multiple rounds of updates since the first release, the largest being an onboarding tracking system for incoming governors, so orientation now lives in the same place as the rest of the board’s work.
+
+That growth is the quiet payoff of the early pattern work: because tiles, roles, and micro-interactions were built as a small reusable system, new capabilities ship inside the existing shell without bespoke design work each time.
+
 ## What I’d improve next
 
 - A lightweight "what’s new this month" surface so members landing the day before a meeting see relevant updates first

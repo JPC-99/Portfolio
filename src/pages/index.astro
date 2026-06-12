@@ -63,6 +63,7 @@ const schema = websiteSchema(origin);
           <li data-reveal style="--reveal-delay: 160ms">Calendar built into the same shell as governance work</li>
           <li data-reveal style="--reveal-delay: 240ms">Editable by non-technical staff without breaking the layout</li>
           <li data-reveal style="--reveal-delay: 320ms">QMS palette used sparingly, as category accents</li>
+          <li data-reveal style="--reveal-delay: 400ms">Onboarding tracking for incoming governors, added since launch</li>
         </ul>
         <p class="muted small">
           Visuals are redacted to protect private governance materials.
@@ -246,6 +247,7 @@ const schema = websiteSchema(origin);
           <li>Figma</li>
           <li>Adobe Creative Cloud</li>
           <li>InDesign, Illustrator, Photoshop</li>
+          <li>Custom SVG iconography</li>
         </ul>
       </div>
       <div data-reveal style="--reveal-delay: 90ms">
@@ -261,6 +263,7 @@ const schema = websiteSchema(origin);
         <ul>
           <li>WordPress (Roots/Sage)</li>
           <li>HTML, CSS, accessible markup</li>
+          <li>JavaScript, PHP</li>
           <li>Astro, content collections</li>
         </ul>
       </div>
@@ -276,28 +279,13 @@ const schema = websiteSchema(origin);
           Production
         </h3>
         <ul>
-          <li>Premiere Pro, Media Encoder</li>
+          <li>Premiere Pro</li>
+          <li>Media Encoder</li>
           <li>Acrobat fillable PDFs</li>
           <li>Print and digital production</li>
         </ul>
       </div>
       <div data-reveal style="--reveal-delay: 270ms">
-        <h3>
-          <span class="skill-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 3l1.6 5L19 9.5l-4.2 3.2L16 18l-4-2.8L8 18l1.2-5.3L5 9.5l5.4-1.5z"/>
-            </svg>
-          </span>
-          Practice
-        </h3>
-        <ul>
-          <li>Information architecture</li>
-          <li>Content design</li>
-          <li>Accessibility-minded design</li>
-          <li>Stakeholder collaboration</li>
-        </ul>
-      </div>
-      <div data-reveal style="--reveal-delay: 360ms">
         <h3>
           <span class="skill-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -562,11 +550,24 @@ const schema = websiteSchema(origin);
     font-size: var(--fs-base);
   }
 
-  /* Skills */
+  /* Skills — four fixed groups, so the columns are explicit: a clean
+     1 / 2x2 / row-of-4 progression with no orphan wrap in between. */
   .skills {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-7);
+  }
+
+  @media (min-width: 560px) {
+    .skills {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 960px) {
+    .skills {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
   }
 
   .skills h3 {

@@ -12,7 +12,7 @@ function isActive(href: string) {
   <div class="container nav-inner">
     <a href="/" class="brand" aria-label={`${site.name}, home`}>
       <span class="brand-mark" aria-hidden="true">JP</span>
-      <span class="brand-name">{site.name}</span>
+      <span class="brand-name">J<span class="brand-expand"><span class="brand-expand-text">ack&nbsp;</span></span>P<span class="brand-expand"><span class="brand-expand-text">rosper</span></span> Chicquen</span>
     </a>
 
     <div class="nav-end">
@@ -151,6 +151,36 @@ function isActive(href: string) {
 
   .brand-name {
     font-size: var(--fs-base);
+    white-space: nowrap;
+  }
+
+  /* "JP Chicquen" unfolds to "Jack Prosper Chicquen" on hover and
+     keyboard focus. Animating the grid track (0fr to 1fr) measures the
+     hidden letters themselves, so no magic widths can drift. */
+  .brand-expand {
+    display: inline-grid;
+    grid-template-columns: 0fr;
+    transition: grid-template-columns var(--dur-slow) var(--ease-out);
+  }
+
+  .brand-expand-text {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  /* Hover-capable devices only: on touch there is no hover-out to fold
+     the name back, and a tap should simply navigate home. */
+  @media (hover: hover) {
+    .brand:hover .brand-expand,
+    .brand:focus-visible .brand-expand {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-expand {
+      transition: none;
+    }
   }
 
   .nav-list {
