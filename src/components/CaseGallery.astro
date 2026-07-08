@@ -6,6 +6,8 @@ interface Item {
   alt: string;
   caption?: string;
   span?: "full" | "half";
+  frame?: "browser" | "plain";
+  frameLabel?: string;
 }
 
 interface Props {
@@ -29,6 +31,16 @@ const { items, title } = Astro.props;
             style={`--reveal-delay: ${Math.min(i * 80, 320)}ms`}
           >
             <div class="gallery-frame">
+              {item.frame === "browser" && (
+                <div class="shot-chrome" aria-hidden="true">
+                  <span class="shot-chrome-dot"></span>
+                  <span class="shot-chrome-dot"></span>
+                  <span class="shot-chrome-dot"></span>
+                  {item.frameLabel && (
+                    <span class="shot-chrome-label">{item.frameLabel}</span>
+                  )}
+                </div>
+              )}
               <Image
                 src={item.src}
                 alt={item.alt}

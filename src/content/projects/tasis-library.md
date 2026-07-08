@@ -16,15 +16,17 @@ links:
     href: "https://www.tasisportugal.org/academics/libraries"
 hero:
   src: "../../assets/images/tasis-library/01-top.png"
-  alt: "Top of the TASIS Portugal Libraries page, with hours, location, and primary services surfaced first."
+  alt: "Top of the TASIS Portugal Libraries page: a hero photograph of the library, a short welcome, and the collections and catalogue system described up front."
+  frame: "browser"
+  frameLabel: "tasisportugal.org/academics/libraries"
 gallery:
   - src: "../../assets/images/tasis-library/02-recommendations.png"
-    alt: "Reading recommendations section of the TASIS Portugal Libraries page, with curated book cards showing cover imagery and short descriptions."
-    caption: "Reading recommendations. Curated cards instead of paragraph lists."
+    alt: "Reading recommendations on the TASIS Portugal Libraries page: audience-specific accordions for Lower School, Upper School, and adults, opening into carousels of book covers."
+    caption: "Reading recommendations. Audience-first accordions and cover carousels instead of paragraph lists."
     span: "full"
   - src: "../../assets/images/tasis-library/03-embeds.png"
-    alt: "Lower section of the TASIS Portugal Libraries page, showing embedded resources and links to library catalogues."
-    caption: "Embedded resources. Quick access to catalogues and partner services."
+    alt: "Resource section of the TASIS Portugal Libraries page: catalogue search for Lower and Upper School, podcast recommendations, the Sora digital library, and a book request form."
+    caption: "Embedded resources. Catalogue search, podcasts, and Sora, with a book request form as the fallback path."
     span: "full"
 ---
 

@@ -6,7 +6,7 @@ role: "UX/UI design, interaction design, motion, front-end implementation, conte
 type: "Single-page interactive microsite"
 summary: "A self-contained HTML microsite that presents Queen Margaret’s School’s 2026 strategic plan as a navigable, atmospheric experience: six pillars on a radial ring, each opening into illustrated nodes."
 year: "2025–2026"
-status: "Live"
+status: "In progress"
 tools: ["HTML", "CSS", "JavaScript", "Custom SVG iconography", "Figma", "Adobe Creative Cloud"]
 tags: ["UX/UI", "Interaction Design", "Motion", "Front-end", "Information Architecture"]
 featured: true
@@ -14,15 +14,21 @@ order: 2
 hero:
   src: "../../assets/images/qms-strategic-plan/01-overview.png"
   alt: "QMS Strategic Plan 2026 microsite overview view, showing the six pillars arrayed around a central crest over a dawn forest scene."
+  frame: "browser"
+  frameLabel: "single HTML file · runs anywhere"
 gallery:
   - src: "../../assets/images/qms-strategic-plan/02-pillar.png"
     alt: "A single pillar selected on the radial navigator, with its sub-nodes fanned out and the ambient horizon tinted by the active pillar’s colour."
     caption: "Pillar selection. Sub-nodes fan out, and the ambient colour follows the active pillar."
     span: "full"
+    frame: "browser"
+    frameLabel: "single HTML file · runs anywhere"
   - src: "../../assets/images/qms-strategic-plan/03-node.png"
     alt: "An individual node opened into a focused detail card with photography, headline, and a short narrative; the third interaction level of the microsite."
     caption: "Node detail. Focused card, photograph, headline, narrative. Esc to back out."
     span: "full"
+    frame: "browser"
+    frameLabel: "single HTML file · runs anywhere"
 ---
 
 ## Overview
@@ -100,15 +106,15 @@ It’s atmospheric, not decorative. The scene exists because the plan is about a
 - Colour-coding never carries meaning on its own. Every active state is also a text label and a movement.
 - Respects `prefers-reduced-motion`. The parallax and mist hold still, and transitions become instant.
 
-## Outcome
+## Where it stands
 
-The plan landed differently than a PDF would have. People returned to it, navigated between pillars, and used it as a reference in their own conversations. For the school, it became a piece of communication infrastructure rather than just a document.
+This is in-progress work, and the page says so on purpose. The experience is built and working: the radial navigator, the node cards, the atmosphere, the keyboard model, and the single-file packaging all work today. What’s still moving is the plan itself, so the microsite is evolving alongside it with school leadership.
 
-Quantitative engagement metrics from a school strategic plan aren’t appropriate to publish here. Qualitatively:
+The single-file format earns its keep here too. Every revision is a complete, portable artifact that leadership can open on any device and review anywhere, with no staging server and no login between them and the work.
 
-- The plan became something the community engaged with rather than archived.
-- The single-file format meant it could live in every place a stakeholder might look (board portal, email, internal share) without breaking.
-- The atmospheric, tactile design reinforced the plan’s tone in a way a PDF couldn’t.
+- Fully working interactive prototype, reviewed with the Headmaster and senior leadership
+- Content and pacing still being refined as the plan takes its final shape
+- Ready to distribute the moment the plan is: the deliverable is one file
 
 ## What I’d improve next
 

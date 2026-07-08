@@ -2,6 +2,7 @@
 import Base from "~/layouts/Base.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 import BoardPortalMock from "~/components/mockups/BoardPortalMock.astro";
+import OnboardingTrackerMock from "~/components/mockups/OnboardingTrackerMock.astro";
 import PageStructureMock from "~/components/mockups/PageStructureMock.astro";
 import FlowDiagram from "~/components/mockups/FlowDiagram.astro";
 import StrategicPlanMock from "~/components/mockups/StrategicPlanMock.astro";
@@ -136,6 +137,16 @@ const schema = caseStudySchema({
         )}
         {d.hero ? (
           <figure class="case-hero-figure" data-reveal>
+            {d.hero.frame === "browser" && (
+              <div class="shot-chrome" aria-hidden="true">
+                <span class="shot-chrome-dot"></span>
+                <span class="shot-chrome-dot"></span>
+                <span class="shot-chrome-dot"></span>
+                {d.hero.frameLabel && (
+                  <span class="shot-chrome-label">{d.hero.frameLabel}</span>
+                )}
+              </div>
+            )}
             {d.links.length > 0 ? (
               <a
                 href={d.links[0].href}
@@ -219,6 +230,25 @@ const schema = caseStudySchema({
     {/* Gallery — additional screenshots after the lead visual */}
     {d.gallery.length > 0 && (
       <CaseGallery items={d.gallery} title="Selected screens" />
+    )}
+
+    {/* Board portal only: the onboarding tracker shipped after launch.
+        Its real screens can't be published, so a structural mockup
+        stands in — same redaction pattern as the dashboard mock. */}
+    {slug === "qms-board-portal" && (
+      <section class="case-extra">
+        <div class="container">
+          <p class="eyebrow" data-reveal>Since launch</p>
+          <figure class="case-extra-figure" data-reveal style="--reveal-delay: 100ms">
+            <OnboardingTrackerMock />
+            <figcaption class="case-extra-caption">
+              Structural mockup of the onboarding tracker added after launch.
+              Layout only; real records, names, and checklist items are not
+              shown.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
     )}
 
     <!-- BODY -->
@@ -522,6 +552,28 @@ const schema = caseStudySchema({
 
   .case-hero-pill-arrow {
     font-size: 0.85em;
+  }
+
+  .case-extra {
+    padding-block: clamp(2rem, 5vw, 4rem) var(--space-2);
+  }
+
+  .case-extra .eyebrow {
+    margin-bottom: var(--space-5);
+  }
+
+  .case-extra-figure {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .case-extra-caption {
+    font-size: var(--fs-sm);
+    color: var(--color-ink-muted);
+    line-height: var(--lh-base);
+    max-width: 56ch;
   }
 
   .case-body {

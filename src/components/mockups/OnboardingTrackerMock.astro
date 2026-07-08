@@ -1,0 +1,258 @@
+---
+// Redacted, public-safe representation of the board portal's onboarding
+// tracker. No real names, records, or checklist items — purely structural,
+// following the same redaction pattern as BoardPortalMock.
+---
+
+<div
+  class="mock tracker"
+  role="img"
+  aria-label="Redacted mockup of the onboarding tracker: a per-member record with a progress count, a checklist grouped by onboarding phase with date and notes fields per item, and a final acknowledgement row. Layout only; no real records are shown."
+>
+  <div class="mock-chrome">
+    <span></span><span></span><span></span>
+    <span class="addr">board.qmslife.com</span>
+  </div>
+  <div class="mock-body">
+    <div class="mock-header">
+      <div>
+        <span class="record-name" aria-hidden="true"></span>
+        <span class="record-meta">Onboarding record · Committee member</span>
+      </div>
+      <span class="record-status">In progress</span>
+    </div>
+
+    <div class="progress-row">
+      <span class="progress-label">Checklist progress</span>
+      <span class="progress-track"><span class="progress-fill"></span></span>
+    </div>
+
+    <p class="group-label">Before orientation</p>
+
+    <ul class="items">
+      <li class="item">
+        <span class="check done"></span>
+        <span class="item-line"></span>
+        <span class="chip">Date</span>
+        <span class="chip">Notes</span>
+      </li>
+      <li class="item">
+        <span class="check done"></span>
+        <span class="item-line mid"></span>
+        <span class="chip">Date</span>
+        <span class="chip">Notes</span>
+      </li>
+      <li class="item">
+        <span class="check"></span>
+        <span class="item-line short"></span>
+        <span class="chip">Date</span>
+        <span class="chip">Notes</span>
+      </li>
+    </ul>
+
+    <div class="ack">
+      <span class="ack-label">Final acknowledgement</span>
+      <span class="ack-meta">Signed by the member once every item is complete</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .mock {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    background: var(--color-bg-elevated);
+    box-shadow: var(--shadow-md);
+  }
+
+  .mock-chrome {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-bg-muted);
+    border-bottom: 1px solid var(--color-border);
+    font-size: var(--fs-xs);
+  }
+
+  .mock-chrome span:not(.addr) {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-border-strong);
+  }
+
+  .addr {
+    margin-left: auto;
+    color: var(--color-ink-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+  }
+
+  .mock-body {
+    padding: var(--space-6);
+    background: linear-gradient(180deg, var(--color-bg-elevated) 0%, var(--color-bg-raised) 100%);
+  }
+
+  .mock-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+  }
+
+  .record-name {
+    display: block;
+    width: 9rem;
+    max-width: 40vw;
+    height: 10px;
+    border-radius: var(--radius-xs);
+    background: var(--color-bg-raised);
+    margin-bottom: var(--space-2);
+  }
+
+  .record-meta {
+    display: block;
+    font-size: var(--fs-xs);
+    color: var(--color-ink-secondary);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .record-status {
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-ink-secondary);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-full);
+    padding: var(--space-1) var(--space-3);
+  }
+
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .progress-label {
+    font-size: var(--fs-xs);
+    color: var(--color-ink-secondary);
+    white-space: nowrap;
+  }
+
+  .progress-track {
+    position: relative;
+    flex: 1;
+    height: 6px;
+    border-radius: var(--radius-full);
+    background: var(--color-bg-raised);
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 40%;
+    border-radius: inherit;
+    background: var(--qms-deep-green);
+  }
+
+  .group-label {
+    font-size: var(--fs-xs);
+    color: var(--color-ink-secondary);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    margin-bottom: var(--space-3);
+  }
+
+  .items {
+    list-style: none;
+    display: grid;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-bg-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .check {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    border-radius: var(--radius-xs);
+    border: 1.5px solid var(--color-border-strong);
+  }
+
+  .check.done {
+    border-color: var(--qms-deep-green);
+    background: var(--qms-deep-green);
+  }
+
+  .item-line {
+    height: 8px;
+    width: 42%;
+    border-radius: var(--radius-xs);
+    background: var(--color-bg-raised);
+    margin-right: auto;
+  }
+
+  .item-line.mid {
+    width: 34%;
+  }
+
+  .item-line.short {
+    width: 26%;
+  }
+
+  .chip {
+    flex-shrink: 0;
+    font-size: 0.7rem;
+    color: var(--color-ink-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    padding: 2px var(--space-2);
+  }
+
+  .ack {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--qms-blue);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-muted);
+  }
+
+  .ack-label {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    color: var(--color-ink);
+  }
+
+  .ack-meta {
+    font-size: var(--fs-xs);
+    color: var(--color-ink-secondary);
+  }
+
+  @media (max-width: 540px) {
+    .chip {
+      display: none;
+    }
+  }
+</style>

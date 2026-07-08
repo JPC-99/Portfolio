@@ -18,16 +18,18 @@ links:
     href: "https://www.tasisportugal.org/elc-viewbook"
 hero:
   src: "../../assets/images/tasis-viewbooks/01-ibdp-cover.png"
-  alt: "Cover spread of the TASIS Portugal IB Diploma Programme viewbook, with a candid classroom photograph behind the title."
+  alt: "Student profile spread from the TASIS Portugal IB Diploma Programme viewbook, with a tabbed switcher between two student profiles, subject choices across the six IB groups, and extracurricular activities."
+  frame: "browser"
+  frameLabel: "tasisportugal.org/ibdp-viewbook"
 gallery:
   - src: "../../assets/images/tasis-viewbooks/02-ibdp-profile.png"
-    alt: "Student profile spread from the IBDP viewbook, with a tabbed switcher between two students, their academic subject choices, and extracurricular activities."
-    caption: "Student profile spread. A tabbed switcher lets readers explore the subject choices and activities of two different IBDP students."
+    alt: "Statistics band from the ELC viewbook, showing four key figures: nationalities school-wide, current ELC enrolment, languages spoken, and the educator-to-student ratio."
+    caption: "ELC by the numbers. Key figures pulled into one scannable band before the narrative begins."
     span: "full"
   - src: "../../assets/images/tasis-viewbooks/03-elc-schedule.png"
     alt: "Daily schedule spread from the ELC viewbook, showing a colour-coded vertical timeline from 8:05 a.m. circle time to 4:00 p.m. visual arts, with playful illustrations along each side."
     caption: "ELC daily schedule. Vertical colour timeline with illustrated cues, tuned for the youngest readers and their parents."
-    span: "full"
+    span: "half"
 ---
 
 ## Overview
