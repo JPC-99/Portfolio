@@ -25,6 +25,10 @@ const projects = defineCollection({
         .object({
           src: image(),
           alt: z.string(),
+          // "browser" adds the slim chrome bar (three dots + label) so web
+          // screenshots read as captured surfaces, not floating rectangles.
+          frame: z.enum(["browser", "plain"]).default("plain"),
+          frameLabel: z.string().optional(),
         })
         .optional(),
       gallery: z
@@ -35,6 +39,8 @@ const projects = defineCollection({
             caption: z.string().optional(),
             // Layout hint: full = full bleed; half = pair-friendly tile
             span: z.enum(["full", "half"]).default("full"),
+            frame: z.enum(["browser", "plain"]).default("plain"),
+            frameLabel: z.string().optional(),
           }),
         )
         .default([]),

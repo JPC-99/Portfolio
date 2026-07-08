@@ -17,14 +17,16 @@ links:
 hero:
   src: "../../assets/images/tasis-homepage/01-hero.png"
   alt: "TASIS Portugal homepage redesign concept, with a clear primary admissions action and trust signals concentrated near the call to action."
+  frame: "browser"
+  frameLabel: "tasisportugal.org/home-clone-two"
 gallery:
   - src: "../../assets/images/tasis-homepage/02-values.png"
-    alt: "Values section of the redesigned TASIS Portugal homepage, with a clear three-up content hierarchy."
-    caption: "Values section. Three-up hierarchy, scannable on mobile first."
+    alt: "Mission and vision section of the redesigned TASIS Portugal homepage, with the school crest beside short mission and vision statements and a rotating band of school statistics below."
+    caption: "Mission and vision. Short statements beside the crest, with key school stats rotating underneath."
     span: "full"
   - src: "../../assets/images/tasis-homepage/03-media-grid.png"
-    alt: "Media grid section of the redesigned TASIS Portugal homepage, showing campus life through paced photography."
-    caption: "Life at TASIS. A paced photography grid built around photo-first storytelling."
+    alt: "Media grid section of the redesigned TASIS Portugal homepage: a central school-experience video surrounded by Headmaster’s Corner, Facebook, Instagram, and YouTube tiles."
+    caption: "Life at TASIS. One video anchors the grid; the school’s channels orbit it."
     span: "full"
 ---
 

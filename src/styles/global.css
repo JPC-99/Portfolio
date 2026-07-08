@@ -101,30 +101,30 @@ body::after {
   will-change: transform;
 }
 
-/* BLUE — anchored top-left region. Tracks the cursor closely. */
+/* GOLD — anchored top-left region. Tracks the cursor closely. */
 body::before {
   width: 65vmax;
   height: 65vmax;
   transform: translate3d(calc(var(--mx) * 0.7), calc(var(--my) * 0.6 + 5vh), 0)
     translate(-50%, -50%);
-  background: radial-gradient(closest-side, rgba(58, 132, 200, 0.6) 0%, transparent 70%);
+  background: radial-gradient(closest-side, var(--ambient-a) 0%, transparent 70%);
   opacity: 0.65;
 }
 
-/* RED — anchored bottom-right region. Counter-moves to the cursor and
-   drifts upward as you scroll. */
+/* TERRACOTTA — anchored bottom-right region. Counter-moves to the cursor
+   and drifts upward as you scroll. */
 body::after {
   width: 60vmax;
   height: 60vmax;
   transform: translate3d(calc(100vw - var(--mx) * 0.7), calc(95vh - var(--my) * 0.6 - var(--sp) * 18vh), 0)
     translate(-50%, -50%);
-  background: radial-gradient(closest-side, rgba(220, 88, 72, 0.5) 0%, transparent 70%);
+  background: radial-gradient(closest-side, var(--ambient-b) 0%, transparent 70%);
   opacity: 0.55;
 }
 
-/* GREEN — anchored bottom-left region (the third corner blue and red
-   don't occupy). Tracks the cursor on a softer orbit so the trio forms
-   a stable triangle that breathes rather than collapses. */
+/* ROSEWOOD — anchored bottom-left region (the third corner gold and
+   terracotta don't occupy). Tracks the cursor on a softer orbit so the
+   trio forms a stable triangle that breathes rather than collapses. */
 html::before {
   content: "";
   position: fixed;
@@ -138,7 +138,7 @@ html::before {
   z-index: -1;
   border-radius: 50%;
   filter: blur(100px);
-  background: radial-gradient(closest-side, rgba(110, 200, 150, 0.9) 0%, transparent 70%);
+  background: radial-gradient(closest-side, var(--ambient-c) 0%, transparent 70%);
   opacity: calc(0.55 + var(--sp) * 0.15);
   will-change: transform;
 }
@@ -642,6 +642,41 @@ ol {
 }
 
 /* =========================================
+   Screenshot chrome — the slim browser bar used above framed
+   screenshots. Shares the visual grammar of the structural mockups
+   (three dots + optional address/label) so real captures and redacted
+   mocks read as one family.
+   ========================================= */
+.shot-chrome {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-muted);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--fs-xs);
+}
+
+.shot-chrome-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-border-strong);
+}
+
+.shot-chrome-label {
+  margin-left: auto;
+  /* ink-secondary, not ink-muted: this small mono label must hold 4.5:1
+     on the translucent chrome bar in the dark theme. */
+  color: var(--color-ink-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================================
    Grid utilities
    ========================================= */
 .grid {
@@ -728,7 +763,7 @@ ol {
   position: absolute;
   inset: 0 auto 0 0;
   width: calc(var(--hx) * 100%);
-  background: linear-gradient(90deg, var(--cat-qms-ink), var(--cat-tasis-ink), var(--cat-personal-ink));
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-strong));
   border-radius: inherit;
   transition: width 120ms linear;
 }

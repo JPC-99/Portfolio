@@ -56,6 +56,11 @@
   --nav-bg: rgba(10, 13, 18, 0.45);
   --nav-bg-scrolled: rgba(10, 13, 18, 0.6);
 
+  /* Mobile menu panel — fully solid so links never fight the page
+     behind them. Translucency here also trips a Chromium compositing
+     bug on children overflowing a backdrop-filtered sticky header. */
+  --menu-bg: #10141b;
+
   /* Text and chrome that sit ON an inverse surface (the cream CTA block
      on dark; it becomes a dark block when the light theme flips). */
   --inverse-ink-soft: rgba(13, 16, 20, 0.55);
@@ -70,19 +75,27 @@
   --color-accent-strong: #e36b5b;
   --color-accent-soft: rgba(208, 84, 69, 0.12);
 
+  /* Ambient atmosphere — three blurred volumes behind everything
+     (positioned and animated in global.css). One analogous warm family
+     anchored on the accent: gold, terracotta, rosewood. Near-neutral
+     depth, not a light show; the accent stays the only loud color. */
+  --ambient-a: rgba(199, 148, 78, 0.55);
+  --ambient-b: rgba(208, 84, 69, 0.5);
+  --ambient-c: rgba(152, 84, 94, 0.85);
+
   /* Category identity — three short-range gradients.
      Used sparingly as 2px stripes, eyebrow dots, and header halos so each
-     project category has a quiet visual signature. Each gradient stays
-     within a narrow hue range so they read as "depth" not "decoration". */
-  --grad-qms: linear-gradient(135deg, #2a6fb3 0%, #4da0c8 100%);
-  --grad-tasis: linear-gradient(135deg, #c8483b 0%, #e98b66 100%);
-  --grad-personal: linear-gradient(135deg, #2f7a55 0%, #74b58e 100%);
+     project category has a quiet visual signature. Muted on purpose:
+     these are wayfinding, and must never compete with the accent. */
+  --grad-qms: linear-gradient(135deg, #3d6288 0%, #6289a9 100%);
+  --grad-tasis: linear-gradient(135deg, #c05045 0%, #dd8a68 100%);
+  --grad-personal: linear-gradient(135deg, #446c56 0%, #74997f 100%);
 
   /* Solid representative ink for each category — used for tag dots and
      radial halos where a single color reads cleaner than a gradient. */
-  --cat-qms-ink: #4193c2;
+  --cat-qms-ink: #5e87a8;
   --cat-tasis-ink: #d56950;
-  --cat-personal-ink: #5aa07e;
+  --cat-personal-ink: #6b9781;
 
   /* QMS contextual palette — used ONLY inside QMS surfaces.
      Do not apply globally. */
@@ -232,6 +245,8 @@
 
   --nav-bg: rgba(242, 238, 228, 0.55);
   --nav-bg-scrolled: rgba(242, 238, 228, 0.78);
+
+  --menu-bg: #f7f4ec;
 
   --inverse-ink-soft: rgba(243, 238, 226, 0.62);
   --inverse-ink-secondary: rgba(243, 238, 226, 0.78);

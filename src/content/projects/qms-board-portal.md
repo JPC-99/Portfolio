@@ -16,6 +16,8 @@ confidentialityNote: "Details and visuals are redacted to protect private govern
 hero:
   src: "../../assets/images/qms-board-portal/dashboard.png"
   alt: "Queen Margaret’s School Board of Governors portal dashboard showing role-aware tiles for Board, Finance Committee, Governance Committee, Calendar, and an executive-only documents area."
+  frame: "browser"
+  frameLabel: "board.qmslife.com"
 ---
 
 ## Overview
@@ -23,6 +25,8 @@ hero:
 The Queen Margaret’s School Board of Governors needed a single, predictable place for governance work. Materials lived in email, scattered SharePoint links, and personal folders, which slowed meeting prep and put pressure on the people maintaining the resources.
 
 I designed and built a role-based WordPress microsite that brings the right materials forward for the right people: board members, committee members, executives, and the small team that keeps the content current.
+
+The design problem was never the pages. It was the workflow around them: I mapped role-based access to how board members actually find documents, so the right resource sits one or two decisions away instead of at the end of a search.
 
 ## My role
 
@@ -124,7 +128,9 @@ Quantitative results from a private governance portal aren’t appropriate to pu
 
 ## Since launch
 
-The portal hasn’t stood still. It has taken on multiple rounds of updates since the first release, the largest being an onboarding tracking system for incoming governors, so orientation now lives in the same place as the rest of the board’s work.
+The portal hasn’t stood still. It has taken on multiple rounds of updates since the first release, the largest being an onboarding tracker for incoming committee members, so orientation now lives in the same place as the rest of the board’s work.
+
+The tracker gives each incoming member one record: a checklist of onboarding items, each with a completion date, a notes field, and a flag for whether the supporting document has made it into records. Progress is visible at a glance, administrators create and review records from a single list, and once every item is checked, the member signs a final acknowledgement from their own checklist page. The structural mockup above shows the shape of it; the real records stay private.
 
 That growth is the quiet payoff of the early pattern work: because tiles, roles, and micro-interactions were built as a small reusable system, new capabilities ship inside the existing shell without bespoke design work each time.
 
