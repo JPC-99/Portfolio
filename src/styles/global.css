@@ -97,33 +97,32 @@ body::after {
   pointer-events: none;
   z-index: -1;
   border-radius: 50%;
-  filter: blur(120px);
   will-change: transform;
 }
 
-/* GOLD — anchored top-left region. Tracks the cursor closely. */
+/* STEEL BLUE (QMS) — anchored top-left region. Tracks the cursor closely. */
 body::before {
   width: 65vmax;
   height: 65vmax;
   transform: translate3d(calc(var(--mx) * 0.7), calc(var(--my) * 0.6 + 5vh), 0)
     translate(-50%, -50%);
-  background: radial-gradient(closest-side, var(--ambient-a) 0%, transparent 70%);
+  background: var(--ambient-a);
   opacity: 0.65;
 }
 
-/* TERRACOTTA — anchored bottom-right region. Counter-moves to the cursor
-   and drifts upward as you scroll. */
+/* TERRACOTTA (TASIS/accent) — anchored bottom-right region. Counter-moves
+   to the cursor and drifts upward as you scroll. */
 body::after {
   width: 60vmax;
   height: 60vmax;
   transform: translate3d(calc(100vw - var(--mx) * 0.7), calc(95vh - var(--my) * 0.6 - var(--sp) * 18vh), 0)
     translate(-50%, -50%);
-  background: radial-gradient(closest-side, var(--ambient-b) 0%, transparent 70%);
+  background: var(--ambient-b);
   opacity: 0.55;
 }
 
-/* ROSEWOOD — anchored bottom-left region (the third corner gold and
-   terracotta don't occupy). Tracks the cursor on a softer orbit so the
+/* SAGE (personal) — anchored bottom-left region (the third corner the
+   other two don't occupy). Tracks the cursor on a softer orbit so the
    trio forms a stable triangle that breathes rather than collapses. */
 html::before {
   content: "";
@@ -137,8 +136,7 @@ html::before {
   pointer-events: none;
   z-index: -1;
   border-radius: 50%;
-  filter: blur(100px);
-  background: radial-gradient(closest-side, var(--ambient-c) 0%, transparent 70%);
+  background: var(--ambient-c);
   opacity: calc(0.55 + var(--sp) * 0.15);
   will-change: transform;
 }

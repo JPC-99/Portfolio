@@ -75,13 +75,15 @@
   --color-accent-strong: #e36b5b;
   --color-accent-soft: rgba(208, 84, 69, 0.12);
 
-  /* Ambient atmosphere — three blurred volumes behind everything
-     (positioned and animated in global.css). One analogous warm family
-     anchored on the accent: gold, terracotta, rosewood. Near-neutral
-     depth, not a light show; the accent stays the only loud color. */
-  --ambient-a: rgba(199, 148, 78, 0.55);
-  --ambient-b: rgba(208, 84, 69, 0.5);
-  --ambient-c: rgba(152, 84, 94, 0.85);
+  /* Ambient atmosphere — three soft volumes behind everything
+     (positioned and animated in global.css). Each carries one category
+     ink (QMS steel blue / TASIS terracotta / personal sage) so the
+     background echoes the same colors the cards, dots, and stripes use.
+     The multi-stop falloff bakes the softness in; no filter: blur(),
+     so all three paint instantly instead of rasterizing one by one. */
+  --ambient-a: radial-gradient(closest-side, rgba(94, 135, 168, 0.5) 0%, rgba(94, 135, 168, 0.22) 40%, transparent 72%);
+  --ambient-b: radial-gradient(closest-side, rgba(213, 105, 80, 0.45) 0%, rgba(213, 105, 80, 0.2) 40%, transparent 72%);
+  --ambient-c: radial-gradient(closest-side, rgba(107, 151, 129, 0.8) 0%, rgba(107, 151, 129, 0.35) 40%, transparent 72%);
 
   /* Category identity — three short-range gradients.
      Used sparingly as 2px stripes, eyebrow dots, and header halos so each
