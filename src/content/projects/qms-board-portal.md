@@ -12,12 +12,19 @@ tags: ["UX/UI", "Implementation", "Information Architecture"]
 featured: true
 confidential: true
 order: 1
-confidentialityNote: "Details and visuals are redacted to protect private governance materials. The screenshot below shows the role-aware dashboard surface only. No real board documents, governance files, or member names are displayed."
+confidentialityNote: "Details and visuals are redacted to protect private governance materials. The screenshots below show the role-aware dashboard surface and the onboarding tracker structure only. No real board documents, governance files, or member records are displayed."
 hero:
   src: "../../assets/images/qms-board-portal/dashboard.png"
-  alt: "Queen Margaret’s School Board of Governors portal dashboard showing role-aware tiles for Board, Finance Committee, Governance Committee, Calendar, and an executive-only documents area."
+  alt: "Queen Margaret’s School Board of Governors portal dashboard showing role-aware navigation for BOG, Governance, Finance, CAIS, and Campus Master Plan, with a school social feed, strategic plan tile, and shared calendar."
   frame: "browser"
   frameLabel: "board.qmslife.com"
+gallery:
+  - src: "../../assets/images/qms-board-portal/onboarding-tracker.png"
+    alt: "The Onboarding Tracker inside the portal: a committee onboarding table with progress, status, acknowledgement, and last-updated columns, plus an admin panel for adding a committee member. Shown with a test record only."
+    caption: "The Onboarding Tracker, added since launch. Admins manage records from one list; each member works from their own checklist. Test data only."
+    span: "full"
+    frame: "browser"
+    frameLabel: "board.qmslife.com"
 ---
 
 ## Overview
@@ -130,7 +137,7 @@ Quantitative results from a private governance portal aren’t appropriate to pu
 
 The portal hasn’t stood still. It has taken on multiple rounds of updates since the first release, the largest being an onboarding tracker for incoming committee members, so orientation now lives in the same place as the rest of the board’s work.
 
-The tracker gives each incoming member one record: a checklist of onboarding items, each with a completion date, a notes field, and a flag for whether the supporting document has made it into records. Progress is visible at a glance, administrators create and review records from a single list, and once every item is checked, the member signs a final acknowledgement from their own checklist page. The structural mockup above shows the shape of it; the real records stay private.
+The tracker gives each incoming member one record: a checklist of onboarding items, each with a completion date, a notes field, and a flag for whether the supporting document has made it into records. Progress is visible at a glance, administrators create and review records from a single list, and once every item is checked, the member signs a final acknowledgement from their own checklist page. The screenshot below shows the shape of it; the real records stay private.
 
 That growth is the quiet payoff of the early pattern work: because tiles, roles, and micro-interactions were built as a small reusable system, new capabilities ship inside the existing shell without bespoke design work each time.
 
